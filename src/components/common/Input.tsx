@@ -20,7 +20,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
   (
     {
       id,
-      type,
+      type = "text",
       placeholder,
       className,
       variant = "default",
@@ -31,9 +31,13 @@ const Input = forwardRef<HTMLInputElement, Props>(
   ) => {
     return (
       <div className="relative">
-        <div className="absolute left-[20px] top-[9px]  w-[20px] h-[20px]">
+        <label
+          htmlFor={id}
+          aria-label="search아이콘"
+          className="absolute left-[20px] top-[9px] w-[20px] h-[20px] cursor-pointer"
+        >
           {variant === "search" && <SearchIcon />}
-        </div>
+        </label>
         <input
           ref={ref}
           id={id}
