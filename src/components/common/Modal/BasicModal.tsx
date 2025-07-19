@@ -53,7 +53,9 @@ const BasicModal = ({
             <DialogTitle className="text-xl md:text-2xl text-left">
               {title}
             </DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogDescription className="sr-only">
+              다이얼로그 내용
+            </DialogDescription>
           </DialogHeader>
           {/* 컨텐츠 영역 */}
           {children}
