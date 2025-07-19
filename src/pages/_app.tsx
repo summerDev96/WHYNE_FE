@@ -1,11 +1,14 @@
-import Gnb from '@/components/common/Gnb';
-import '@/styles/globals.css';
-import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
+import "@/styles/globals.css";
+
+import { useRouter } from "next/router";
+
+import Gnb from "@/components/common/Gnb";
+
+import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/login', '/signUp'];
+  const pagesWithoutGnb = ["/login", "/signUp", "/_error"];
 
   return (
     <>

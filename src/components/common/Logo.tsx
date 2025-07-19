@@ -1,10 +1,12 @@
-import React from 'react';
-import LogoIcon from '@/assets/logo.svg';
-import Link from 'next/link';
+import React from "react";
+
+import Link from "next/link";
+
+import LogoIcon from "@/assets/logo.svg";
 
 function Logo() {
   return (
-    <Link href="/" className='w-[52px] h-[15px]'>
+    <Link href="/" className="w-[52px] h-[15px]">
       <LogoIcon />
     </Link>
   );

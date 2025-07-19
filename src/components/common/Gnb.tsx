@@ -1,9 +1,11 @@
-import React from 'react';
-import Logo from './Logo';
-import Link from 'next/link';
-import UserDefaultImg from './UserDefaultImg';
-import { useRouter } from 'next/router';
-import Image from 'next/image';
+import React from "react";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+import Logo from "./Logo";
+import UserDefaultImg from "./UserDefaultImg";
 
 function Gnb() {
   return (
@@ -24,15 +26,15 @@ function AuthMenu() {
 
   /*테스트용 코드*/
   let user = null; //로그인x상태
-  user = { image: '' }; //로그인o 상태 //여기 주석 풀었다 했다하면서 확인할 수 있어여
-  /* */
+  user = { image: "" }; //로그인o 상태 //여기 주석 풀었다 했다하면서 확인할 수 있어여
+  /*        */
 
   return user ? (
-    <UserDropdown userImage={''} />
+    <UserDropdown userImage={""} />
   ) : (
     <div className="flex items-center gap-[20px] md:gap-[40px] text-white text-[14px] md:text-[16px] font-medium">
       <Link href="/login">로그인</Link>
-      {pathname === '/' && <Link href="/signup">회원가입</Link>}
+      {pathname === "/" && <Link href="/signup">회원가입</Link>}
     </div>
   );
 }

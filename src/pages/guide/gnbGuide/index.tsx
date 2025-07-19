@@ -1,8 +1,9 @@
-import Gnb from '@/components/common/Gnb';
-import React from 'react';
+import React from "react";
+
+import Gnb from "@/components/common/Gnb";
 
 function GnbGuide() {
-  return <Gnb/>;
+  return <Gnb />;
 }
 
 export default GnbGuide;
