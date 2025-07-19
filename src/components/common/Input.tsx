@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
   ) => {
     return (
       <div className="relative">
-        <div className="absolute left-[20px] top-[9px]  w-[20px] h-[20px]    ">
+        <div className="absolute left-[20px] top-[9px]  w-[20px] h-[20px]">
           {variant === "search" && <SearchIcon />}
         </div>
         <input
