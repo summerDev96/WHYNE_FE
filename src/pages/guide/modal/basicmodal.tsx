@@ -56,7 +56,7 @@ const BasicModalGuide = () => {
         모달의 내용을 추가해주세요
       </BasicModal>
 
-      <div className="text-xl font-bold">모달2: 하단 버튼이 두개인 경우</div>
+      <div className="text-xl font-bold">모달2: 하단 버튼이 한 개인 경우</div>
       {/* 버튼 클릭 시 모달 열림 */}
       <Button variant="outline" onClick={() => setShowReviewModal(true)}>
         리뷰 모달 예시
