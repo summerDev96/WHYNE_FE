@@ -33,7 +33,9 @@ const ConfirmModal = ({
             <DialogTitle className="mt-2 flex justify-center text-xl md:text-2xl">
               {children}
             </DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogDescription className="sr-only">
+              다이얼로그 내용
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="w-full flex flex-row justify-between gap-2">
             {buttons}
