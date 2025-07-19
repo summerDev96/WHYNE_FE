@@ -25,6 +25,17 @@ const buttonVariants = cva(
         white: "bg-white text-black border border-gray-300",
         onlyCancel: "bg-white text-gray-500 border border-gray-300",
         purpleLight: "bg-purpleLight text-purpleDark",
+
+        default:
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         xs: "h-[40px] md:h-[42px] rounded-[12px]",
@@ -33,6 +44,8 @@ const buttonVariants = cva(
         lg: "h-[48px] md:h-[52px] rounded-[12px] md:rounded-[16px]",
         xl: "h-[54px] rounded-[12px]",
         onlyLanding: "h-[50px] rounded-[100px]",
+
+        icon: "h-9 w-9",
       },
       width: {
         xs: "w-[61px] md:w-[68px]",
