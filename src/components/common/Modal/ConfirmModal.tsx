@@ -30,7 +30,7 @@ const ConfirmModal = ({
         >
           <DialogHeader>
             {/* 컨텐츠 영역 */}
-            <DialogTitle className="mt-2 flex justify-center">
+            <DialogTitle className="mt-2 flex justify-center text-xl md:text-2xl">
               {children}
             </DialogTitle>
             <DialogDescription></DialogDescription>

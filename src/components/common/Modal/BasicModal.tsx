@@ -50,7 +50,9 @@ const BasicModal = ({
             </DialogClose>
           )}
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle className="text-xl md:text-2xl text-left">
+              {title}
+            </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           {/* 컨텐츠 영역 */}
