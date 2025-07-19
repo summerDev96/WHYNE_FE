@@ -14,6 +14,11 @@ const config: Config = {
   theme: {
     extend: {
       ...shadTheme,
+      colors: {
+        ...shadTheme.colors,
+        purpleDark: "#6A42DB",
+        purpleLight: "#F1EDFC",
+      },
     },
   },
   plugins: [animate],
