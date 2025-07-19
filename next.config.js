@@ -4,23 +4,23 @@ const nextConfig = {
 
   webpack(config) {
     config.module.rules = config.module.rules.filter(
-      (rule) => !(rule.test && rule.test.test && rule.test.test('.svg'))
+      (rule) => !(rule.test && rule.test.test && rule.test.test(".svg")),
     );
 
     config.module.rules.push({
       test: /\.svg$/,
       use: [
         {
-          loader: '@svgr/webpack',
+          loader: "@svgr/webpack",
           options: {
             svgoConfig: {
               plugins: [
                 {
-                  name: 'removeViewBox',
+                  name: "removeViewBox",
                   active: false,
                 },
                 {
-                  name: 'removeDimensions',
+                  name: "removeDimensions",
                   active: true,
                 },
               ],
