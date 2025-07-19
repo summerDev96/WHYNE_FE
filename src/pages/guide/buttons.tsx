@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 export default function buttons() {
   return (
     <div>
-      <div style={{ width: "50px", marginLeft: "20px" }}>
+      <div style={{ width: "1000px", marginLeft: "20px" }}>
         Size
         <div style={{ marginBottom: "10px" }}>
           <Button size="xs" width="xs">
@@ -30,9 +30,9 @@ export default function buttons() {
             onlyLanding
           </Button>
         </div>
-        <div style={{ marginBottom: "10px" }}>
-          <Button width="full">full</Button>
-        </div>
+      </div>
+      <div style={{ width: "100%", maxWidth: "800px", marginBottom: "10px" }}>
+        <Button width="full">full</Button>
       </div>
       <div style={{ marginLeft: "20px" }}>Variant</div>
       <div
