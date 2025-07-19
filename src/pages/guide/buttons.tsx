@@ -26,6 +26,11 @@ export default function buttons() {
           </Button>
         </div>
         <div style={{ marginBottom: "10px" }}>
+          <Button size="xl" width="xl">
+            xl
+          </Button>
+        </div>
+        <div style={{ marginBottom: "10px" }}>
           <Button size="onlyLanding" width="onlyLanding">
             onlyLanding
           </Button>

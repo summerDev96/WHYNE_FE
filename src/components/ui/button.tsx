@@ -28,9 +28,10 @@ const buttonVariants = cva(
       },
       size: {
         xs: "h-[40px] md:h-[42px] rounded-[12px]",
-        sm: "h-[40px] md:h-[42px] rounded-[12px] ",
-        md: "h-[48px] md:h-[52px] rounded-[12px] md:rounded-[16px]",
-        lg: "h-[48px] md:h-[50px] rounded-[12px] md:rounded-[12px]",
+        sm: "h-[42px] md:h-[48px] rounded-[12px] ",
+        md: "h-[48px] md:h-[50px] rounded-[12px] md:rounded-[16px]",
+        lg: "h-[48px] md:h-[52px] rounded-[12px] md:rounded-[16px]",
+        xl: "h-[54px] rounded-[12px]",
         onlyLanding: "h-[50px] rounded-[100px]",
       },
       width: {
@@ -38,6 +39,7 @@ const buttonVariants = cva(
         sm: "w-[100px] md:w-[113px]",
         md: "w-[303px] md:w-[400px]",
         lg: "w-[343px] md:w-[400px]",
+        xl: "w-[480px]",
         full: "w-full",
         onlyLanding: "w-[279px]",
       },
