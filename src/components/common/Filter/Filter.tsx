@@ -22,6 +22,7 @@ const Filter = () => {
       <div className="flex flex-col gap-3">
         <span className="text-xl font-bold">WINE TYPES</span>
         <div className="flex gap-2.5">
+          {/* todo: 공통 뱃지로 변경 필요 */}
           {wineTypeOptions.map((option, index) => (
             <Badge
               key={`${option}-${index}`}
@@ -38,6 +39,7 @@ const Filter = () => {
       </div>
       <div className="flex flex-col gap-5">
         <span className="text-xl font-bold">PRICE</span>
+        {/* todo: 공통 레인지 슬라이더로 변경 필요 */}
         <DualSlider
           min={0}
           max={100000}
@@ -50,6 +52,7 @@ const Filter = () => {
       </div>
       <div className="flex flex-col gap-2.5">
         <span className="text-xl font-bold">RATING</span>
+        {/* todo: 공통 라디오, 라벨 컴포넌트로 변경 필요 */}
         <RadioGroup value={rating} onValueChange={setRating}>
           <div className="flex items-center gap-3">
             {/* 전체인 경우 보내야 하는 값을 몰라서, 임의로 value 0으로 설정하였습니다. */}
