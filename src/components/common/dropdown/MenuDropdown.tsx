@@ -51,7 +51,7 @@ export default function MenuDropdown({
             key={option.value}
             onClick={() => onSelect(option.value)}
             className={cn(
-              "w-full px-3 py-2 rounded-xl flex justify-center text-sm md:text-base font-medium text-gray-800 cursor-pointer transition-colors bg-transparent",
+              "w-full px-3 py-2.5 rounded-xl flex justify-center text-sm md:text-base font-medium text-gray-800 cursor-pointer transition-colors bg-transparent",
               "data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800",
               "active:bg-violet-100 active:text-violet-800 active:font-semibold "
             )}

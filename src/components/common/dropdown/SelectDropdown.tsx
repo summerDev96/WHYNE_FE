@@ -57,7 +57,7 @@ export default function FormDropdown({
               key={option.value}
               onClick={() => onChange(option.value)}
               data-value={option.value}
-              className={`w-full px-4 py-2 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors
+              className={`w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors
                 ${
                   isSelected
                     ? "bg-violet-100 text-violet-800 font-semibold"
