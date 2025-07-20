@@ -35,6 +35,7 @@ export default function SelectDropdown({
 
   return (
     <DropdownMenu>
+      {/* 드롭다운 트리거 버튼 - 사용 시 Trigger 컴포넌트를 바꿔 넣어야합니다!*/}
       <DropdownMenuTrigger asChild>
         <button
           type="button"
@@ -46,7 +47,7 @@ export default function SelectDropdown({
           {selectedLabel}
         </button>
       </DropdownMenuTrigger>
-
+      {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
         align="start"
         className={cn(
