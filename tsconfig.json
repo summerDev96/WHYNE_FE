@@ -13,10 +13,17 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/styles/shadTheme.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/styles/shadTheme.ts",
+    "src/**/*.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
