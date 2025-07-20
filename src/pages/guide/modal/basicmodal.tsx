@@ -29,9 +29,7 @@ const BasicModalGuide = () => {
       <div className="text-xl font-bold">모달1: 하단 버튼이 두개인 경우</div>
       {/* 예시에는 버튼 클릭 시 모달 열리게 되어있음 */}
       {/* 사용 시에는 텍스트, 버튼에 onClick={() => setShowRegisterModal(true)} 추가필요! */}
-      <Button variant="outline" onClick={() => setShowRegisterModal(true)}>
-        등록 모달 예시
-      </Button>
+      <Button onClick={() => setShowRegisterModal(true)}>등록 모달 예시</Button>
       {/* 모달 컴포넌트 */}
       <BasicModal
         type="register"
@@ -42,7 +40,6 @@ const BasicModalGuide = () => {
         buttons={
           <>
             <Button
-              variant="outline"
               className="flex-auto"
               onClick={() => setShowRegisterModal(false)}
             >
@@ -58,9 +55,7 @@ const BasicModalGuide = () => {
 
       <div className="text-xl font-bold">모달2: 하단 버튼이 한 개인 경우</div>
       {/* 버튼 클릭 시 모달 열림 */}
-      <Button variant="outline" onClick={() => setShowReviewModal(true)}>
-        리뷰 모달 예시
-      </Button>
+      <Button onClick={() => setShowReviewModal(true)}>리뷰 모달 예시</Button>
       {/* 모달 컴포넌트 */}
       <BasicModal
         type="review"
