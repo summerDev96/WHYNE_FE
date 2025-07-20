@@ -12,6 +12,16 @@ const shadTheme = {
   colors: {
     background: "hsl(var(--background))",
     foreground: "hsl(var(--foreground))",
+    black: "hsl(var(--black))",
+    white: "hsl(var(--white))",
+
+    gray: {
+      100: "hsl(var(--gray-100))",
+      300: "hsl(var(--gray-300))",
+      500: "hsl(var(--gray-500))",
+      800: "hsl(var(--gray-800))",
+    },
+
     card: {
       DEFAULT: "hsl(var(--card))",
       foreground: "hsl(var(--card-foreground))",
@@ -22,6 +32,7 @@ const shadTheme = {
     },
     primary: {
       DEFAULT: "hsl(var(--primary))",
+      100: "hsl(var(--primary-100))",
       foreground: "hsl(var(--primary-foreground))",
     },
     secondary: {
