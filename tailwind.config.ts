@@ -15,6 +15,11 @@ const config: Config = {
         sans: ["var(--font-sans)"],
       },
       ...shadTheme,
+      colors: {
+        ...shadTheme.colors,
+        purpleDark: "#6A42DB",
+        purpleLight: "#F1EDFC",
+      },
     },
   },
   plugins: [animate],
