@@ -60,6 +60,7 @@ const BasicModal = ({
               다이얼로그 내용
             </DialogDescription>
           </DialogHeader>
+
           {/* 컨텐츠 영역 */}
           {children}
           <DialogFooter className="w-full flex flex-row justify-between gap-2">
