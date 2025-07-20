@@ -4,6 +4,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 interface Option {
   label: string;
@@ -23,7 +24,7 @@ interface SelectDropdownProps {
   placeholder?: string;
 }
 
-export default function FormDropdown({
+export default function SelectDropdown({
   value,
   options,
   onChange,
@@ -37,8 +38,10 @@ export default function FormDropdown({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="bg-white border border-gray-300 text-gray-800 px-4 py-2 rounded-lg font-medium shadow-sm
-            hover:border-violet-400 transition-colors text-left w-[303px] md:w-[412px]"
+          className={cn(
+            "bg-white border border-gray-300 text-gray-800 px-4 py-2 rounded-lg font-medium shadow-sm hover:border-violet-400 transition-colors text-left",
+            "w-[303px] md:w-[412px]"
+          )}
         >
           {selectedLabel}
         </button>
@@ -46,7 +49,10 @@ export default function FormDropdown({
 
       <DropdownMenuContent
         align="start"
-        className="rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1 w-[303px] md:w-[412px]"
+        className={cn(
+          "rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1",
+          "w-[303px] md:w-[412px]"
+        )}
       >
         {options.map((option) => {
           const isSelected = value === option.value;
@@ -57,12 +63,12 @@ export default function FormDropdown({
               key={option.value}
               onClick={() => onChange(option.value)}
               data-value={option.value}
-              className={`w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors
-                ${
-                  isSelected
-                    ? "bg-violet-100 text-violet-800 font-semibold"
-                    : "text-gray-800"
-                } data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800`}
+              className={cn(
+                "w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800",
+                isSelected
+                  ? "bg-violet-100 text-violet-800 font-semibold"
+                  : "text-gray-800"
+              )}
             >
               {option.label}
             </DropdownMenuItem>
