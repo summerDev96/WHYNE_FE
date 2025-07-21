@@ -9,36 +9,30 @@ import { cn } from "@/lib/utils";
 interface Option {
   label: React.ReactNode;
   value: string;
+  ariaLabel?: string;
 }
 
 /**
  * MenuDropdown
  * - 수정/삭제 같은 액션을 위한 메뉴 드롭다운 컴포넌트
- * - 버튼 클릭 시 옵션 리스트 표시
- * - 선택 시 onSelect 콜백 호출
+ * - trigger prop으로 원하는 요소를 넘겨서 사용
+ * - 옵션 label에 ReactNode 허용 (이미지, 아이콘 등)
  */
 interface MenuDropdownProps {
   options: Option[]; // 표시할 메뉴 항목들
   onSelect: (value: string) => void; // 항목 클릭 시 실행할 콜백
-  label?: string; // 버튼 텍스트 (기본: "메뉴")
+  trigger: React.ReactElement;
 }
 
 export default function MenuDropdown({
   options,
   onSelect,
-  label = "메뉴",
+  trigger,
 }: MenuDropdownProps) {
   return (
     <DropdownMenu>
       {/* 드롭다운 트리거 버튼 - 사용 시 Trigger 컴포넌트를 바꿔 넣어야합니다!*/}
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className="bg-violet-600 text-white px-4 py-2 rounded-lg font-medium  hover:bg-violet-700"
-        >
-          {label}
-        </button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
       {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
@@ -47,7 +41,7 @@ export default function MenuDropdown({
       >
         {options.map((option) => (
           <DropdownMenuItem
-            aria-label={option.label}
+            aria-label={option.ariaLabel}
             key={option.value}
             onClick={() => onSelect(option.value)}
             className={cn(
