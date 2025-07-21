@@ -65,7 +65,7 @@ Input.displayName = "Input";
 
 //md 768이상  xl 1280이상
 const variantStyles = {
-  base: " rounded-[16px] bg-[#ffffff] border border-[#CFDBEA] outline-none active:border-[#9FACBD] focus:border-[#9FACBD]",
+  base: " rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans",
   default: "px-[20px] py-[11px] w-[303px] md:w-[400px]",
   search: "w-[210px] py-[7px] px-[45px] rounded-[50px] md:w-[400px]",
   name: "px-[20px] py-[11px]  w-full",

@@ -1,8 +1,9 @@
 // src/pages/guide/dropdown.tsx
 
+import { useState } from "react";
+
 import MenuDropdown from "@/components/common/dropdown/MenuDropdown";
 import SelectDropdown from "@/components/common/dropdown/SelectDropdown";
-import { useState } from "react";
 
 /**
  * 드롭다운 가이드 페이지

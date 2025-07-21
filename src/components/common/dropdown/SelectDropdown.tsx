@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -52,7 +53,7 @@ export default function SelectDropdown({
         align="start"
         className={cn(
           "rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1",
-          "w-[303px] md:w-[412px]"
+          "w-[303px] md:w-[412px]",
         )}
       >
         {options.map((option) => {
@@ -68,7 +69,7 @@ export default function SelectDropdown({
                 "w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800",
                 isSelected
                   ? "bg-violet-100 text-violet-800 font-semibold"
-                  : "text-gray-800"
+                  : "text-gray-800",
               )}
             >
               {option.label}
