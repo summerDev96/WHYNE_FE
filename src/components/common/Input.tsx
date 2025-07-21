@@ -27,7 +27,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
       errorMessage,
       ...rest
     },
-    ref,
+    ref
   ) => {
     return (
       <div className="relative">
@@ -47,7 +47,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
             variantStyles.base,
             variant && variantStyles[variant],
             errorMessage && "border-red-500",
-            className,
+            className
           )}
           {...rest}
         />
@@ -56,7 +56,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
         </div>
       </div>
     );
-  },
+  }
 );
 
 export default Input;
