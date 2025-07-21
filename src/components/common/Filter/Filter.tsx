@@ -27,9 +27,9 @@ const Filter = () => {
           {wineTypeOptions.map((option, index) => (
             <Badge
               key={`${option}-${index}`}
-              variant="secondary"
+              variant="chooseWineType"
               className={
-                type === option ? "bg-violet-500 text-white" : "bg-white"
+                type === option ? "bg-purpleDark text-white" : "bg-white"
               }
               onClick={() => setType(option)}
             >
