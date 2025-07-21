@@ -13,9 +13,6 @@ const buttonVariants = cva(
   [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0
   `,
   {
-    // 색상, 폰트 조정필요 (배경, 폰트크기,굴기, 테두리(borer))
-    //size, width 지정이 필요합니다
-    //asChild가 true이면 <Slot>으로 렌더링해 <Link>같은 다른 컴포넌트에 스타일 적용이 가능하다고 합니다
     //반응형 xl: 1280 , md: 768 ,
     variants: {
       variant: {
