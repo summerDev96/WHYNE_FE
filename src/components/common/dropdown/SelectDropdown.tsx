@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 interface Option {
   label: React.ReactNode;
@@ -33,11 +33,10 @@ export default function SelectDropdown({
   value,
   options,
   onChange,
-  placeholder = "선택하세요",
+  placeholder = '선택하세요',
   trigger,
 }: SelectDropdownProps) {
-  const selectedLabel =
-    options.find((opt) => opt.value === value)?.label || placeholder;
+  const selectedLabel = options.find((opt) => opt.value === value)?.label || placeholder;
 
   // trigger의 children을 선택된 라벨로 교체
   const clonedTrigger = React.cloneElement(trigger, {
@@ -50,10 +49,10 @@ export default function SelectDropdown({
       <DropdownMenuTrigger asChild>{clonedTrigger}</DropdownMenuTrigger>
       {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
-        align="start"
+        align='start'
         className={cn(
-          "rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1",
-          "w-[303px] md:w-[412px]",
+          'rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1',
+          'w-[303px] md:w-[412px]',
         )}
       >
         {options.map((option) => {
@@ -66,10 +65,8 @@ export default function SelectDropdown({
               onClick={() => onChange(option.value)}
               data-value={option.value}
               className={cn(
-                "w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800",
-                isSelected
-                  ? "bg-violet-100 text-violet-800 font-semibold"
-                  : "text-gray-800",
+                'w-full px-3 py-2.5 text-sm md:text-base text-left rounded-xl cursor-pointer transition-colors data-[highlighted]:bg-violet-50 data-[highlighted]:text-violet-800',
+                isSelected ? 'bg-violet-100 text-violet-800 font-semibold' : 'text-gray-800',
               )}
             >
               {option.label}

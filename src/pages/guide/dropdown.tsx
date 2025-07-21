@@ -1,9 +1,9 @@
 // src/pages/guide/dropdown.tsx
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import MenuDropdown from "@/components/common/dropdown/MenuDropdown";
-import SelectDropdown from "@/components/common/dropdown/SelectDropdown";
+import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
+import SelectDropdown from '@/components/common/dropdown/SelectDropdown';
 
 /**
  * 드롭다운 가이드 페이지
@@ -11,28 +11,28 @@ import SelectDropdown from "@/components/common/dropdown/SelectDropdown";
  * - SelectDropdown: 선택 입력용 (폼 컴포넌트)
  */
 export default function DropdownGuidePage() {
-  const [action, setAction] = useState("edit");
+  const [action, setAction] = useState('edit');
   const actionOptions = [
-    { label: "수정하기", value: "edit" },
-    { label: "삭제하기", value: "delete" },
+    { label: '수정하기', value: 'edit' },
+    { label: '삭제하기', value: 'delete' },
   ];
 
-  const [category, setCategory] = useState("Red");
+  const [category, setCategory] = useState('Red');
   const categoryOptions = [
-    { label: "Red", value: "Red" },
-    { label: "White", value: "White" },
-    { label: "Sparkling", value: "Sparkling" },
+    { label: 'Red', value: 'Red' },
+    { label: 'White', value: 'White' },
+    { label: 'Sparkling', value: 'Sparkling' },
   ];
 
   const selectedCategoryLabel =
-    categoryOptions.find((opt) => opt.value === category)?.label ?? "선택";
+    categoryOptions.find((opt) => opt.value === category)?.label ?? '선택';
 
   return (
-    <main className="p-6 space-y-10">
+    <main className='p-6 space-y-10'>
       {/* MenuDropdown 가이드 */}
-      <section className="space-y-2">
-        <h2 className="text-lg font-semibold">MenuDropdown 사용법</h2>
-        <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
+      <section className='space-y-2'>
+        <h2 className='text-lg font-semibold'>MenuDropdown 사용법</h2>
+        <pre className='bg-gray-100 p-3 rounded text-sm overflow-auto'>
           <code>
             {`<MenuDropdown
   options={[
@@ -45,8 +45,8 @@ export default function DropdownGuidePage() {
           </code>
         </pre>
 
-        <h3 className="text-md font-medium">데이터 흐름</h3>
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+        <h3 className='text-md font-medium'>데이터 흐름</h3>
+        <ul className='list-disc list-inside text-sm text-gray-700 space-y-1'>
           <li>
             <code>options</code>: 메뉴에 표시될 항목 목록
           </li>
@@ -58,22 +58,22 @@ export default function DropdownGuidePage() {
           </li>
         </ul>
 
-        <div className="flex gap-4 items-center pt-5">
-          <p className="text-sm w-52">
+        <div className='flex gap-4 items-center pt-5'>
+          <p className='text-sm w-52'>
             선택된 메뉴: <strong>{action}</strong>
           </p>
           <MenuDropdown
             options={actionOptions}
             onSelect={(value) => setAction(value)}
-            trigger={<button className="px-4 py-2 border rounded">메뉴</button>}
+            trigger={<button className='px-4 py-2 border rounded'>메뉴</button>}
           />
         </div>
       </section>
 
       {/* SelectDropdown 가이드 */}
-      <section className="space-y-2">
-        <h2 className="text-lg font-semibold">SelectDropdown 사용법</h2>
-        <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
+      <section className='space-y-2'>
+        <h2 className='text-lg font-semibold'>SelectDropdown 사용법</h2>
+        <pre className='bg-gray-100 p-3 rounded text-sm overflow-auto'>
           <code>
             {`<SelectDropdown
   value={category}
@@ -88,8 +88,8 @@ export default function DropdownGuidePage() {
           </code>
         </pre>
 
-        <h3 className="text-md font-medium">데이터 흐름</h3>
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+        <h3 className='text-md font-medium'>데이터 흐름</h3>
+        <ul className='list-disc list-inside text-sm text-gray-700 space-y-1'>
           <li>
             <code>value</code>: 현재 선택된 항목 값
           </li>
@@ -104,8 +104,8 @@ export default function DropdownGuidePage() {
           </li>
         </ul>
 
-        <div className="pt-5 space-y-2">
-          <p className="text-sm">
+        <div className='pt-5 space-y-2'>
+          <p className='text-sm'>
             선택된 카테고리: <strong>{category}</strong>
           </p>
           <SelectDropdown
@@ -113,7 +113,7 @@ export default function DropdownGuidePage() {
             options={categoryOptions}
             onChange={setCategory}
             trigger={
-              <button className="w-full px-4 py-2 border rounded text-left">
+              <button className='w-full px-4 py-2 border rounded text-left'>
                 {selectedCategoryLabel}
               </button>
             }
