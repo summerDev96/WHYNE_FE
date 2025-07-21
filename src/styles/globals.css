@@ -1,8 +1,12 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+/*Pretendard 웹폰트 불러오기*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import "./shadcnVars.css";
+@import "./textStyles.css";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,5 +20,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
   }
 }

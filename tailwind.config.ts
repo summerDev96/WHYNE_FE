@@ -1,8 +1,6 @@
-import animate from "tailwindcss-animate";
-
 import shadTheme from "./src/styles/shadTheme";
-
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 const config: Config = {
   darkMode: ["class"],
@@ -13,7 +11,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+      },
       ...shadTheme,
+      colors: {
+        ...shadTheme.colors,
+        purpleDark: "#6A42DB",
+        purpleLight: "#F1EDFC",
+      },
     },
   },
   plugins: [animate],
