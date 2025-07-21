@@ -1,3 +1,4 @@
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -7,14 +8,16 @@ import {
 import { cn } from "@/lib/utils";
 
 interface Option {
-  label: string;
+  label: React.ReactNode;
   value: string;
+  ariaLabel?: string;
 }
 
 /**
  * SelectDropdown
  * - 폼 입력용 드롭다운 컴포넌트
- * - 선택된 항목이 버튼 텍스트로 표시됨
+ * - trigger prop으로 원하는 요소를 넘겨 사용 가능
+ * - 선택된 항목을 버튼 텍스트로 표시 (기본 trigger)
  * - 반응형 너비 (모바일/PC)
  */
 interface SelectDropdownProps {
@@ -22,6 +25,7 @@ interface SelectDropdownProps {
   options: Option[];
   onChange: (value: string) => void;
   placeholder?: string;
+  trigger: React.ReactElement;
 }
 
 export default function SelectDropdown({
@@ -29,24 +33,20 @@ export default function SelectDropdown({
   options,
   onChange,
   placeholder = "선택하세요",
+  trigger,
 }: SelectDropdownProps) {
   const selectedLabel =
     options.find((opt) => opt.value === value)?.label || placeholder;
 
+  // trigger의 children을 선택된 라벨로 교체
+  const clonedTrigger = React.cloneElement(trigger, {
+    children: selectedLabel,
+  });
+
   return (
     <DropdownMenu>
-      {/* 드롭다운 트리거 버튼 - 사용 시 Trigger 컴포넌트를 바꿔 넣어야합니다!*/}
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className={cn(
-            "bg-white border border-gray-300 text-gray-800 px-4 py-2 rounded-lg font-medium shadow-sm hover:border-violet-400 transition-colors text-left",
-            "w-[303px] md:w-[412px]"
-          )}
-        >
-          {selectedLabel}
-        </button>
-      </DropdownMenuTrigger>
+      {/* 드롭다운 트리거 버튼 */}
+      <DropdownMenuTrigger asChild>{clonedTrigger}</DropdownMenuTrigger>
       {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
         align="start"
@@ -60,7 +60,7 @@ export default function SelectDropdown({
 
           return (
             <DropdownMenuItem
-              aria-label={option.label}
+              aria-label={option.ariaLabel}
               key={option.value}
               onClick={() => onChange(option.value)}
               data-value={option.value}
