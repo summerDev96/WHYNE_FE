@@ -8,7 +8,7 @@ import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ["/login", "/signUp", "/_error"];
+  const pagesWithoutGnb = ["/login", "/signup", "/_error"];
 
   return (
     <>
