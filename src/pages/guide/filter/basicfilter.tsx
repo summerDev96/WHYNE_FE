@@ -13,7 +13,8 @@ const BasicFilterGuide = () => {
       </div>
       <div className="text-xl font-bold">필터 값</div>
       *stores의 filterStore로 관리 (zustand) <br />
-      useFilterStore를 import 하여 type, minPrice, maxPrice, rating 값 사용
+      useFilterStore를 import 하여 type, minPrice, maxPrice, rating 값 사용{" "}
+      <br />
       *전체인 경우 rating이 all이 되며, api 호출 시에는 rating을 안보내면
       됩니다.
       <br />
