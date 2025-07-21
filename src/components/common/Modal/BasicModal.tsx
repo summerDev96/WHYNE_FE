@@ -38,7 +38,7 @@ const BasicModal = ({
 }: BasicModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <form aria-labelledby="modal-title">
+      <form>
         <DialogContent
           className={`${widthClass[type]} rounded-xl [&>button:last-child]:hidden`}
         >
