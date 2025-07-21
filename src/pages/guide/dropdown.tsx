@@ -23,6 +23,9 @@ export default function DropdownGuidePage() {
     { label: "Sparkling", value: "Sparkling" },
   ];
 
+  const selectedCategoryLabel =
+    categoryOptions.find((opt) => opt.value === category)?.label ?? "선택";
+
   return (
     <main className="p-6 space-y-10">
       {/* MenuDropdown 가이드 */}
@@ -31,13 +34,13 @@ export default function DropdownGuidePage() {
         <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
           <code>
             {`<MenuDropdown
-              options={[
-                { label: "수정하기", value: "edit" },
-                { label: "삭제하기", value: "delete" },
-              ]}
-              onSelect={setAction}
-              label="메뉴"
-            />`}
+  options={[
+    { label: "수정하기", value: "edit" },
+    { label: "삭제하기", value: "delete" },
+  ]}
+  onSelect={setAction}
+  trigger={<button>메뉴</button>}
+/>`}
           </code>
         </pre>
 
@@ -50,7 +53,7 @@ export default function DropdownGuidePage() {
             <code>onSelect</code>: 항목 클릭 시 실행할 콜백
           </li>
           <li>
-            <code>label</code>: 버튼 텍스트
+            <code>trigger</code>: 버튼 엘리먼트 (JSX)
           </li>
         </ul>
 
@@ -61,7 +64,7 @@ export default function DropdownGuidePage() {
           <MenuDropdown
             options={actionOptions}
             onSelect={(value) => setAction(value)}
-            label="메뉴"
+            trigger={<button className="px-4 py-2 border rounded">메뉴</button>}
           />
         </div>
       </section>
@@ -72,14 +75,15 @@ export default function DropdownGuidePage() {
         <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
           <code>
             {`<SelectDropdown
-              value={category}
-              options={[
-                { label: "Red", value: "Red" },
-                { label: "White", value: "White" },
-                { label: "Sparkling", value: "Sparkling" },
-              ]}
-              onChange={setCategory}
-            />`}
+  value={category}
+  options={[
+    { label: "Red", value: "Red" },
+    { label: "White", value: "White" },
+    { label: "Sparkling", value: "Sparkling" },
+  ]}
+  onChange={setCategory}
+  trigger={<button>{selectedLabel}</button>}
+/>`}
           </code>
         </pre>
 
@@ -94,6 +98,9 @@ export default function DropdownGuidePage() {
           <li>
             <code>onChange</code>: 항목 선택 시 콜백
           </li>
+          <li>
+            <code>trigger</code>: 드롭다운 열기용 버튼 (선택된 label 포함)
+          </li>
         </ul>
 
         <div className="pt-5 space-y-2">
@@ -104,6 +111,11 @@ export default function DropdownGuidePage() {
             value={category}
             options={categoryOptions}
             onChange={setCategory}
+            trigger={
+              <button className="w-full px-4 py-2 border rounded text-left">
+                {selectedCategoryLabel}
+              </button>
+            }
           />
         </div>
       </section>
