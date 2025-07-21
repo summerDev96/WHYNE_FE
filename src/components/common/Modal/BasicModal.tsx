@@ -40,7 +40,7 @@ const BasicModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
         <DialogContent
-          className={`${widthClass[type]} rounded-xl [&>button:last-child]:hidden`}
+          className={`${widthClass[type]} flex flex-col rounded-xl [&>button:last-child]:hidden`}
         >
           {showCloseButton && (
             <DialogClose asChild>
@@ -50,10 +50,7 @@ const BasicModal = ({
             </DialogClose>
           )}
           <DialogHeader>
-            <DialogTitle
-              id="modal-title"
-              className="text-xl md:text-2xl text-left"
-            >
+            <DialogTitle className="text-xl md:text-2xl text-left">
               {title}
             </DialogTitle>
             <DialogDescription className="sr-only">
