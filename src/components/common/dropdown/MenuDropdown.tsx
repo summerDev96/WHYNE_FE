@@ -7,7 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 
 interface Option {
-  label: string;
+  label: React.ReactNode;
   value: string;
 }
 
@@ -42,7 +42,7 @@ export default function MenuDropdown({
 
       {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
-        align="start"
+        align="end"
         className="min-w-[101px] md:w-[126px] rounded-2xl border border-gray-200 bg-white px-1.5 py-1.5 space-y-1"
       >
         {options.map((option) => (
