@@ -12,7 +12,7 @@ const DualSlider = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full touch-none select-none items-center mt-8",
-      className
+      className,
     )}
     value={value}
     onValueChange={onValueChange}
