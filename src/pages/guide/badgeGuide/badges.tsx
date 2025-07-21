@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function badges() {
   return (
-    <div style={{ marginBottom: "30px" }}>
+    <div style={{ marginBottom: "30px", marginLeft: "20px" }}>
       variant : chooseFlavor(기본값)
       <div style={{ marginBottom: "30px", display: "flex", gap: "10px" }}>
         <Badge>체리</Badge>
