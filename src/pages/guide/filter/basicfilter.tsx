@@ -8,9 +8,7 @@ const BasicFilterGuide = () => {
     <div className="p-10 flex flex-col gap-4 items-start">
       <div className="text-2xl font-extrabold">필터 가이드</div>
       <div className="text-xl font-bold">필터 예시</div>
-      <div className="bg-slate-50">
-        <Filter />
-      </div>
+      <Filter />
       <div className="text-xl font-bold">필터 값</div>
       *stores의 filterStore로 관리 (zustand) <br />
       useFilterStore를 import 하여 type, minPrice, maxPrice, rating 값 사용{" "}
