@@ -31,9 +31,8 @@ export default function MenuDropdown({
 }: MenuDropdownProps) {
   return (
     <DropdownMenu>
-      {/* 드롭다운 트리거 버튼 - 사용 시 Trigger 컴포넌트를 바꿔 넣어야합니다!*/}
+      {/* 드롭다운 트리거 버튼 */}
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-
       {/* 드롭다운 메뉴 영역 */}
       <DropdownMenuContent
         align="end"
