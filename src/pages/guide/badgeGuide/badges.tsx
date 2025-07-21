@@ -39,6 +39,8 @@ export default function badges() {
         <Badge variant="taste">당도</Badge>
         <Badge variant="taste">산미</Badge>
       </div>
+      <input type="checkbox" id="id" />
+      <Badge htmlFor="id">123</Badge>
     </div>
   );
 }
