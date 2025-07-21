@@ -15,6 +15,7 @@ interface FormInputProps<T> {
   id: string;
 }
 
+// FormProvider로 감싸지 않으면 오류 발생
 const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
   const { placeholder, name, type, id } = props;
   const methods = useFormContext();
