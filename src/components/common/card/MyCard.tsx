@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface MyCardProps {
   rating: React.ReactNode; // 별점 숫자
@@ -11,24 +11,17 @@ interface MyCardProps {
   className?: string; // 컨테이너 클래스
 }
 
-export function MyCard({
-  rating,
-  timeAgo,
-  title,
-  review,
-  rightSlot,
-  className,
-}: MyCardProps) {
+export function MyCard({ rating, timeAgo, title, review, rightSlot, className }: MyCardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-xl bg-white p-4 flex flex-col gap-2 border border-gray-300",
+        'w-full rounded-xl bg-white p-4 flex flex-col gap-2 border border-gray-300',
         className,
       )}
     >
       {/* 상단 정보 영역 */}
-      <div className="flex items-center justify-between text-sm text-gray-500">
-        <div className="flex items-center gap-2">
+      <div className='flex items-center justify-between text-sm text-gray-500'>
+        <div className='flex items-center gap-2'>
           {/* 별점 */}
           {rating}
           {/* 시간 */}
@@ -40,10 +33,10 @@ export function MyCard({
       </div>
 
       {/* 제목 */}
-      <h3 className="text-md font-semibold text-gray-900">{title}</h3>
+      <h3 className='text-md font-semibold text-gray-900'>{title}</h3>
 
       {/* 리뷰 내용 */}
-      <p className="text-sm text-gray-700">{review}</p>
+      <p className='text-sm text-gray-700'>{review}</p>
     </div>
   );
 }

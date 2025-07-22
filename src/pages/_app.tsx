@@ -1,19 +1,27 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 
-import { useRouter } from "next/router";
+import clsx from 'clsx';
+import { useRouter } from 'next/router';
 
-import Gnb from "@/components/common/Gnb";
+import Gnb from '@/components/common/Gnb';
 
-import type { AppProps } from "next/app";
+import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ["/login", "/signUp", "/_error"];
+  const pagesWithoutGnb = ['/login', '/signup', '/_error'];
+  const hideHeader = pagesWithoutGnb.includes(pathname);
 
   return (
     <>
-      {!pagesWithoutGnb.includes(pathname) && <Gnb />}
-      <Component {...pageProps} />
+      {!hideHeader && <Gnb />}
+      <div
+        className={clsx({
+          'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
+        })}
+      >
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }
