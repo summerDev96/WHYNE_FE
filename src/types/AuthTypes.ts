@@ -1,3 +1,5 @@
+import { InternalAxiosRequestConfig } from 'axios';
+
 export interface SignupRequest {
   email: string;
   nickname: string;
@@ -30,4 +32,17 @@ export interface LoginResponse {
   user: User;
   accessToken: string;
   refreshToken: string;
+}
+
+export interface AccessTokenRequest {
+  refreshToken: string;
+}
+
+export interface AccessTokenResponse {
+  accessToken: string;
+}
+
+// 인터셉터 관련 타입
+export interface RetryRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
 }

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
@@ -18,7 +19,7 @@ import {
 } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse, SignupRequest, SignupResponse } from '@/types/AuthTypes';
 
-import { userLogin, userRegister } from '../api/auth';
+import { userLogin, userRegister } from '../../api/auth';
 
 const SignupSchema = z
   .object({
@@ -35,6 +36,7 @@ const SignupSchema = z
 type SignupData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -75,7 +77,7 @@ const Signup = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log('로그인 성공', data);
-      // 로그인 완료 후 화면 이동
+      router.push('/');
     },
     onError: (error) => {
       // API 에러를 모달로 출력
@@ -87,14 +89,6 @@ const Signup = () => {
     console.log(formData);
     registerMutation.mutate(formData);
   };
-
-  // const login = async (data: LoginRequest) => {
-  //   await userLogin(data);
-  //   // await userLogin({
-  //   //   email: "belly15@naver.com",
-  //   //   password: "12345678",
-  //   // });
-  // };
 
   return (
     <div className='flex justify-center items-center bg-gray-100 min-h-screen'>

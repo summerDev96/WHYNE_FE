@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
@@ -13,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
 
-import { userLogin } from '../api/auth';
+import { userLogin } from '../../api/auth';
 
 const LoginSchema = z.object({
   email: emailSchema,
@@ -23,6 +24,8 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>;
 
 const SignIn = () => {
+  const router = useRouter();
+
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -45,7 +48,7 @@ const SignIn = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log('로그인 성공', data);
-      // 로그인 완료 후 화면 이동
+      router.push('/');
     },
     onError: (error) => {
       // API 에러를 모달로 출력
