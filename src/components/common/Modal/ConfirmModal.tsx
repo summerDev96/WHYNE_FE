@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {
   Dialog,
@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 interface ConfirmModalProps {
   children?: React.ReactNode;
@@ -16,12 +16,7 @@ interface ConfirmModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const ConfirmModal = ({
-  children,
-  buttons,
-  open,
-  onOpenChange,
-}: ConfirmModalProps) => {
+const ConfirmModal = ({ children, buttons, open, onOpenChange }: ConfirmModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
@@ -30,14 +25,12 @@ const ConfirmModal = ({
         >
           <DialogHeader>
             {/* 컨텐츠 영역 */}
-            <DialogTitle className="mt-2 flex justify-center text-xl">
+            <DialogTitle className='mt-2 flex justify-center text-xl md:text-2xl'>
               {children}
             </DialogTitle>
-            <DialogDescription className="sr-only">
-              다이얼로그 내용
-            </DialogDescription>
+            <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
           </DialogHeader>
-          <DialogFooter className="w-full flex flex-row justify-between gap-2">
+          <DialogFooter className='w-full flex flex-row justify-between gap-2'>
             {buttons}
           </DialogFooter>
         </DialogContent>

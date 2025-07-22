@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import Input from "@/components/common/Input";
+import Input from '@/components/common/Input';
 
-import ControlledInput from "./ControlledInput";
-import Login from "./Login";
+import ControlledInput from './ControlledInput';
+import Login from './Login';
 
 function InputGuide() {
   return (
@@ -11,30 +11,19 @@ function InputGuide() {
       <form>
         <h2>기본 모양 종류</h2>
         <br />
-        <Input
-          name="테스트"
-          placeholder='variant="default"'
-          type="text"
-          id="test1"
-        />
+        <Input name='테스트' placeholder='variant="default"' type='text' id='test1' />
         <br />
         <br />
         <Input
-          variant="search"
-          name="테스트"
+          variant='search'
+          name='테스트'
           placeholder='variant="search"'
-          type="text"
-          id="test2"
+          type='text'
+          id='test2'
         />
         <br />
         <br />
-        <Input
-          variant="name"
-          name="테스트"
-          placeholder='variant="name"'
-          type="text"
-          id="test3"
-        />
+        <Input variant='name' name='테스트' placeholder='variant="name"' type='text' id='test3' />
       </form>
       <br />
       <br />

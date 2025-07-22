@@ -78,7 +78,7 @@ export default [
       'func-names': ['error', 'as-needed'],
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-       'no-unused-vars': ['error', { args: 'none', ignoreRestSiblings: true }]
+      'no-unused-vars': ['error', { args: 'none', ignoreRestSiblings: true }]
     },
   },
 
@@ -127,7 +127,7 @@ export default [
   {
     plugins: { prettier: pluginPrettier },
     rules: {
-      'prettier/prettier': ['error', { endOfLine: 'auto' }],
+      'prettier/prettier': ['error'],
     },
   },
 ];

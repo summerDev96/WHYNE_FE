@@ -39,5 +39,9 @@ const RadioGroupItem = React.forwardRef<
   );
 });
 RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
+  );
+});
+RadioGroupItem.displayName = RadioGroupPrimitive.Item.displayName;
 
+export { RadioGroup, RadioGroupItem };
 export { RadioGroup, RadioGroupItem };
