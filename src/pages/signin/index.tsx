@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
 
-import { userLogin, userRegister } from '../api/auth';
+import { userLogin } from '../api/auth';
 
 const LoginSchema = z.object({
   email: emailSchema,

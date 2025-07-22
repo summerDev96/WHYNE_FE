@@ -4,9 +4,9 @@ import {
   type FieldErrors,
   type FieldValues,
   type Path,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import Input from "@/components/common/Input";
+import Input from '@/components/common/Input';
 
 interface FormInputProps<T> {
   placeholder: string;
@@ -23,7 +23,7 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
 
   function getErrorMessage(errors: FieldErrors) {
     const errMsg = errors[name]?.message;
-    const result = errMsg && typeof errMsg === "string" ? errMsg : "";
+    const result = errMsg && typeof errMsg === 'string' ? errMsg : '';
     return result;
   }
 

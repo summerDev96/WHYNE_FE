@@ -1,12 +1,7 @@
-import axios from "@/lib/api";
-import {
-  LoginRequest,
-  LoginResponse,
-  SignupRequest,
-  SignupResponse,
-} from "@/types/AuthTypes";
+import axios from '@/lib/api';
+import { LoginRequest, LoginResponse, SignupRequest, SignupResponse } from '@/types/AuthTypes';
 
-const TEAM = "16-4";
+const TEAM = '16-4';
 
 export const userRegister = (data: SignupRequest): Promise<SignupResponse> => {
   return axios.post(`/${TEAM}/auth/signUp`, data);
