@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
+import axiosInstance from '@/api/axios';
 import CameraIcon from '@/assets/camera.svg';
 
 import SelectDropdown from '../common/dropdown/SelectDropdown';
@@ -16,6 +17,42 @@ interface WineForm {
   wineImage: FileList;
 }
 
+////api 테스트용////
+///////////////
+export const uploadImage = async (teamId: string, file: File) => {
+  //토큰추가//
+  const token = localStorage.getItem('accessToken');
+
+  console.log(token);
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await axiosInstance.post(`/${teamId}/images/upload`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data.imageUrl;
+};
+//
+export const PostWine = async (
+  teamId: string,
+  data: {
+    name: string;
+    region: string;
+    image: string;
+    price: number;
+    type: 'RED' | 'WHITE' | 'SPARKLING';
+  },
+) => {
+  const response = await axiosInstance.post(`/${teamId}/wines`, data);
+  return response.data;
+};
+///////
+///////
+//////
 const AddWineModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [category, setCategory] = useState('Red');
@@ -44,14 +81,41 @@ const AddWineModal = () => {
     reset,
   } = useForm<WineForm>();
 
-  const onSubmit = (data: WineForm) => {
-    const fullData = {
-      ...data,
-      category,
-    };
-    console.log(fullData);
-    reset();
-    setShowRegisterModal(false);
+  // const onSubmit = (data: WineForm) => {
+  //   const fullData = {
+  //     ...data,
+  //     category,
+  //   };
+  //   console.log(fullData);
+  //   reset();
+  //   setShowRegisterModal(false);
+  // };
+
+  const onSubmit = async (form: WineForm) => {
+    const teamId = '16-4';
+
+    try {
+      const file = form.wineImage[0];
+      const imageUrl = await uploadImage(teamId, file);
+
+      const requestData = {
+        name: form.wineName,
+        region: form.wineOrigin,
+        image: imageUrl,
+        price: Number(form.winePrice),
+        type: category.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
+        category,
+      };
+
+      await PostWine(teamId, requestData);
+
+      console.log('와인등록완료');
+      reset();
+      setShowRegisterModal(false);
+    } catch (error) {
+      console.error('와인등록실패', error);
+      alert('와인등ㄹ곡실패');
+    }
   };
 
   const categoryOptions = [
