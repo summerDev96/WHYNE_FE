@@ -1,6 +1,6 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-export type WineType = "Red" | "White" | "Sparkling";
+export type WineType = 'Red' | 'White' | 'Sparkling';
 
 type FilterState = {
   type: WineType;
@@ -13,12 +13,12 @@ type FilterState = {
 };
 
 const useFilterStore = create<FilterState>((set) => ({
-  type: "Red",
+  type: 'Red',
   setType: (val) => set({ type: val }),
   minPrice: 0,
   maxPrice: 1000000,
   setPriceRange: ([min, max]) => set({ minPrice: min, maxPrice: max }),
-  rating: "0",
+  rating: '0',
   setRating: (val) => set({ rating: val }),
 }));
 

@@ -13,8 +13,14 @@ const nextConfig = {
         {
           loader: "@svgr/webpack",
           options: {
+            replaceAttrValues: {
+              "none": "currentColor",
+              "#000": "currentColor",
+              "#000000": "currentColor",
+            },
             svgoConfig: {
               plugins: [
+                { name: "removeAttrs", params: { attrs: "path:fill" } },
                 {
                   name: "removeViewBox",
                   active: false,
