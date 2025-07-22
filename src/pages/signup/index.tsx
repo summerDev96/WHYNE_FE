@@ -16,11 +16,14 @@ import {
   passwordSchema,
   passwordConfirmationSchema,
 } from "@/lib/form/schemas";
-import { LoginRequest, SignupRequest, SignupResponse } from "@/types/AuthTypes";
+import {
+  LoginRequest,
+  LoginResponse,
+  SignupRequest,
+  SignupResponse,
+} from "@/types/AuthTypes";
 
 import { userLogin, userRegister } from "../api/auth";
-
-// import { createUser } from "../api/auth";
 
 const SignupSchema = z
   .object({
@@ -48,36 +51,60 @@ const Signup = () => {
     mode: "all",
   });
 
-  const signup = async (params: SignupRequest): Promise<SignupResponse> => {
+  const registerUser = async (
+    params: SignupRequest
+  ): Promise<SignupResponse> => {
     return await userRegister(params);
   };
 
-  const mutation = useMutation<SignupResponse, Error, SignupRequest>({
-    mutationFn: signup,
+  const loginUser = async (params: LoginRequest): Promise<LoginResponse> => {
+    return await userLogin(params);
+  };
+
+  // 에러 처리: 모달로 메시지 출력
+  const handleError = (error: Error) => {
+    setErrorMsg(error.message);
+    setShowModal(true);
+  };
+
+  const registerMutation = useMutation<SignupResponse, Error, SignupRequest>({
+    mutationFn: registerUser,
     onSuccess: (data, variables) => {
       console.log("회원가입 성공", data);
       console.log("request 요청 시 formData", variables);
-      // const { email, password } = variables;
-      login();
+      const { email, password } = variables;
+      loginMutation.mutate({ email, password });
     },
     onError: (error) => {
       // API 에러를 모달로 출력
-      setErrorMsg(error.message);
-      setShowModal(true);
+      handleError(error);
+    },
+  });
+
+  const loginMutation = useMutation<LoginResponse, Error, LoginRequest>({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      console.log("로그인 성공", data);
+      // 로그인 완료 후 화면 이동
+    },
+    onError: (error) => {
+      // API 에러를 모달로 출력
+      handleError(error);
     },
   });
 
   const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
     console.log(formData);
-    mutation.mutate(formData);
+    registerMutation.mutate(formData);
   };
 
-  const login = async () => {
-    await userLogin({
-      email: "belly15@naver.com",
-      password: "12345678",
-    });
-  };
+  // const login = async (data: LoginRequest) => {
+  //   await userLogin(data);
+  //   // await userLogin({
+  //   //   email: "belly15@naver.com",
+  //   //   password: "12345678",
+  //   // });
+  // };
 
   return (
     <div className="flex justify-center items-center bg-gray-100 min-h-screen">
