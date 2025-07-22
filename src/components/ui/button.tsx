@@ -13,16 +13,13 @@ const buttonVariants = cva(
   [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0
   `,
   {
-    // 색상, 폰트 조정필요 (배경, 폰트크기,굴기, 테두리(borer))
-    //size, width 지정이 필요합니다
-    //asChild가 true이면 <Slot>으로 렌더링해 <Link>같은 다른 컴포넌트에 스타일 적용이 가능하다고 합니다
     //반응형 xl: 1280 , md: 768 ,
     variants: {
       variant: {
-        purpleDark: 'bg-purpleDark text-white hover:bg-purpleLight hover:text-purpleDark',
+        purpleDark: 'bg-primary text-white hover:bg-primary-100 hover:text-primary',
         white: 'bg-white text-black border border-gray-300',
         onlyCancel: 'bg-white text-gray-500 border border-gray-300',
-        purpleLight: 'bg-purpleLight text-purpleDark',
+        purpleLight: 'bg-primary-100 text-primary',
       },
       size: {
         xs: 'h-[40px] md:h-[42px] rounded-[12px]',
@@ -42,21 +39,14 @@ const buttonVariants = cva(
         onlyLanding: 'w-[279px]',
       },
       fontSize: {
-        sm: 'text-xs',
-        md: 'text-sm',
-        lg: 'text-2xl',
-      },
-      fontWeight: {
-        normal: 'font-normal',
-        medium: 'font-medium',
-        bold: 'font-bold',
+        md: 'custom-text-md-bold md:custom-text-lg-bold',
+        lg: 'custom-text-lg-bold',
       },
     },
     defaultVariants: {
       variant: 'white',
       size: 'xs',
-      fontSize: 'sm',
-      fontWeight: 'normal',
+      fontSize: 'md',
       width: 'xs',
     },
   },
@@ -69,13 +59,12 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ fontSize, fontWeight, className, variant, size, width, asChild = false, ...props }, ref) => {
+  ({ fontSize, className, variant, size, width, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
         className={cn(
           buttonVariants({
-            fontWeight,
             fontSize,
             variant,
             size,
