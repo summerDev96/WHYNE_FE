@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { useMutation } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
@@ -55,39 +54,30 @@ const Signup = () => {
 
   const mutation = useMutation<SignupResponse, Error, SignupRequest>({
     mutationFn: signup,
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
       console.log("회원가입 성공", data);
+      console.log("request 요청 시 formData", variables);
+      // const { email, password } = variables;
+      login();
     },
     onError: (error) => {
-      if (typeof error === "string") {
-        setErrorMsg(error);
-        setShowModal(true);
-      }
+      // API 에러를 모달로 출력
+      setErrorMsg(error.message);
+      setShowModal(true);
     },
   });
 
   const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
     console.log(formData);
-    // register();
-    // login();
     mutation.mutate(formData);
   };
 
-  // const register = async () => {
-  //   await userRegister({
-  //     email: "admin@wine.com",
-  //     nickname: "관리자",
-  //     password: "12345678",
-  //     passwordConfirmation: "12345678",
-  //   });
-  // };
-
-  // const login = async () => {
-  //   await userLogin({
-  //     email: "belly15@naver.com",
-  //     password: "12345678",
-  //   });
-  // };
+  const login = async () => {
+    await userLogin({
+      email: "belly15@naver.com",
+      password: "12345678",
+    });
+  };
 
   return (
     <div className="flex justify-center items-center bg-gray-100 min-h-screen">
@@ -99,10 +89,15 @@ const Signup = () => {
           /* 버튼커스텀 영역 */
           buttons={
             <>
-              {/* <Button className="flex-auto" onClick={() => setShowModal(false)}>
-                취소
-              </Button> */}
-              <Button className="flex-auto">확인</Button>
+              <Button
+                size="xl"
+                width="xl"
+                variant="purpleDark"
+                className="flex-auto text-base font-bold"
+                onClick={() => setShowModal(false)}
+              >
+                확인
+              </Button>
             </>
           }
         >
