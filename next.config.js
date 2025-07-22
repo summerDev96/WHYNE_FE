@@ -4,29 +4,29 @@ const nextConfig = {
 
   webpack(config) {
     config.module.rules = config.module.rules.filter(
-      (rule) => !(rule.test && rule.test.test && rule.test.test(".svg"))
+      (rule) => !(rule.test && rule.test.test && rule.test.test('.svg')),
     );
 
     config.module.rules.push({
       test: /\.svg$/,
       use: [
         {
-          loader: "@svgr/webpack",
+          loader: '@svgr/webpack',
           options: {
             replaceAttrValues: {
-              none: "currentColor",
-              "#000": "currentColor",
-              "#000000": "currentColor",
+              none: 'currentColor',
+              '#000': 'currentColor',
+              '#000000': 'currentColor',
             },
             svgoConfig: {
               plugins: [
-                { name: "removeAttrs", params: { attrs: "path:fill" } },
+                { name: 'removeAttrs', params: { attrs: 'path:fill' } },
                 {
-                  name: "removeViewBox",
+                  name: 'removeViewBox',
                   active: false,
                 },
                 {
-                  name: "removeDimensions",
+                  name: 'removeDimensions',
                   active: true,
                 },
               ],
