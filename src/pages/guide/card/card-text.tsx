@@ -7,7 +7,7 @@ export default function CardTestPage() {
     <div className='p-10 bg-gray-100 min-h-screen space-y-6'>
       {/* ImageCard 테스트 */}
       <ImageCard
-        imageSrc='test.url'
+        imageSrc='/test.jpg'
         className='p-8' // 컨테이너 패딩 & 배경 덮어쓰기
         imageClassName='w-[80px] h-[120px]' // 이미지 크기 덮어쓰기
         rightSlot={<button className='text-sm'>⋯</button>}
