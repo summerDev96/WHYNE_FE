@@ -1,15 +1,15 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
-import pluginReact from 'eslint-plugin-react';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import configPrettier from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
 import pluginPrettier from 'eslint-plugin-prettier';
-import configPrettier from 'eslint-config-prettier';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +19,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-export default [
+const eslintConfig = [
   // 기존 Next.js + React + 기본 ESLint 설정 (FlatCompat로 로드)
   ...compat.extends('next/core-web-vitals'),
 
@@ -40,10 +40,13 @@ export default [
     },
     rules: {
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
     },
   },
 
@@ -78,7 +81,7 @@ export default [
       'func-names': ['error', 'as-needed'],
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      'no-unused-vars': ['error', { args: 'none', ignoreRestSiblings: true }]
+      'no-unused-vars': ['error', { args: 'none', ignoreRestSiblings: true }],
     },
   },
 
@@ -131,3 +134,5 @@ export default [
     },
   },
 ];
+
+export default eslintConfig;
