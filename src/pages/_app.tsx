@@ -10,7 +10,7 @@ import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/login', '/signup', '/_error'];
+  const pagesWithoutGnb = ['/login', '/signup', '/signin', '/_error'];
   const hideHeader = pagesWithoutGnb.includes(pathname);
   const queryClient = new QueryClient();
 
