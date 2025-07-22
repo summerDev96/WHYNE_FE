@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import clsx from "clsx";
-import { useFormState } from "react-hook-form";
+import clsx from 'clsx';
+import { useFormState } from 'react-hook-form';
 
 interface Props {
   children: React.ReactNode;
@@ -12,10 +12,10 @@ export default function SubmitButton({ children }: Props) {
 
   return (
     <button
-      type="submit"
+      type='submit'
       className={clsx({
-        "bg-[#CFDBEA]": !isValid, //유효하지 않을 때 true
-        "bg-[#d9a1e7]": isValid, //유효하면 true
+        'bg-[#CFDBEA]': !isValid, //유효하지 않을 때 true
+        'bg-[#d9a1e7]': isValid, //유효하면 true
       })}
     >
       {children}
