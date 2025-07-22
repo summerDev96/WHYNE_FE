@@ -18,7 +18,7 @@ const useFilterStore = create<FilterState>((set) => ({
   minPrice: 0,
   maxPrice: 1000000,
   setPriceRange: ([min, max]) => set({ minPrice: min, maxPrice: max }),
-  rating: '0',
+  rating: 'all',
   setRating: (val) => set({ rating: val }),
 }));
 

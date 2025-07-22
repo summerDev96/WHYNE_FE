@@ -19,11 +19,11 @@ const DualSlider = React.forwardRef<
       <SliderPrimitive.Range className='absolute h-full bg-primary' />
     </SliderPrimitive.Track>
 
-    <SliderPrimitive.Thumb className='flex flex-col items-center block h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50'>
+    <SliderPrimitive.Thumb className='flex flex-col items-center h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50'>
       <span className='-mt-8'>{value[0]}</span>
     </SliderPrimitive.Thumb>
 
-    <SliderPrimitive.Thumb className='flex flex-col items-center block h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50'>
+    <SliderPrimitive.Thumb className='flex flex-col items-center h-4 w-4 rounded-full border border-primary/50 bg-background shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50'>
       <span className='-mt-8'>{value[1]}</span>
     </SliderPrimitive.Thumb>
   </SliderPrimitive.Root>

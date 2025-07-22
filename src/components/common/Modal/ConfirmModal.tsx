@@ -21,7 +21,7 @@ const ConfirmModal = ({ children, buttons, open, onOpenChange }: ConfirmModalPro
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
         <DialogContent
-          className={'max-w-[353px] flex flex-col gap-10 rounded-xl [&>button:last-child]:hidden'}
+          className={`max-w-[353px] px-4 pb-6 flex flex-col gap-10 rounded-xl [&>button:last-child]:hidden`}
         >
           <DialogHeader>
             {/* 컨텐츠 영역 */}

@@ -21,7 +21,13 @@ const ConfirmModalGuide = () => {
       <div className='text-xl font-bold'>모달 예시</div>
       {/* 예시에는 버튼 클릭 시 모달 열리게 되어있음 */}
       {/* 사용 시에는 텍스트, 버튼에 onClick={() => setShowModal(true)} 추가필요! */}
-      <Button variant='purpleDark' onClick={() => setShowModal(true)}>
+      <Button
+        size='md'
+        width='md'
+        variant='purpleDark'
+        className='text-base font-bold'
+        onClick={() => setShowModal(true)}
+      >
         삭제 모달 예시
       </Button>
       {/* 모달 컴포넌트 */}
@@ -31,7 +37,13 @@ const ConfirmModalGuide = () => {
         /* 버튼커스텀 영역 */
         buttons={
           <>
-            <Button variant='purpleDark' className='flex-auto' onClick={() => setShowModal(false)}>
+            <Button
+              size='xl'
+              width='xl'
+              variant='purpleLight'
+              className='flex-auto text-base font-bold'
+              onClick={() => setShowModal(false)}
+            >
               취소
             </Button>
             <Button className='flex-auto'>삭제하기</Button>
