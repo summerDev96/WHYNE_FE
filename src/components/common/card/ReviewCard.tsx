@@ -30,7 +30,10 @@ export function ReviewCard({
 }: ReviewCardProps) {
   return (
     <div
-      className={cn('w-full rounded-xl bg-white p-4 shadow-sm border border-gray-300', className)}
+      className={cn(
+        'w-full rounded-xl bg-white p-4 md:p-8 xl:p-4 shadow-sm border border-gray-300',
+        className,
+      )}
     >
       {/* 상단: 유저 정보 & 우측 slot */}
       <div className='flex justify-between items-start'>

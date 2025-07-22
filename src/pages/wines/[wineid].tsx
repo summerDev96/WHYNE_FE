@@ -30,7 +30,7 @@ function WineInfoById() {
       </ImageCard>
 
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
-        <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px]]:'>
+        <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='hidden xl:block mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
           <ul>
             {testReviews?.map((review, i) => (
@@ -46,13 +46,11 @@ function WineInfoById() {
                   reviewText={review.text}
                   className='w-full xl:w-[800px]'
                 ></ReviewCard>
-                {/* </div> */}
               </li>
             ))}
           </ul>
         </div>
-        <WineRating rating={4.8} reviewCount={47}></WineRating>
-        {/*  ratings={[90, 80, 50, 30, 20] */}
+        <WineRating rating={4.8} reviewCount={47} ratings={[90, 80, 50, 30, 20]}></WineRating>
       </div>
     </main>
   );

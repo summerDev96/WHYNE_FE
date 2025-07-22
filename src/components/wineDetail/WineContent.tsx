@@ -15,7 +15,7 @@ function WineContent() {
         variant={'priceBadge'}
         className='custom-text-md-bold md:custom-text-2lg-bold md:mt-[14px]'
       >
-        360,000
+        ₩{' ' + (360000).toLocaleString('ko-KR')}
       </Badge>
     </div>
   );

@@ -2,18 +2,19 @@ import React from 'react';
 
 import AverageStar from './AverageStar';
 import { Button } from '../ui/button';
+import { Progress } from '../ui/progress';
 
 interface Props {
   rating: number;
   reviewCount: number;
-  // ratings: number[];
+  ratings: number[];
 }
 
-function WineRating({ rating, reviewCount }: Props) {
+function WineRating({ rating, reviewCount, ratings }: Props) {
   return (
     <div
-      className='mb-[20px] md:mb-[36px] md:max-w-[587px] xl:max-w-[280px] w-full mx-auto order-1 xl:order-2  
-        h-[300px] xl:mx-0'
+      className='mb-[20px] md:mb-[36px] md:px-[63px] xl:px-0 w-full xl:max-w-[280px] mx-auto order-1 xl:order-2  
+      xl:mx-0'
     >
       <div className='flex justify-between '>
         <div>
@@ -28,7 +29,14 @@ function WineRating({ rating, reviewCount }: Props) {
         </Button>
       </div>
 
-      <div className='flex gap-2 flex-col w-[300px]'></div>
+      <div className='flex gap-2 flex-col w-full  '>
+        {ratings.map((rating, i) => (
+          <div key={`${5 - i}points`} className='flex items-center justify-between '>
+            <span className='block w-8 text-gray-500 mr-4'>{5 - i}점</span>
+            <Progress className='h-[6px]' value={rating} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
