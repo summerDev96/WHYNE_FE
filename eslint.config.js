@@ -5,6 +5,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import configPrettier from 'eslint-config-prettier';
 import pluginImport from 'eslint-plugin-import';
 import pluginPrettier from 'eslint-plugin-prettier';
 import pluginReact from 'eslint-plugin-react';
@@ -108,7 +109,7 @@ export default [
               position: 'before',
             },
             {
-              pattern: '@src/**', // alias 사용 시 맞춰 변경
+              pattern: '@src/**',
               group: 'internal',
               position: 'after',
             },
@@ -125,13 +126,11 @@ export default [
   },
 
   // Prettier 연동
-  ...compat.extends('prettier'),
+  configPrettier,
   {
-    plugins: {
-      prettier: pluginPrettier,
-    },
+    plugins: { prettier: pluginPrettier },
     rules: {
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error'],
     },
   },
 ];
