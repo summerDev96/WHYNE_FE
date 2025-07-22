@@ -101,8 +101,11 @@ const AddWineModal = () => {
         }
       >
         <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
-          <p className='custom-text-md-medium md:custom-text-lg-medium'>와인이름</p>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px] '>
+            와인 이름
+          </p>
           <Input
+            className='custom-text-md-regular md:custom-text-lg-regular'
             id='wineName'
             type='text'
             variant='name'
@@ -113,21 +116,26 @@ const AddWineModal = () => {
             })}
             errorMessage={errors.wineName?.message}
           />
-          <p className='custom-text-md-medium md:custom-text-lg-medium'>가격</p>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            가격
+          </p>
           <Input
+            className='[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none custom-text-md-regular md:custom-text-lg-regular'
             id='winePrice'
             type='number'
             variant='name'
             placeholder='가격 입력'
-            className='[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
             {...register('winePrice', {
               required: '가격을 입력해 주세요.',
               onChange: () => clearErrors('winePrice'),
             })}
             errorMessage={errors.winePrice?.message}
           />
-          <p className='custom-text-md-medium md:custom-text-lg-medium'>원산지</p>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            원산지
+          </p>
           <Input
+            className='custom-text-md-regular md:custom-text-lg-regular'
             id='wineOrigin'
             type='text'
             variant='name'
@@ -138,7 +146,9 @@ const AddWineModal = () => {
             })}
             errorMessage={errors.wineOrigin?.message}
           />
-          <p className='custom-text-md-medium md:custom-text-lg-medium'>타입</p>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            타입
+          </p>
           <SelectDropdown
             value={category}
             options={categoryOptions}
@@ -149,9 +159,11 @@ const AddWineModal = () => {
               </button>
             }
           />
-          <p className='custom-text-md-medium md:custom-text-lg-medium'>와인 사진</p>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            와인 사진
+          </p>
           <Input
-            className='hidden'
+            className='custom-text-md-regular md:custom-text-lg-regular hidden'
             id='wineImage'
             type='file'
             accept='image/*'
