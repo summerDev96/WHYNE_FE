@@ -19,7 +19,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-export default [
+const eslintConfig = [
   // 기존 Next.js + React + 기본 ESLint 설정 (FlatCompat로 로드)
   ...compat.extends('next/core-web-vitals'),
 
@@ -109,7 +109,7 @@ export default [
               position: 'before',
             },
             {
-              pattern: '@src/**',
+              pattern: '@src/**', // alias 사용 시 맞춰 변경
               group: 'internal',
               position: 'after',
             },
@@ -134,3 +134,5 @@ export default [
     },
   },
 ];
+
+export default eslintConfig;
