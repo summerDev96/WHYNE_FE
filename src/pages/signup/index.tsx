@@ -1,50 +1,114 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+// import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
 
 import FormInput from "@/components/common/FormInput";
 import Logo from "@/components/common/Logo";
+import ConfirmModal from "@/components/common/Modal/ConfirmModal";
 import { Button } from "@/components/ui/button";
 import {
   emailSchema,
   nicknameSchema,
   passwordSchema,
-  passwordCheckSchema,
+  passwordConfirmationSchema,
 } from "@/lib/form/schemas";
+import { LoginRequest, SignupRequest, SignupResponse } from "@/types/AuthTypes";
+
+import { userLogin, userRegister } from "../api/auth";
+
+// import { createUser } from "../api/auth";
 
 const SignupSchema = z
   .object({
     email: emailSchema,
     nickname: nicknameSchema,
     password: passwordSchema,
-    passwordCheck: passwordCheckSchema,
+    passwordConfirmation: passwordConfirmationSchema,
   })
-  .refine((formData) => formData["password"] === formData["passwordCheck"], {
-    path: ["password-check"],
-    message: "비밀번호가 일치하지 않습니다.",
-  });
+  .refine(
+    (formData) => formData["password"] === formData["passwordConfirmation"],
+    {
+      path: ["password-check"],
+      message: "비밀번호가 일치하지 않습니다.",
+    }
+  );
 
 type SignupData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
-  // 회원가입 스키마
+  const [showModal, setShowModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const methods = useForm<SignupData>({
     resolver: zodResolver(SignupSchema),
     mode: "all",
   });
 
-  const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
-    console.log("폼 데이터 제출 시 동작");
-    console.log(formData);
+  const signup = async (params: SignupRequest): Promise<SignupResponse> => {
+    return await userRegister(params);
   };
+
+  const mutation = useMutation<SignupResponse, Error, SignupRequest>({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      console.log("회원가입 성공", data);
+    },
+    onError: (error) => {
+      if (typeof error === "string") {
+        setErrorMsg(error);
+        setShowModal(true);
+      }
+    },
+  });
+
+  const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
+    console.log(formData);
+    // register();
+    // login();
+    mutation.mutate(formData);
+  };
+
+  // const register = async () => {
+  //   await userRegister({
+  //     email: "admin@wine.com",
+  //     nickname: "관리자",
+  //     password: "12345678",
+  //     passwordConfirmation: "12345678",
+  //   });
+  // };
+
+  // const login = async () => {
+  //   await userLogin({
+  //     email: "belly15@naver.com",
+  //     password: "12345678",
+  //   });
+  // };
 
   return (
     <div className="flex justify-center items-center bg-gray-100 min-h-screen">
       <div className="w-[21rem] min-h-[43rem] md:w-[31rem] md:min-h-[48rem] lg:min-h-[50rem] py-14 px-5 md:py-16 md:px-12 lg:py-12 lg:px-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]">
+        {/* 모달 컴포넌트 */}
+        <ConfirmModal
+          open={showModal}
+          onOpenChange={setShowModal}
+          /* 버튼커스텀 영역 */
+          buttons={
+            <>
+              {/* <Button className="flex-auto" onClick={() => setShowModal(false)}>
+                취소
+              </Button> */}
+              <Button className="flex-auto">확인</Button>
+            </>
+          }
+        >
+          {/* 모달 내용 영역 */}
+          {errorMsg}
+        </ConfirmModal>
         <div className="w-[104px] h-[30px] mb-[56px] md:mb-[64px]">
           <Logo className="text-black" />
         </div>
@@ -86,11 +150,11 @@ const Signup = () => {
             </div>
             {/* 비밀번호 확인 */}
             <div className="flex flex-col gap-2.5">
-              <label htmlFor="user-email">비밀번호 확인</label>
+              <label htmlFor="passwordConfirmation">비밀번호 확인</label>
               <FormInput
                 type="password"
-                id="passwordCheck"
-                name="passwordCheck"
+                id="passwordConfirmation"
+                name="passwordConfirmation"
                 placeholder="비밀번호 확인"
               />
             </div>

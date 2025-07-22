@@ -32,7 +32,7 @@ export const passwordSchema = z
     }
   );
 
-export const passwordCheckSchema = z
+export const passwordConfirmationSchema = z
   .string()
   .min(1, "비밀번호 확인을 입력해주세요")
   .min(8, "비밀번호 확인을 8자 이상 입력해주세요");
