@@ -77,6 +77,8 @@ const Signup = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log('로그인 성공', data);
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
       router.push('/');
     },
     onError: (error) => {
