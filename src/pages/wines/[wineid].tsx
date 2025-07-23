@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Star from '@/assets/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { ReviewCard } from '@/components/common/card/ReviewCard';
 import UserDefaultImg from '@/components/common/UserDefaultImg';
@@ -28,7 +29,6 @@ function WineInfoById() {
       >
         <WineContent />
       </ImageCard>
-
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='hidden xl:block mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
@@ -42,7 +42,11 @@ function WineInfoById() {
                   tags={review.tag}
                   timeAgo={review.timeAgo}
                   username={review.name}
-                  rating={review.rating}
+                  rating={
+                    <span className='inline-flex gap-1 items-center'>
+                      <Star className='w-3 md:w-4 h-3 md:h-4 md:mt-[-2px]' /> {review.rating}
+                    </span>
+                  }
                   reviewText={review.text}
                   className='w-full xl:w-[800px]'
                 ></ReviewCard>

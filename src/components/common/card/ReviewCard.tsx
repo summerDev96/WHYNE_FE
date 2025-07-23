@@ -60,7 +60,7 @@ export function ReviewCard({
           {tags.map((tag, idx) => (
             <Badge
               key={idx}
-              className='mt-4 rounded-full bg-white border-gray-300 px-[10px] py-[6px] md:px-[15px] md:py-2 custom-text-lg-regular: text-gray-700'
+              className='mt-4 rounded-full bg-white border-gray-300 px-[10px] py-[6px] md:px-[15px] md:py-2 custom-text-lg-regular text-gray-700'
               variant='flavor'
             >
               {tag}

@@ -17,8 +17,8 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
       flex flex-col md:flex-row md:gap-20 xl:gap-0 xl:flex-col xl:relative'
     >
       <div className='flex justify-between order-1 md:flex-col md:justify-center xl:mb-5'>
-        <div className='flex md:mb-[30px] xl:mb-0'>
-          <span className='text-[36px] font-extrabold mr-5'>{rating}</span>
+        <div className='flex items-center md:mb-[30px] xl:mb-0'>
+          <span className='text-[36px] md:text-[54px] font-extrabold mr-4 md:mr-5'>{rating}</span>
           <div>
             <AverageStar rating={rating} />
             <div className='custom-text-md-regular text-gray-500'>{reviewCount}개의 후기</div>
