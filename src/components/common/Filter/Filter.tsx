@@ -15,7 +15,6 @@ const Filter = () => {
       <div className='flex flex-col gap-3'>
         <span className='text-xl font-bold'>WINE TYPES</span>
         <div className='flex gap-2.5'>
-          {/* todo: 공통 뱃지로 변경 필요 */}
           {wineTypeOptions.map((option, index) => (
             <Badge
               key={`${option}-${index}`}
