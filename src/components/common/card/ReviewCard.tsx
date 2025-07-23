@@ -78,7 +78,7 @@ export function ReviewCard({
       )}
 
       {/* 슬라이더 */}
-      {flavorSliderSlot && <div className='mt-4'>{flavorSliderSlot}</div>}
+      {flavorSliderSlot && <div className='mt-4 md:mt-6 xl:mt-5'>{flavorSliderSlot}</div>}
     </div>
   );
 }
