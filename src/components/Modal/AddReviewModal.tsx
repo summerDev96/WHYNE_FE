@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import Reviewicon from '@/assets/reviewicon.svg';
 import { cn } from '@/lib/utils';
 
+import StarRating from './StarRating';
 import BasicModal from '../common/Modal/BasicModal';
-import StarRating from '../common/Modal/StarTating';
 import FlavorSlider from '../common/slider/FlavorSlider';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
