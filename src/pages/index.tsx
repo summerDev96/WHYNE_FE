@@ -1,10 +1,3 @@
-import AddWineModal from '@/components/Modal/AddWineModal';
-
 export default function Home() {
-  return (
-    <main>
-      메인
-      <AddWineModal />
-    </main>
-  );
+  return <main>메인</main>;
 }
