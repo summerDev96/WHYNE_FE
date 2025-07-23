@@ -1,6 +1,11 @@
 import React from 'react';
 
+import clsx from 'clsx';
+
+import ShowMoreBtn from '@/assets/showMoreBtn.svg';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import useClickToggle from '@/hooks/useClickToggle';
 import { cn } from '@/lib/utils';
 
 interface ReviewCardProps {
@@ -28,6 +33,8 @@ export function ReviewCard({
   flavorSliderSlot,
   className,
 }: ReviewCardProps) {
+  const { isOpen, onToggle } = useClickToggle();
+
   return (
     <div
       className={cn(
@@ -71,14 +78,25 @@ export function ReviewCard({
       </div>
 
       {/* 리뷰 텍스트 */}
-      {reviewText && (
+      {isOpen && reviewText && (
         <p className='mt-5 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800'>
           {reviewText}
         </p>
       )}
 
       {/* 슬라이더 */}
-      {flavorSliderSlot && <div className='mt-4 md:mt-6 xl:mt-5'>{flavorSliderSlot}</div>}
+      {isOpen && flavorSliderSlot && <div className='mt-4 md:mt-6 xl:mt-5'>{flavorSliderSlot}</div>}
+      <Button
+        width={null} //버튼 디폴트 덮어씌우기
+        variant='onlyCancel'
+        onClick={onToggle}
+        className={clsx({
+          'border-0 mx-auto [&_svg]:w-[30px] [&_svg]:h-[30px] block': true,
+          'scale-y-[-1]': isOpen,
+        })}
+      >
+        <ShowMoreBtn />
+      </Button>
     </div>
   );
 }
