@@ -18,17 +18,16 @@ interface WineForm {
 }
 
 ////api 테스트용////
-///////////////
-export const uploadImage = async (teamId: string, file: File) => {
-  //토큰추가//
+export const uploadImage = async (file: File) => {
+  //토큰에 막혀서 추가함//
   const token = localStorage.getItem('accessToken');
-
+  ////
   console.log(token);
 
   const formData = new FormData();
   formData.append('image', file);
 
-  const response = await axiosInstance.post(`/${teamId}/images/upload`, formData, {
+  const response = await axiosInstance.post(`/16-4/images/upload`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${token}`,
@@ -36,23 +35,19 @@ export const uploadImage = async (teamId: string, file: File) => {
   });
   return response.data.imageUrl;
 };
-//
-export const PostWine = async (
-  teamId: string,
-  data: {
-    name: string;
-    region: string;
-    image: string;
-    price: number;
-    type: 'RED' | 'WHITE' | 'SPARKLING';
-  },
-) => {
-  const response = await axiosInstance.post(`/${teamId}/wines`, data);
+
+export const PostWine = async (data: {
+  name: string;
+  region: string;
+  image: string;
+  price: number;
+  type: 'RED' | 'WHITE' | 'SPARKLING';
+}) => {
+  const response = await axiosInstance.post(`/16-4/wines`, data);
   return response.data;
 };
-///////
-///////
-//////
+////
+
 const AddWineModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [category, setCategory] = useState('Red');
@@ -92,11 +87,12 @@ const AddWineModal = () => {
   // };
 
   const onSubmit = async (form: WineForm) => {
-    const teamId = '16-4';
-
+    ////데이터확인
+    console.log(form);
+    ////
     try {
       const file = form.wineImage[0];
-      const imageUrl = await uploadImage(teamId, file);
+      const imageUrl = await uploadImage(file);
 
       const requestData = {
         name: form.wineName,
@@ -107,7 +103,7 @@ const AddWineModal = () => {
         category,
       };
 
-      await PostWine(teamId, requestData);
+      await PostWine(requestData);
 
       console.log('와인등록완료');
       reset();
@@ -127,6 +123,15 @@ const AddWineModal = () => {
   const selectedCategoryLabel =
     categoryOptions.find((opt) => opt.value === category)?.label ?? '선택';
 
+  //모달창 끄면 리셋되게
+  const closeModalReset = (isOpen: boolean) => {
+    setShowRegisterModal(isOpen);
+    if (!isOpen) {
+      reset();
+      setPreviewImage(null); //이미지 미리보기 초기화
+    }
+  };
+  ////
   return (
     <div>
       <Button variant='purpleDark' size='lg' width='lg' onClick={() => setShowRegisterModal(true)}>
@@ -136,7 +141,7 @@ const AddWineModal = () => {
         type='register'
         title='와인 등록'
         open={showRegisterModal}
-        onOpenChange={setShowRegisterModal}
+        onOpenChange={closeModalReset}
         buttons={
           <div className='flex gap-2'>
             <Button
