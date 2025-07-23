@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -37,6 +37,11 @@ type SignupData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
   const router = useRouter();
+
+  const bgClass = 'flex justify-center items-center bg-gray-100 min-h-screen';
+  const cardClass =
+    'min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem] w-[21rem] md:w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]';
+
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -75,7 +80,6 @@ const Signup = () => {
       loginMutation.mutate({ email, password });
     },
     onError: (error) => {
-      // API 에러를 모달로 출력
       if (error.response?.status === 400) {
         // 로그인 오류인 경우 공통 에러 메시지
         setError('root', { message: '닉네임이 중복되었습니다.' });
@@ -103,9 +107,16 @@ const Signup = () => {
     registerMutation.mutate(formData);
   };
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      router.replace('/');
+    }
+  }, [router]);
+
   return (
-    <div className='flex justify-center items-center bg-gray-100 min-h-screen'>
-      <div className='min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem] w-[21rem] md:w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]'>
+    <div className={bgClass}>
+      <div className={cardClass}>
         {/* 모달 컴포넌트 */}
         <ConfirmModal
           open={showModal}
