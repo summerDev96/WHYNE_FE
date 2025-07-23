@@ -6,6 +6,7 @@ import Reviewicon from '@/assets/reviewicon.svg';
 import { cn } from '@/lib/utils';
 
 import BasicModal from '../common/Modal/BasicModal';
+import StarRating from '../common/Modal/StarTating';
 import FlavorSlider from '../common/slider/FlavorSlider';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -28,7 +29,6 @@ const aromaOptions = [
   '후추',
   '제빵',
   '풀',
-  '사과',
   '사과',
   '복숭아',
   '시트러스',
@@ -82,6 +82,7 @@ const AddReviewModal = () => {
       setValue('aroma', [...aroma, item]);
     }
   };
+  ////
 
   const onSubmit = (data: ReviewForm) => {
     const fullData = {
@@ -92,6 +93,15 @@ const AddReviewModal = () => {
     setShowRegisterModal(false);
   };
 
+  //모달창 끄면 리셋되게
+  const closeModalReset = (isOpen: boolean) => {
+    setShowRegisterModal(isOpen);
+    if (!isOpen) {
+      reset();
+    }
+  };
+  ////
+
   return (
     <div>
       <Button variant='purpleDark' size='lg' width='lg' onClick={() => setShowRegisterModal(true)}>
@@ -101,7 +111,7 @@ const AddReviewModal = () => {
         type='review'
         title='리뷰 등록'
         open={showRegisterModal}
-        onOpenChange={setShowRegisterModal}
+        onOpenChange={closeModalReset}
         buttons={
           <Button
             onClick={handleSubmit(onSubmit)}
@@ -123,9 +133,14 @@ const AddReviewModal = () => {
             />
             <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
               <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
-                이름 받아와서 넣기
+                Sentinel Carbernet Sauviginon 2016
               </span>
-              <span className='mb-0'>별점구현</span>
+              <span className='mb-0'>
+                <StarRating
+                  value={watch('rating')}
+                  onChange={(rating) => setValue('rating', rating)}
+                />
+              </span>
             </div>
           </div>
           <textarea
@@ -203,13 +218,16 @@ const AddReviewModal = () => {
           <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
             기억에 남는 향이 있나요?
           </p>
-          <div>
+          <div className='flex flex-wrap gap-[10px]'>
             {aromaOptions.map((item) => (
               <Badge
                 key={item}
                 variant='chooseFlavor'
                 onClick={() => toggleAroma(item)}
-                className={cn('cursor-pointer', isSelected(item) && 'bg-primary text-white')}
+                className={cn(
+                  'cursor-pointer px-2.5 md:px-[18px] py-1.5 md:py-2.5',
+                  isSelected(item) && 'bg-primary text-white border-primary',
+                )}
               >
                 {item}
               </Badge>
