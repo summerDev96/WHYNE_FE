@@ -34,6 +34,11 @@ export function ReviewCard({
   className,
 }: ReviewCardProps) {
   const { isOpen, onToggle } = useClickToggle();
+  const cardTransition = clsx({
+    'overflow-hidden transition-all duration-500 ease-in-out': true,
+    'opacity-100 translate-y-0 max-h-[500px]': isOpen,
+    'opacity-0 -translate-y-4 max-h-0': !isOpen,
+  });
 
   return (
     <div
@@ -78,14 +83,21 @@ export function ReviewCard({
       </div>
 
       {/* 리뷰 텍스트 */}
-      {isOpen && reviewText && (
-        <p className='mt-5 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800'>
+      {reviewText && (
+        <p
+          className={cn(
+            'mt-5 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800',
+            cardTransition,
+          )}
+        >
           {reviewText}
         </p>
       )}
 
       {/* 슬라이더 */}
-      {isOpen && flavorSliderSlot && <div className='mt-4 md:mt-6 xl:mt-5'>{flavorSliderSlot}</div>}
+      {flavorSliderSlot && (
+        <div className={cn('mt-4 md:mt-6 xl:mt-5', cardTransition)}>{flavorSliderSlot}</div>
+      )}
       <Button
         width={null} //버튼 디폴트 덮어씌우기
         variant='onlyCancel'
