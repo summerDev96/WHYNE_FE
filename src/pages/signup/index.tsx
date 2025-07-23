@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
@@ -28,7 +29,7 @@ const SignupSchema = z
     passwordConfirmation: passwordConfirmationSchema,
   })
   .refine((formData) => formData['password'] === formData['passwordConfirmation'], {
-    path: ['password-check'],
+    path: ['passwordConfirmation'],
     message: '비밀번호가 일치하지 않습니다.',
   });
 
@@ -44,6 +45,15 @@ const Signup = () => {
     mode: 'all',
   });
 
+  const {
+    handleSubmit,
+    clearErrors,
+    setError,
+    trigger,
+    getValues,
+    formState: { errors, isValid },
+  } = methods;
+
   const handleRegister = async (params: SignupRequest): Promise<SignupResponse> => {
     return await createUser(params);
   };
@@ -58,7 +68,7 @@ const Signup = () => {
     setShowModal(true);
   };
 
-  const registerMutation = useMutation<SignupResponse, Error, SignupRequest>({
+  const registerMutation = useMutation<SignupResponse, AxiosError, SignupRequest>({
     mutationFn: handleRegister,
     onSuccess: (_, variables) => {
       const { email, password } = variables;
@@ -66,11 +76,17 @@ const Signup = () => {
     },
     onError: (error) => {
       // API 에러를 모달로 출력
-      handleError(error);
+      if (error.response?.status === 400) {
+        // 로그인 오류인 경우 공통 에러 메시지
+        setError('root', { message: '닉네임이 중복되었습니다.' });
+      } else {
+        // API 에러를 모달로 출력
+        handleError(error.response?.data as Error);
+      }
     },
   });
 
-  const loginMutation = useMutation<LoginResponse, Error, LoginRequest>({
+  const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: handleLogin,
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
@@ -79,7 +95,7 @@ const Signup = () => {
     },
     onError: (error) => {
       // API 에러를 모달로 출력
-      handleError(error);
+      handleError(error.response?.data as Error);
     },
   });
 
@@ -89,7 +105,7 @@ const Signup = () => {
 
   return (
     <div className='flex justify-center items-center bg-gray-100 min-h-screen'>
-      <div className='w-[21rem] min-h-[43rem] md:w-[31rem] md:min-h-[48rem] lg:min-h-[50rem] py-14 px-5 md:py-16 md:px-12 lg:py-12 lg:px-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]'>
+      <div className='min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem] w-[21rem] md:w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]'>
         {/* 모달 컴포넌트 */}
         <ConfirmModal
           open={showModal}
@@ -117,46 +133,74 @@ const Signup = () => {
         </div>
         {/* 폼 시작 */}
         <FormProvider {...methods}>
-          <form
-            className='flex flex-col items-center gap-4 md:gap-6'
-            onSubmit={methods.handleSubmit(handleOnClickSignup)}
-          >
-            {/* 이메일 */}
-            <div className='flex flex-col gap-2.5'>
-              <label htmlFor='email'>이메일</label>
-              <FormInput type='email' id='email' name='email' placeholder='user@email.com' />
+          <form onSubmit={handleSubmit(handleOnClickSignup)}>
+            <div className='flex flex-col items-center gap-4 md:gap-6'>
+              {/* 이메일 */}
+              <div className='flex flex-col gap-2.5'>
+                <label htmlFor='email'>이메일</label>
+                <FormInput
+                  type='email'
+                  id='email'
+                  name='email'
+                  placeholder='user@email.com'
+                  onChange={() => {
+                    clearErrors('root');
+                  }}
+                />
+              </div>
+              {/* 닉네임 */}
+              <div className='flex flex-col gap-2.5'>
+                <label htmlFor='nickname'>닉네임</label>
+                <FormInput
+                  type='text'
+                  id='nickname'
+                  name='nickname'
+                  placeholder='user'
+                  onChange={() => {
+                    clearErrors('root');
+                  }}
+                />
+              </div>
+              {/* 비밀번호 */}
+              <div className='flex flex-col gap-2.5'>
+                <label htmlFor='password'>비밀번호</label>
+                <FormInput
+                  type='password'
+                  id='password'
+                  name='password'
+                  placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
+                  onChange={() => {
+                    clearErrors('root');
+                    // 하지만 여기서 간단하게 passwordConfirmation 필드에 값이 있는지만 체크하려면:
+                    if (getValues('passwordConfirmation')) {
+                      trigger('passwordConfirmation');
+                    }
+                  }}
+                />
+              </div>
+              {/* 비밀번호 확인 */}
+              <div className='flex flex-col gap-2.5'>
+                <label htmlFor='passwordConfirmation'>비밀번호 확인</label>
+                <FormInput
+                  type='password'
+                  id='passwordConfirmation'
+                  name='passwordConfirmation'
+                  placeholder='비밀번호 확인'
+                  onChange={() => {
+                    clearErrors('root');
+                  }}
+                />
+              </div>
             </div>
-            {/* 닉네임 */}
-            <div className='flex flex-col gap-2.5'>
-              <label htmlFor='nickname'>닉네임</label>
-              <FormInput type='text' id='nickname' name='nickname' placeholder='user' />
-            </div>
-            {/* 비밀번호 */}
-            <div className='flex flex-col gap-2.5'>
-              <label htmlFor='password'>비밀번호</label>
-              <FormInput
-                type='password'
-                id='password'
-                name='password'
-                placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
-              />
-            </div>
-            {/* 비밀번호 확인 */}
-            <div className='flex flex-col gap-2.5'>
-              <label htmlFor='passwordConfirmation'>비밀번호 확인</label>
-              <FormInput
-                type='password'
-                id='passwordConfirmation'
-                name='passwordConfirmation'
-                placeholder='비밀번호 확인'
-              />
-            </div>
+
+            {/* 회원가입 오류 출력 */}
+            {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
             <Button
               variant='purpleDark'
               size='md'
               width='md'
-              className='text-lg font-bold mb-10'
-              disabled={!methods.formState.isValid}
+              className='text-lg font-bold mb-10 mt-8'
+              disabled={!isValid}
             >
               가입하기
             </Button>

@@ -76,7 +76,7 @@ const SignIn = () => {
 
   return (
     <div className='flex justify-center items-center bg-gray-100 min-h-screen'>
-      <div className='w-[21rem] min-h-[43rem] md:w-[31rem] md:min-h-[48rem] lg:min-h-[50rem] py-14 px-5 md:py-16 md:px-12 lg:py-12 lg:px-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]'>
+      <div className='min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem] w-[21rem] md:w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]'>
         {/* 모달 컴포넌트 */}
         <ConfirmModal
           open={showModal}
@@ -134,7 +134,7 @@ const SignIn = () => {
               </div>
             </div>
 
-            {/* 공통 서버 오류 출력 */}
+            {/* 로그인 오류 출력 */}
             {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
             <Button
               variant='purpleDark'
