@@ -82,7 +82,7 @@ apiClient.interceptors.response.use(
       // 토큰 삭제 처리
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      Router.replace('/');
+      Router.replace('/signin');
       return handleCommonError(refreshTokenError as AxiosError);
     }
 
