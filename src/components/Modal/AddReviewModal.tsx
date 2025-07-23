@@ -62,7 +62,7 @@ const AddReviewModal = () => {
       slidersoftAcidic: 0,
       content: '',
       aroma: [],
-      rating: 0,
+      rating: 5,
     },
   });
 
@@ -104,7 +104,7 @@ const AddReviewModal = () => {
 
   return (
     <div>
-      <Button variant='purpleDark' size='lg' width='lg' onClick={() => setShowRegisterModal(true)}>
+      <Button variant='purpleDark' size='xs' width='sm' onClick={() => setShowRegisterModal(true)}>
         리뷰 남기기
       </Button>
       <BasicModal
