@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
 
-import { userLogin } from '../../api/auth';
+import { loginUser } from '../../api/auth';
 
 const LoginSchema = z.object({
   email: emailSchema,
@@ -34,8 +34,8 @@ const SignIn = () => {
     mode: 'all',
   });
 
-  const loginUser = async (params: LoginRequest): Promise<LoginResponse> => {
-    return await userLogin(params);
+  const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
+    return await loginUser(params);
   };
 
   // 에러 처리: 모달로 메시지 출력
@@ -45,7 +45,7 @@ const SignIn = () => {
   };
 
   const loginMutation = useMutation<LoginResponse, Error, LoginRequest>({
-    mutationFn: loginUser,
+    mutationFn: handleLogin,
     onSuccess: (data) => {
       console.log('로그인 성공', data);
       localStorage.setItem('accessToken', data.accessToken);

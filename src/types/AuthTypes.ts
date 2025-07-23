@@ -42,6 +42,34 @@ export interface AccessTokenResponse {
   accessToken: string;
 }
 
+export interface KakakoSignInRequest {
+  state: string;
+  redirectUrl: string;
+  token: string;
+}
+
+export interface KakakoSignInResponse {
+  refreshToken: string;
+  accessToken: string;
+  user: User;
+}
+
+export interface AuthAppRequest {
+  appSecret: string;
+  appKey: string;
+  provider: 'KAKAO';
+}
+
+export interface AuthAppResponse {
+  createdAt: string;
+  updatedAt: string;
+  appSecret: string;
+  appKey: string;
+  provider: 'KAKAO';
+  teamId: string;
+  id: number;
+}
+
 // 인터셉터 관련 타입
 export interface RetryRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;

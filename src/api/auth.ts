@@ -1,21 +1,33 @@
-import axios from '@/lib/api';
+import axios from '@/api/apiClient';
 import {
   AccessTokenRequest,
   AccessTokenResponse,
+  AuthAppRequest,
+  AuthAppResponse,
+  KakakoSignInRequest,
+  KakakoSignInResponse,
   LoginRequest,
   LoginResponse,
   SignupRequest,
   SignupResponse,
 } from '@/types/AuthTypes';
 
-export const userRegister = (data: SignupRequest): Promise<SignupResponse> => {
+export const createUser = (data: SignupRequest): Promise<SignupResponse> => {
   return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signUp`, data);
 };
 
-export const userLogin = (data: LoginRequest): Promise<LoginResponse> => {
+export const loginUser = (data: LoginRequest): Promise<LoginResponse> => {
   return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn`, data);
 };
 
 export const updateAccessToken = (data: AccessTokenRequest): Promise<AccessTokenResponse> => {
   return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/refresh-token`, data);
+};
+
+export const createAuthApp = (data: AuthAppRequest): Promise<AuthAppResponse> => {
+  return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
+};
+
+export const signInKakao = (data: KakakoSignInRequest): Promise<KakakoSignInResponse> => {
+  return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
 };

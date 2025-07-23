@@ -30,7 +30,7 @@ const handleCommonError = (error: AxiosError) => {
   // 에러 타입 정의하여 바꿔야 할듯
   let errorMessage = (data as { message?: string })?.message ?? '서버에서 오류가 발생했습니다.';
 
-  // 에러 디버깅 콘솔
+  // 에러!!
   console.error('API 에러 발생:', { status, errorMessage, data });
   return Promise.reject(new Error(errorMessage));
 };

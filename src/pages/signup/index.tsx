@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
+import { createUser, loginUser } from '@/api/auth';
 import FormInput from '@/components/common/FormInput';
 import Logo from '@/components/common/Logo';
 import ConfirmModal from '@/components/common/Modal/ConfirmModal';
@@ -18,8 +19,6 @@ import {
   passwordConfirmationSchema,
 } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse, SignupRequest, SignupResponse } from '@/types/AuthTypes';
-
-import { userLogin, userRegister } from '../../api/auth';
 
 const SignupSchema = z
   .object({
@@ -45,12 +44,12 @@ const Signup = () => {
     mode: 'all',
   });
 
-  const registerUser = async (params: SignupRequest): Promise<SignupResponse> => {
-    return await userRegister(params);
+  const handleRegister = async (params: SignupRequest): Promise<SignupResponse> => {
+    return await createUser(params);
   };
 
-  const loginUser = async (params: LoginRequest): Promise<LoginResponse> => {
-    return await userLogin(params);
+  const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
+    return await loginUser(params);
   };
 
   // 에러 처리: 모달로 메시지 출력
@@ -60,7 +59,7 @@ const Signup = () => {
   };
 
   const registerMutation = useMutation<SignupResponse, Error, SignupRequest>({
-    mutationFn: registerUser,
+    mutationFn: handleRegister,
     onSuccess: (data, variables) => {
       console.log('회원가입 성공', data);
       console.log('request 요청 시 formData', variables);
@@ -74,7 +73,7 @@ const Signup = () => {
   });
 
   const loginMutation = useMutation<LoginResponse, Error, LoginRequest>({
-    mutationFn: loginUser,
+    mutationFn: handleLogin,
     onSuccess: (data) => {
       console.log('로그인 성공', data);
       localStorage.setItem('accessToken', data.accessToken);
@@ -169,7 +168,7 @@ const Signup = () => {
         </FormProvider>
         <span className='text-gray-500'>
           계정이 이미 있으신가요?{' '}
-          <Link href='/login' className='text-purpleDark font-medium underline'>
+          <Link href='/signin' className='text-purpleDark font-medium underline'>
             로그인하기
           </Link>
         </span>
