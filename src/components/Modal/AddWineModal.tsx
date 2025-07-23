@@ -129,7 +129,7 @@ const AddWineModal = () => {
 
   return (
     <div>
-      <Button size='onlyLanding' width='onlyLanding' onClick={() => setShowRegisterModal(true)}>
+      <Button variant='purpleDark' size='lg' width='lg' onClick={() => setShowRegisterModal(true)}>
         와인 등록하기
       </Button>
       <BasicModal
