@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
+import Reviewicon from '@/assets/reviewicon.svg';
 import { cn } from '@/lib/utils';
 
 import BasicModal from '../common/Modal/BasicModal';
@@ -19,7 +20,28 @@ interface ReviewForm {
   content: string;
 }
 
-const aromaOptions = ['체리', '바닐라', '블랙베리'];
+const aromaOptions = [
+  '체리',
+  '베리',
+  '오크',
+  '바닐라',
+  '후추',
+  '제빵',
+  '풀',
+  '사과',
+  '사과',
+  '복숭아',
+  '시트러스',
+  '트로피컬',
+  '미네랄',
+  '꽃',
+  '담뱃잎',
+  '흙',
+  '초콜릿',
+  '스파이스',
+  '카라멜',
+  '가죽',
+];
 
 const AddReviewModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -94,6 +116,18 @@ const AddReviewModal = () => {
         }
       >
         <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
+          <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
+            <Reviewicon
+              alt='Reviewwineicon'
+              className='w-[68px] aspect-square bg-gray-100 rounded-lg p-[7px] text-primary'
+            />
+            <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
+              <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
+                이름 받아와서 넣기
+              </span>
+              <span className='mb-0'>별점구현</span>
+            </div>
+          </div>
           <textarea
             id='content'
             {...register('content', {
