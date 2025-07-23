@@ -35,6 +35,13 @@ const SignIn = () => {
     mode: 'all',
   });
 
+  const {
+    handleSubmit,
+    clearErrors,
+    setError,
+    formState: { errors, isValid },
+  } = methods;
+
   const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
     return await loginUser(params);
   };
@@ -53,10 +60,11 @@ const SignIn = () => {
       router.push('/');
     },
     onError: (error) => {
-      // API 에러를 모달로 출력
       if (error.response?.status === 400) {
-        methods.setError('root', { message: '이메일 혹은 비밀번호를 확인해주세요' });
+        // 로그인 오류인 경우 공통 에러 메시지
+        setError('root', { message: '이메일 혹은 비밀번호를 확인해주세요' });
       } else {
+        // API 에러를 모달로 출력
         handleError(error.response?.data as Error);
       }
     },
@@ -96,7 +104,7 @@ const SignIn = () => {
         </div>
         {/* 폼 시작 */}
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleOnClickLogin)}>
+          <form onSubmit={handleSubmit(handleOnClickLogin)}>
             <div className='flex flex-col items-center gap-4 md:gap-6'>
               {/* 이메일 */}
               <div className='flex flex-col gap-2.5'>
@@ -107,7 +115,7 @@ const SignIn = () => {
                   name='email'
                   placeholder='user@email.com'
                   onChange={() => {
-                    methods.clearErrors('root');
+                    clearErrors('root');
                   }}
                 />
               </div>
@@ -120,24 +128,20 @@ const SignIn = () => {
                   name='password'
                   placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
                   onChange={() => {
-                    methods.clearErrors('root');
+                    clearErrors('root');
                   }}
                 />
               </div>
             </div>
 
             {/* 공통 서버 오류 출력 */}
-            {methods.formState.errors.root && (
-              <p className='text-red-500 flex self-start'>
-                {methods.formState.errors.root.message}
-              </p>
-            )}
+            {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
             <Button
               variant='purpleDark'
               size='md'
               width='md'
               className='text-lg font-bold mb-10 mt-8'
-              disabled={!methods.formState.isValid}
+              disabled={!isValid}
             >
               로그인
             </Button>

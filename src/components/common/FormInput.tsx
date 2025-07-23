@@ -30,18 +30,18 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
     return result;
   }
 
-  const { onChange: FormOnChange, ...field } = methods.register(name);
+  const { onChange: formOnChange, ...inputProps } = methods.register(name);
 
   return (
     <Input
-      {...field}
+      {...inputProps}
       type={type}
       id={id}
       name={name}
       placeholder={placeholder}
       errorMessage={getErrorMessage(errors)}
       onChange={(e) => {
-        FormOnChange(e);
+        formOnChange(e);
         onChange?.(e);
       }}
     />
