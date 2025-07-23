@@ -32,7 +32,7 @@ const handleCommonError = (error: AxiosError) => {
 
   // 에러!!
   console.error('API 에러 발생:', { status, errorMessage, data });
-  return Promise.reject(new Error(errorMessage));
+  return Promise.reject(error);
 };
 
 // 리프레쉬 토큰 및 에러 처리 메소드

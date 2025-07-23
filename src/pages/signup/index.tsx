@@ -60,9 +60,7 @@ const Signup = () => {
 
   const registerMutation = useMutation<SignupResponse, Error, SignupRequest>({
     mutationFn: handleRegister,
-    onSuccess: (data, variables) => {
-      console.log('회원가입 성공', data);
-      console.log('request 요청 시 formData', variables);
+    onSuccess: (_, variables) => {
       const { email, password } = variables;
       loginMutation.mutate({ email, password });
     },
@@ -75,7 +73,6 @@ const Signup = () => {
   const loginMutation = useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: handleLogin,
     onSuccess: (data) => {
-      console.log('로그인 성공', data);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       router.push('/');
@@ -87,7 +84,6 @@ const Signup = () => {
   });
 
   const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
-    console.log(formData);
     registerMutation.mutate(formData);
   };
 
