@@ -31,7 +31,7 @@ const SignIn = () => {
 
   const bgClass = 'flex justify-center items-center bg-gray-100 min-h-screen';
   const cardClass =
-    'min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem] w-[21rem] md:w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]';
+    'min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem] w-full max-w-[21rem] md:max-w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]';
 
   const [showModal, setShowModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -81,7 +81,10 @@ const SignIn = () => {
   };
 
   const handleOnClickKakao = () => {
-    console.log('카카오 로그인 todo');
+    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_APP_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}&response_type=code`;
+
+    // 카카오 로그인 화면으로 이동
+    window.location.href = kakaoAuthUrl;
   };
 
   const { data: userData, isLoading } = useQuery({
@@ -171,7 +174,6 @@ const SignIn = () => {
               >
                 로그인
               </Button>
-              <KakaoIcon className={'w-6 h-6'} />
               <Button
                 asChild
                 type='button'
@@ -180,8 +182,8 @@ const SignIn = () => {
                 className='text-lg font-bold'
                 onClick={handleOnClickKakao}
               >
-                <div className={'w-6 h-6'}>
-                  <KakaoIcon />
+                <div className='[&_svg]:w-6 [&_svg]:h-6'>
+                  <KakaoIcon /> 카카오로그인
                 </div>
               </Button>
             </div>

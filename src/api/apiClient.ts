@@ -37,18 +37,19 @@ const handleCommonError = (error: AxiosError) => {
 };
 
 // 리프레쉬 토큰 및 에러 처리 메소드
-const handleRefreshTokenError = async (error: AxiosError): Promise<AxiosResponse> => {
+const handleRefreshTokenError = async (error: AxiosError): Promise<AxiosResponse | null> => {
   const originalRequest = error.config as RetryRequestConfig;
   const refreshToken = localStorage.getItem('refreshToken');
 
-  if (error.response?.status !== 401 || originalRequest._retry) return Promise.reject(error);
+  if (error.response?.status !== 401 || originalRequest._retry) return null;
 
   originalRequest._retry = true;
 
   try {
     if (!refreshToken) {
-      return Promise.reject(new Error('리프레쉬 토큰이 없습니다.'));
+      return null;
     }
+    console.log('update');
     const data = await updateAccessToken({ refreshToken });
 
     // 갱신받은 access 토큰 저장

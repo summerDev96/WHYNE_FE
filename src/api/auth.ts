@@ -2,8 +2,6 @@ import axios from '@/api/apiClient';
 import {
   AccessTokenRequest,
   AccessTokenResponse,
-  AuthAppRequest,
-  AuthAppResponse,
   KakakoSignInRequest,
   KakakoSignInResponse,
   LoginRequest,
@@ -22,10 +20,6 @@ export const loginUser = (data: LoginRequest): Promise<LoginResponse> => {
 
 export const updateAccessToken = (data: AccessTokenRequest): Promise<AccessTokenResponse> => {
   return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/refresh-token`, data);
-};
-
-export const createAuthApp = (data: AuthAppRequest): Promise<AuthAppResponse> => {
-  return axios.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
 };
 
 export const signInKakao = (data: KakakoSignInRequest): Promise<KakakoSignInResponse> => {
