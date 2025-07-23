@@ -1,7 +1,5 @@
 import React from 'react';
 
-import clsx from 'clsx';
-
 import ShowMoreBtn from '@/assets/showMoreBtn.svg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -34,8 +32,7 @@ export function ReviewCard({
   className,
 }: ReviewCardProps) {
   const { isOpen, onToggle } = useClickToggle();
-  const cardTransition = clsx({
-    'overflow-hidden transition-all duration-500 ease-in-out': true,
+  const cardTransition = cn('overflow-hidden transition-all duration-500 ease-in-out', {
     'opacity-100 translate-y-0 max-h-[500px]': isOpen,
     'opacity-0 -translate-y-4 max-h-0': !isOpen,
   });
@@ -69,9 +66,9 @@ export function ReviewCard({
       {/* 태그 & 별점 */}
       <div className='mt-3 flex justify-between items-center'>
         <div className='flex flex-wrap gap-2'>
-          {tags.map((tag, idx) => (
+          {tags.map((tag) => (
             <Badge
-              key={idx}
+              key={tag + username}
               className='mt-4 rounded-full bg-white border-gray-300 px-[10px] py-[6px] md:px-[15px] md:py-2 custom-text-lg-regular text-gray-700'
               variant='flavor'
             >
@@ -102,8 +99,7 @@ export function ReviewCard({
         width={null} //버튼 디폴트 덮어씌우기
         variant='onlyCancel'
         onClick={onToggle}
-        className={clsx({
-          'border-0 mx-auto [&_svg]:w-[30px] [&_svg]:h-[30px] block': true,
+        className={cn('border-0 mx-auto [&_svg]:w-[30px] [&_svg]:h-[30px] block', {
           'scale-y-[-1]': isOpen,
         })}
       >
