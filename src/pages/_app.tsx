@@ -20,15 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>WINE</title>
-        <meta charSet='UTF-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='description' content='와인 리뷰 사이트' />
-        <meta property='og:title' content='WINE' />
-        <meta property='og:description' content='와인 리뷰 사이트' />
-        {/* todo: 배포 후 이미지, url 변경 필요 */}
-        <meta property='og:image' content='' />
-        <meta property='og:url' content='' />
-        <meta property='og:type' content='website' />
       </Head>
       <QueryClientProvider client={queryClient}>
         {!hideHeader && <Gnb />}
