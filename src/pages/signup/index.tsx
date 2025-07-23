@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
 import { createUser, loginUser } from '@/api/auth';
+import { getUser } from '@/api/user';
 import FormInput from '@/components/common/FormInput';
 import Logo from '@/components/common/Logo';
 import ConfirmModal from '@/components/common/Modal/ConfirmModal';
@@ -107,12 +108,19 @@ const Signup = () => {
     registerMutation.mutate(formData);
   };
 
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ['getUser'],
+    queryFn: getUser,
+    retry: false,
+  });
+
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
+    if (userData) {
       router.replace('/');
     }
-  }, [router]);
+  }, [userData, router]);
+
+  if (isLoading || userData) return null;
 
   return (
     <div className={bgClass}>

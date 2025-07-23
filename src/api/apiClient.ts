@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import Router from 'next/router';
 
 import { RetryRequestConfig } from '@/types/AuthTypes';
 
@@ -78,6 +79,10 @@ apiClient.interceptors.response.use(
       const result = await handleRefreshTokenError(error);
       if (result) return result;
     } catch (refreshTokenError) {
+      // 토큰 삭제 처리
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      Router.replace('/');
       return handleCommonError(refreshTokenError as AxiosError);
     }
 
