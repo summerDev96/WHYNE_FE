@@ -1,7 +1,13 @@
 import React from 'react';
 
-function AverageStar() {
-  return <div>AverageStar</div>;
+interface Props {
+  rating: number;
+}
+
+function AverageStar({ rating }: Props) {
+  // const star = Math.floor(rating);
+
+  return <div>{rating}</div>;
 }
 
 export default AverageStar;

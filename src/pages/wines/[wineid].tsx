@@ -33,7 +33,7 @@ function WineInfoById() {
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='hidden xl:block mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
           <ul>
-            {testReviews?.map((review, i) => (
+            {testReviews.map((review, i) => (
               <li key={`id${i + 1}`} className='mb-[16px] md:mb-[24px] xl:mb-[20px]'>
                 <ReviewCard
                   userIcon={<UserDefaultImg className='w-10 h-10 md:w-16 md:h-16' />}
