@@ -12,7 +12,7 @@ import { getUser } from '@/api/user';
 import KakaoIcon from '@/assets/icons/kakao.svg';
 import FormInput from '@/components/common/FormInput';
 import Logo from '@/components/common/Logo';
-import ConfirmModal from '@/components/common/Modal/ConfirmModal';
+import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
@@ -104,28 +104,7 @@ const SignIn = () => {
   return (
     <div className={bgClass}>
       <div className={cardClass}>
-        {/* 모달 컴포넌트 */}
-        <ConfirmModal
-          open={showModal}
-          onOpenChange={setShowModal}
-          /* 버튼커스텀 영역 */
-          buttons={
-            <>
-              <Button
-                size='xl'
-                width='xl'
-                variant='purpleDark'
-                className='flex-auto text-base font-bold'
-                onClick={() => setShowModal(false)}
-              >
-                확인
-              </Button>
-            </>
-          }
-        >
-          {/* 모달 내용 영역 */}
-          {errorMsg}
-        </ConfirmModal>
+        <ErrorModal open={showModal} onOpenChange={setShowModal} errorMessage={errorMsg} />
         <div className='w-[104px] h-[30px] mb-[56px] md:mb-[64px]'>
           <Logo className='text-black' />
         </div>
