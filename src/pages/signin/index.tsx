@@ -128,14 +128,13 @@ const SignIn = () => {
               로그인
             </Button>
             <Button
-              asChild
               type='button'
               size='md'
               width='md'
-              className='text-lg font-bold'
+              className='text-lg font-bold border-none bg-kakaoYellow'
               onClick={handleOnClickKakao}
             >
-              <div className='[&_svg]:w-6 [&_svg]:h-6'>
+              <div className='[&_svg]:w-5 [&_svg]:h-5 flex gap-3 items-center'>
                 <KakaoIcon /> 카카오로그인
               </div>
             </Button>
