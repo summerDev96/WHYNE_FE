@@ -1,10 +1,11 @@
 import React from 'react';
 
-import ShowMoreBtn from '@/assets/showMoreBtn.svg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import useClickToggle from '@/hooks/useClickToggle';
 import { cn } from '@/lib/utils';
+
+import ShowMoreBtn from '@/assets/showMoreBtn.svg';
 
 /*
   여기 저 혼자만 사용하는 것 같아서 
@@ -39,14 +40,14 @@ export function ReviewCard({
 }: ReviewCardProps) {
   const { isOpen, onToggle } = useClickToggle();
   const cardTransition = cn('overflow-hidden transition-all duration-500 ease-in-out', {
-    'opacity-100 translate-y-0 max-h-[500px]': isOpen,
+    'opacity-100 translate-y-0 max-h-[1000px]': isOpen,
     'opacity-0 -translate-y-4 max-h-0': !isOpen,
   });
 
   return (
     <div
       className={cn(
-        'w-full rounded-xl bg-white p-4 md:p-8 xl:p-4 shadow-sm border border-gray-300',
+        'w-full rounded-xl bg-white p-4 md:p-8 xl:p-4 xl:px-6 shadow-sm border border-gray-300 md:pb-6 xl:pb-5',
         className,
       )}
     >
@@ -89,7 +90,7 @@ export function ReviewCard({
       {reviewText && (
         <p
           className={cn(
-            'mt-5 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800',
+            'mt-9 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800',
             cardTransition,
           )}
         >
@@ -102,12 +103,17 @@ export function ReviewCard({
         <div className={cn('mt-4 md:mt-6 xl:mt-5', cardTransition)}>{flavorSliderSlot}</div>
       )}
       <Button
-        width={null} //버튼 디폴트 덮어씌우기
+        size={null} //버튼 디폴트 덮어씌우기
+        width={null}
         variant='onlyCancel'
         onClick={onToggle}
-        className={cn('border-0 mx-auto [&_svg]:w-[30px] [&_svg]:h-[30px] block', {
-          'scale-y-[-1]': isOpen,
-        })}
+        className={cn(
+          'border-0 mx-auto  [&_svg]:w-[30px] [&_svg]:h-[30px] block transition-all duration-500 ease-in-out mt-[-30px]',
+          // mt-[-40px] mb-2
+          {
+            'scale-y-[-1] mt-0': isOpen,
+          },
+        )}
       >
         <ShowMoreBtn />
       </Button>

@@ -14,7 +14,7 @@ interface Props {
 function WineRating({ rating, reviewCount, ratings }: Props) {
   return (
     <div
-      className='mb-[20px] md:mb-[36px] md:px-[63px] xl:px-0 w-full xl:max-w-[280px] mx-auto xl:mx-0 order-1 xl:order-2  
+      className='mb-10 md:mb-[60px] md:px-[63px] xl:px-0 w-full xl:max-w-[280px] mx-auto xl:mx-0 order-1 xl:order-2  
       flex flex-col md:flex-row md:gap-20 xl:gap-0 xl:flex-col xl:relative'
     >
       <div className='flex justify-between order-1 md:flex-col xl:mb-5'>
@@ -35,7 +35,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
       </div>
       <div className='flex gap-2 flex-col w-full order-2 '>
         {ratings.map((rating, i) => (
-          <div key={`${5 - i}points`} className='flex items-center justify-between '>
+          <div key={`${5 - i}points`} className='flex items-center justify-between'>
             <span className='block w-8 text-gray-500 mr-4'>{5 - i}점</span>
             <Progress className='h-[6px]' value={rating} />
           </div>

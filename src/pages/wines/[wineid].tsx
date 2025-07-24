@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Star from '@/assets/star.svg';
+import Star from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { ReviewCard } from '@/components/common/card/ReviewCard';
 import UserDefaultImg from '@/components/common/UserDefaultImg';
@@ -30,15 +30,15 @@ export default function WineInfoById() {
             {testReviews.map((review) => (
               <li key={review.id} className='mb-[16px] md:mb-[24px] xl:mb-[20px]'>
                 <ReviewCard
-                  userIcon={<UserDefaultImg className='w-10 h-10 md:w-16 md:h-16' />}
+                  userIcon={<UserDefaultImg className='size-10 md:size-16' />}
                   menuSlot={<Kebab />}
-                  likeSlot={<LikeButton />}
+                  likeSlot={<LikeButton isLike={false} />}
                   tags={review.aroma}
                   timeAgo={review.updatedAt}
                   username={review.user.name}
                   rating={
                     <span className='inline-flex gap-1 items-center'>
-                      <Star className='w-3 md:w-4 h-3 md:h-4 md:mt-[-2px]' /> {review.rating}
+                      <Star className='size-3 md:size-4 md:mt-[-2px]' /> {review.rating}
                     </span>
                   }
                   reviewText={review.content}

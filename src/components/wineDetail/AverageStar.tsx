@@ -2,7 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import Star from '@/assets/star.svg';
+import Star from '@/assets/icons/star.svg';
 
 interface Props {
   rating: number;
@@ -19,7 +19,7 @@ function AverageStar({ rating }: Props) {
         <li
           key={`star${i}`}
           className={clsx({
-            'w-[16px] h-[16px] inline-block mr-1': true,
+            'size-4 inline-block mr-1': true,
             'text-primary': i < activateStar,
             'text-gray-300': i >= activateStar,
           })}
