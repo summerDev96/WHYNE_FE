@@ -25,7 +25,7 @@ const ConfirmModal = ({ children, buttons, open, onOpenChange }: ConfirmModalPro
         >
           <DialogHeader>
             {/* 컨텐츠 영역 */}
-            <DialogTitle className='mt-2 flex justify-center text-xl md:text-2xl'>
+            <DialogTitle className='mt-2 flex justify-center text-lg md:text-xl'>
               {children}
             </DialogTitle>
             <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>

@@ -45,7 +45,7 @@ const BasicModal = ({
           {showCloseButton && (
             <DialogClose asChild>
               <button className='absolute top-4 right-5' aria-label='Close'>
-                <Close width={24} height={24} />
+                <Close width={24} height={24} className='text-gray-500' />
               </button>
             </DialogClose>
           )}
