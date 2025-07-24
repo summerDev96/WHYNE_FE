@@ -25,7 +25,7 @@ export default function WineInfoById() {
       </ImageCard>
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
-          <h2 className='hidden xl:block mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
+          <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
           <ul>
             {testReviews.map((review) => (
               <li key={review.id} className='mb-[16px] md:mb-[24px] xl:mb-[20px]'>
