@@ -8,7 +8,7 @@ import { updateAccessToken } from './auth';
 // axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  timeout: 10000,
+  timeout: 10_000,
   headers: { 'Content-Type': 'application/json' },
 });
 
