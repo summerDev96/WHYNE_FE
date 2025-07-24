@@ -13,12 +13,12 @@ interface ReviewListProps {
 
 export function ReviewList({ items }: ReviewListProps) {
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 mt-4'>
       {items.map((r) => (
         <MyCard
           key={r.id}
           rating={<Badge variant='star'>★ {r.rating.toFixed(1)}</Badge>}
-          timeAgo={new Date(r.createdAt).toLocaleDateString()} // 또는 상대 시간 포맷 라이브러리 사용
+          timeAgo={new Date(r.createdAt).toLocaleDateString()}
           title={r.user.nickname}
           review={r.content}
           rightSlot={
@@ -29,8 +29,8 @@ export function ReviewList({ items }: ReviewListProps) {
                 </button>
               }
               options={[
-                { label: '수정', value: 'edit' },
-                { label: '삭제', value: 'delete' },
+                { label: '수정하기', value: 'edit' },
+                { label: '삭제하기', value: 'delete' },
               ]}
               onSelect={(value) => {
                 console.log(`"${value}" clicked for review id: ${r.id}`);

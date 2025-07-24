@@ -17,7 +17,7 @@ export function TabNav({ current, onChange, reviewsCount, winesCount }: TabNavPr
           <button
             key={tab}
             onClick={() => onChange(tab)}
-            className={`text-center custom-text-2lg-bold ${
+            className={`text-center custom-text-2lg-bold md:custom-text-xl-bold ${
               current === tab ? 'text-gray-800' : 'text-gray-500'
             }`}
           >
@@ -25,7 +25,9 @@ export function TabNav({ current, onChange, reviewsCount, winesCount }: TabNavPr
           </button>
         ))}
       </div>
-      <span className='custom-text-xs-regular text-primary'>총 {count}개</span>
+      <span className='custom-text-xs-regular text-primary md:custom-text-md-regular '>
+        총 {count}개
+      </span>
     </nav>
   );
 }
