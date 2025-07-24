@@ -1,67 +1,163 @@
-// src/mocks/user.ts
-
-export interface Review {
-  id: number;
-  rating: number; // 별점 (0–5)
-  timeAgo: string; // 작성 시점(예: "2시간 전")
-  title: string; // 리뷰 제목
-  review: string; // 리뷰 본문
-}
-
-export interface Wine {
-  id: number;
-  name: string; // 와인 이름
-  region: string; // 생산지
-  price: number; // 가격(원 단위)
-}
-
-export interface User {
-  id: number;
-  nickname: string;
-  profileImageUrl: string; // 프로필 이미지 경로
-  reviews: Review[];
-  wines: Wine[];
-}
-
-export const mockUser: User = {
-  id: 1,
-  nickname: '홍길동',
-  profileImageUrl: 'https://picsum.photos/43',
-  reviews: [
-    {
-      id: 1,
-      rating: 4.8,
-      timeAgo: '방금 전',
-      title: '첫인상이 깔끔해요',
-      review: '탄탄한 바디감과 깔끔한 피니시가 인상적입니다.',
-    },
-    {
-      id: 2,
-      rating: 3.5,
-      timeAgo: '2시간 전',
-      title: '과일향 풍부',
-      review: '달콤한 베리향이 풍성하게 퍼지면서 마무리는 드라이해요.',
-    },
-    {
-      id: 3,
-      rating: 5.0,
-      timeAgo: '하루 전',
-      title: '최고의 가성비',
-      review: '가성비가 훌륭하고, 풍미가 깊어 자주 찾게 됩니다.',
-    },
-  ],
-  wines: [
+export const mockUserWinesResponse = {
+  totalCount: 4,
+  nextCursor: 0, // 커서 기반 페이징 예시, 이후 로직에 따라 변경 가능
+  list: [
     {
       id: 1,
       name: 'Château Margaux 2016',
       region: 'Bordeaux, France',
+      image: 'https://picsum.photos/seed/margaux/100/140',
       price: 64990,
+      type: 'Red',
+      avgRating: 4.7,
+      reviewCount: 12,
+      userId: 1,
+      recentReview: {
+        id: 101,
+        content: '풍부한 과일향과 부드러운 탄닌이 인상적이에요.',
+        aroma: ['PLUM', 'CEDAR'],
+        rating: 4.8,
+        createdAt: '2025-07-22T15:21:43.681Z',
+        updatedAt: '2025-07-22T15:21:43.681Z',
+        user: {
+          id: 2,
+          nickname: '와인초보',
+          image: 'https://picsum.photos/seed/user1/32',
+        },
+      },
     },
     {
       id: 2,
       name: 'Screaming Eagle 2012',
       region: 'Napa Valley, USA',
+      image: 'https://picsum.photos/seed/eagle/100/140',
       price: 320000,
+      type: 'Red',
+      avgRating: 4.9,
+      reviewCount: 24,
+      userId: 1,
+      recentReview: {
+        id: 102,
+        content: '이 가격이 아깝지 않은 훌륭한 와인입니다.',
+        aroma: ['BLACKCURRANT'],
+        rating: 5.0,
+        createdAt: '2025-07-21T10:00:00.000Z',
+        updatedAt: '2025-07-21T10:00:00.000Z',
+        user: {
+          id: 3,
+          nickname: '포도박사',
+          image: 'https://picsum.photos/seed/user2/32',
+        },
+      },
+    },
+    {
+      id: 3,
+      name: 'Penfolds Grange 2018',
+      region: 'South Australia, Australia',
+      image: 'https://picsum.photos/seed/penfolds/100/140',
+      price: 210000,
+      type: 'Red',
+      avgRating: 4.5,
+      reviewCount: 7,
+      userId: 1,
+      recentReview: {
+        id: 103,
+        content: '짙은 향과 파워풀한 맛이 기억에 남아요.',
+        aroma: ['CHERRY'],
+        rating: 4.6,
+        createdAt: '2025-07-20T12:15:00.000Z',
+        updatedAt: '2025-07-20T12:15:00.000Z',
+        user: {
+          id: 4,
+          nickname: '와인애호가',
+          image: 'https://picsum.photos/seed/user3/32',
+        },
+      },
+    },
+    {
+      id: 4,
+      name: 'Vega Sicilia Único 2009',
+      region: 'Ribera del Duero, Spain',
+      image: 'https://picsum.photos/seed/vega/100/140',
+      price: 185000,
+      type: 'Red',
+      avgRating: 4.6,
+      reviewCount: 10,
+      userId: 1,
+      recentReview: {
+        id: 104,
+        content: '스페인 와인의 자존심답게 훌륭합니다.',
+        aroma: ['SPICE'],
+        rating: 4.7,
+        createdAt: '2025-07-19T18:00:00.000Z',
+        updatedAt: '2025-07-19T18:00:00.000Z',
+        user: {
+          id: 5,
+          nickname: '비노러버',
+          image: 'https://picsum.photos/seed/user4/32',
+        },
+      },
+    },
+  ],
+};
+
+export const mockUserReviewsResponse = {
+  totalCount: 3,
+  nextCursor: 0,
+  list: [
+    {
+      id: 101,
+      rating: 4.6,
+      lightBold: 3,
+      smoothTannic: 2,
+      drySweet: 1,
+      softAcidic: 4,
+      aroma: ['CHERRY', 'BLACKCURRANT'],
+      content: '부드러운 타닌과 체리향이 잘 어우러진 와인이었어요.',
+      createdAt: '2025-07-22T15:21:43.672Z',
+      updatedAt: '2025-07-22T15:21:43.672Z',
+      user: {
+        id: 1,
+        nickname: '홍길동',
+        image: 'https://picsum.photos/seed/reviewer1/32',
+      },
+      isLiked: true,
+    },
+    {
+      id: 102,
+      rating: 3.8,
+      lightBold: 2,
+      smoothTannic: 3,
+      drySweet: 2,
+      softAcidic: 2,
+      aroma: ['VANILLA'],
+      content: '조금 달달한 편이지만 데일리 와인으로 괜찮아요.',
+      createdAt: '2025-07-21T12:11:00.000Z',
+      updatedAt: '2025-07-21T12:11:00.000Z',
+      user: {
+        id: 1,
+        nickname: '홍길동',
+        image: 'https://picsum.photos/seed/reviewer1/32',
+      },
+      isLiked: false,
+    },
+    {
+      id: 103,
+      rating: 5.0,
+      lightBold: 4,
+      smoothTannic: 4,
+      drySweet: 1,
+      softAcidic: 3,
+      aroma: ['SPICE', 'LEATHER'],
+      content: '깊고 풍성한 풍미에 감탄했습니다. 인생 와인!',
+      createdAt: '2025-07-20T09:00:00.000Z',
+      updatedAt: '2025-07-20T09:00:00.000Z',
+      user: {
+        id: 1,
+        nickname: '홍길동',
+        image: 'https://picsum.photos/seed/reviewer1/32',
+      },
+      isLiked: true,
     },
   ],
 };

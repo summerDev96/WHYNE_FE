@@ -1,7 +1,7 @@
 // pages/myprofile.tsx
 import React, { useState } from 'react';
 
-import { mockUser } from './mockUser';
+import { mockUserReviewsResponse, mockUserWinesResponse } from './mockUser';
 import Profile from './Profile';
 import { ReviewList } from './ReviewList';
 import { TabNav } from './Tab';
@@ -14,15 +14,20 @@ export default function MyProfile() {
     <div className='min-h-screen bg-gray-50'>
       <main className='max-w-md mx-auto p-4 space-y-6'>
         {/* Profile */}
-        <Profile nickname={mockUser.nickname} profileImageUrl={mockUser.profileImageUrl} />
+        <Profile nickname='홍길동' profileImageUrl='https://picsum.photos/64' />
 
         {/* Tabs */}
         <div className='flex flex-col space-y-9'>
-          <TabNav current={tab} onChange={setTab} />
+          <TabNav
+            current={tab}
+            onChange={setTab}
+            reviewsCount={mockUserReviewsResponse.totalCount}
+            winesCount={mockUserWinesResponse.totalCount}
+          />
           {tab === 'reviews' ? (
-            <ReviewList items={mockUser.reviews} />
+            <ReviewList items={mockUserReviewsResponse.list} />
           ) : (
-            <WineList items={mockUser.wines} />
+            <WineList items={mockUserWinesResponse.list} />
           )}
         </div>
       </main>
