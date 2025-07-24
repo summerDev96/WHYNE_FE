@@ -1,21 +1,28 @@
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { cn } from '@/lib/utils';
 import useFilterStore, { WineType } from '@/stores/filterStore';
 
 import DualSlider from '../slider/DualSlider';
 
-const Filter = () => {
+interface FilterProps {
+  showBorder: boolean;
+}
+
+const Filter = ({ showBorder = false }: FilterProps) => {
   const { type, setType, minPrice, maxPrice, setPriceRange, rating, setRating } = useFilterStore();
 
   const wineTypeOptions: WineType[] = ['Red', 'White', 'Sparkling'];
   const priceRange: [number, number] = [minPrice, maxPrice];
 
+  const borderClass = 'border-b border-gray-100';
+
   return (
-    <div className='m-8 flex flex-col gap-9'>
+    <div className='max-w-[20.5rem] m-8 flex flex-col'>
       <div className='flex flex-col gap-3'>
         <span className='custom-text-xl-bold'>WINE TYPES</span>
-        <div className='flex gap-3'>
+        <div className='flex gap-4'>
           {/* todo: 공통 뱃지로 변경 필요 */}
           {wineTypeOptions.map((option, index) => (
             <Badge
@@ -29,10 +36,17 @@ const Filter = () => {
           ))}
         </div>
       </div>
-      <div className='flex flex-col gap-2'>
+      <span className={cn(showBorder && borderClass, 'my-[1.9rem]')}></span>
+      <div className='flex flex-col'>
         <span className='custom-text-xl-bold'>PRICE</span>
-        <DualSlider max={1000000} value={priceRange} onChange={setPriceRange} />
+        <DualSlider
+          max={1000000}
+          value={priceRange}
+          onChange={setPriceRange}
+          className='w-[17.7rem]'
+        />
       </div>
+      <span className={cn(showBorder && borderClass, 'my-[1.9rem]')}></span>
       <div className='flex flex-col gap-2.5'>
         <span className='custom-text-xl-bold'>RATING</span>
         {/* todo: 공통 라디오, 라벨 컴포넌트로 변경 필요 */}
