@@ -125,7 +125,11 @@ const AddReviewModal = () => {
           </Button>
         }
       >
-        <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          encType='multipart/form-data'
+          className='my-[32px] md:my-[40px]'
+        >
           <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
             <Image
               src='/assets/reviewicon.png'
@@ -163,7 +167,7 @@ const AddReviewModal = () => {
             <div role='alert' className='text-red-500 mt-[4px]'>
               {errors.content.message}
             </div>
-          )}{' '}
+          )}
           <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
             와인의 맛은 어땠나요?
           </p>
