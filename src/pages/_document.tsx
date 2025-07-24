@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
   const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
-  const defaultOGImage = `${BASE_URL}/og-image.jpg`;
+  const defaultOGImage = `${BASE_URL}/og-image.png`;
   return (
     <Html lang='ko'>
       <Head>
