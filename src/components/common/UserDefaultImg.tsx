@@ -1,8 +1,7 @@
 import React from 'react';
 
+import DefaultImg from '@/assets/icons/userDefaultImg.svg';
 import { cn } from '@/lib/utils';
-
-import DefaultImg from '@/assets/userDefaultImg.svg';
 
 interface Props {
   className?: string;

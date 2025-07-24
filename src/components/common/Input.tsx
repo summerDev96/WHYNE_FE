@@ -1,7 +1,7 @@
 // 샤드cn은 아닌데 조합해서 쓸 것 같아서 components/ui에 넣어뒀습니다.
 import React, { forwardRef, InputHTMLAttributes } from 'react';
 
-import SearchIcon from '@/assets/search.svg';
+import SearchIcon from '@/assets/icons/search.svg';
 import { cn } from '@/lib/utils';
 
 interface Props extends React.ComponentProps<'input'> {
