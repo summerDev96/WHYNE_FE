@@ -1,15 +1,21 @@
-import LendingPageLogoIcon from '@/assets/lendinglogo.svg';
+import Image from 'next/image';
+
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 lg:mt-[80px]'>
       <header>
-        <div className='relative h-[403px] md:h-[394px] lg:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden'>
+        <div className='relative h-[403px] md:h-[394px] lg:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden rounded-lg'>
           <div className='flex flex-col items-center h-full'>
             <div>
-              {/* 이미지에 그라디언트 */}
-              <LendingPageLogoIcon className='w-[81px] md:w-[100px] h-[23px] md:h-[30px] text-primary mt-[58px] md:mt-[80px] lg:mt-[112px]' />
+              <Image
+                src='/assets/lendinglogo.png'
+                alt='와인 로고 이미지'
+                width={100}
+                height={100}
+                className='w-[81px] md:w-[100px] h-[23px] md:h-[30px] text-primary mt-[58px] md:mt-[80px] lg:mt-[112px]'
+              />
             </div>
             <span className='text-white text-center custom-text-xl-bold md:custom-text-2xl-bold mt-6 md:mt-8'>
               한 곳에서 관리하는 <br />
