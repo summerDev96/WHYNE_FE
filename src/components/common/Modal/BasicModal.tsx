@@ -45,12 +45,14 @@ const BasicModal = ({
           {showCloseButton && (
             <DialogClose asChild>
               <button className='absolute top-4 right-5' aria-label='Close'>
-                <Close width={24} height={24} />
+                <Close width={24} height={24} className='text-gray-500' />
               </button>
             </DialogClose>
           )}
           <DialogHeader>
-            <DialogTitle className='text-xl md:text-2xl text-left'>{title}</DialogTitle>
+            <DialogTitle className='custom-text-xl-bold md:custom-text-2xl-bold text-left'>
+              {title}
+            </DialogTitle>
             <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
           </DialogHeader>
 
