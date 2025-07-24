@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
-import Reviewicon from '@/assets/reviewicon.svg';
 import { cn } from '@/lib/utils';
 
 import StarRating from './StarRating';
@@ -127,9 +127,12 @@ const AddReviewModal = () => {
       >
         <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
           <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
-            <Reviewicon
-              alt='Reviewwineicon'
-              className='w-[68px] aspect-square bg-gray-100 rounded-lg p-[7px] text-primary'
+            <Image
+              src='/assets/reviewicon.png'
+              alt='리뷰 아이콘'
+              width={68}
+              height={68}
+              className='bg-gray-100 rounded-lg p-[7px] text-primary object-contain'
             />
             <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
               <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
