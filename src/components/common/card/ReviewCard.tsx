@@ -108,7 +108,6 @@ export function ReviewCard({
         onClick={onToggle}
         className={cn(
           'border-0 mx-auto  [&_svg]:w-[30px] [&_svg]:h-[30px] block transition-all duration-500 ease-in-out mt-[-30px]',
-          // mt-[-40px] mb-2
           {
             'scale-y-[-1] mt-0': isOpen,
           },
