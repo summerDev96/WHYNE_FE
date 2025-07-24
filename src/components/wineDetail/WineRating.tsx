@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+
 import AverageStar from './AverageStar';
-import { Button } from '../ui/button';
-import { Progress } from '../ui/progress';
 
 interface Props {
   rating: number;
@@ -16,7 +17,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
       className='mb-[20px] md:mb-[36px] md:px-[63px] xl:px-0 w-full xl:max-w-[280px] mx-auto xl:mx-0 order-1 xl:order-2  
       flex flex-col md:flex-row md:gap-20 xl:gap-0 xl:flex-col xl:relative'
     >
-      <div className='flex justify-between order-1 md:flex-col md:justify-center xl:mb-5'>
+      <div className='flex justify-between order-1 md:flex-col xl:mb-5'>
         <div className='flex items-center md:mb-[30px] xl:mb-0'>
           <span className='text-[36px] md:text-[54px] font-extrabold mr-4 md:mr-5'>{rating}</span>
           <div>

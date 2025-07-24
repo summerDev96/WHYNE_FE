@@ -13,8 +13,6 @@ function FlavorSliderList({
   drySweet = 0,
   softAcidic = 0,
 }: Props) {
-  const sliderClassName = '';
-
   return (
     <div className='flex gap-[18px] flex-col mb-4 md:mb-6 xl:mb-[6.5px]'>
       <FlavorSlider
@@ -24,7 +22,6 @@ function FlavorSliderList({
         labelRight={'진해요'}
         badgeLabel={'바디감'}
         disabled
-        className={sliderClassName}
       />
       <FlavorSlider
         value={smoothTannic}
@@ -33,7 +30,6 @@ function FlavorSliderList({
         labelRight={'떫어요'}
         badgeLabel={'타닌'}
         disabled
-        className={sliderClassName}
       />
       <FlavorSlider
         value={drySweet}
@@ -42,7 +38,6 @@ function FlavorSliderList({
         labelRight={'달아요'}
         badgeLabel={'당도'}
         disabled
-        className={sliderClassName}
       />
       <FlavorSlider
         value={softAcidic}
@@ -51,7 +46,6 @@ function FlavorSliderList({
         labelRight={'많이셔요'}
         badgeLabel={'산미'}
         disabled
-        className={sliderClassName}
       />
     </div>
   );

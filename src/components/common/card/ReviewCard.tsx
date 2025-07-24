@@ -6,6 +6,12 @@ import { Button } from '@/components/ui/button';
 import useClickToggle from '@/hooks/useClickToggle';
 import { cn } from '@/lib/utils';
 
+/*
+  여기 저 혼자만 사용하는 것 같아서 
+  제가 임의로 간격이나 이런 수치들 조금 건드렸습니다. 
+  혹시 다른 분들도 쓰게 된다면 말씀해주세요
+*/
+
 interface ReviewCardProps {
   userIcon: React.ReactNode; // 유저 아이콘
   username: string; // 유저 이름
