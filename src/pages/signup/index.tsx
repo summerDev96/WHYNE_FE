@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,11 +9,13 @@ import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
 import { createUser, loginUser } from '@/api/auth';
-import { getUser } from '@/api/user';
+import AuthLayout from '@/components/auth/AuthLayout';
+import AuthLogo from '@/components/auth/AuthLogo';
 import FormInput from '@/components/common/FormInput';
-import Logo from '@/components/common/Logo';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
+import useErrorModal from '@/hooks/useErrorModal';
 import {
   emailSchema,
   nicknameSchema,
@@ -37,14 +39,9 @@ const SignupSchema = z
 type SignupData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
+  const { open, setOpen, handleError, errorMessage } = useErrorModal();
+  const { userData, isLoading } = useAuthRedirect();
   const router = useRouter();
-
-  const bgClass = 'flex justify-center items-center bg-gray-100 min-h-screen';
-  const cardClass =
-    'min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem] w-full max-w-[21rem] md:max-w-[31rem] py-14 px-5 md:py-16 md:px-12 lg:py-20 flex flex-col items-center justify-center rounded-2xl bg-white border border-gray-300 shadow-[0px_2px_20px_rgba(0,0,0,0.04)]';
-
-  const [showModal, setShowModal] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
   const methods = useForm<SignupData>({
     resolver: zodResolver(SignupSchema),
@@ -66,12 +63,6 @@ const Signup = () => {
 
   const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
     return await loginUser(params);
-  };
-
-  // 에러 처리: 모달로 메시지 출력
-  const handleError = (error: Error) => {
-    setErrorMsg(error.message);
-    setShowModal(true);
   };
 
   const registerMutation = useMutation<SignupResponse, AxiosError, SignupRequest>({
@@ -108,109 +99,96 @@ const Signup = () => {
     registerMutation.mutate(formData);
   };
 
-  const { data: userData, isLoading } = useQuery({
-    queryKey: ['getUser'],
-    queryFn: getUser,
-    retry: false,
-  });
-
-  useEffect(() => {
-    if (userData) {
-      router.replace('/');
-    }
-  }, [userData, router]);
-
+  /* useAuthRedirect 훅에서 유저 데이터 요청 후 리디렉트 처리 */
+  // 로딩중이거나 데이터 없으면 화면 안보이게 처리
   if (isLoading || userData) return null;
 
   return (
-    <div className={bgClass}>
-      <div className={cardClass}>
-        <ErrorModal open={showModal} onOpenChange={setShowModal} errorMessage={errorMsg} />
-        <div className='w-[104px] h-[30px] mb-[56px] md:mb-[64px]'>
-          <Logo className='text-black' />
-        </div>
-        {/* 폼 시작 */}
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(handleOnClickSignup)}>
-            <div className='flex flex-col items-center gap-4 md:gap-6'>
-              {/* 이메일 */}
-              <div className='flex flex-col gap-2.5'>
-                <label htmlFor='email'>이메일</label>
-                <FormInput
-                  type='email'
-                  id='email'
-                  name='email'
-                  placeholder='user@email.com'
-                  onChange={() => {
-                    clearErrors('root');
-                  }}
-                />
-              </div>
-              {/* 닉네임 */}
-              <div className='flex flex-col gap-2.5'>
-                <label htmlFor='nickname'>닉네임</label>
-                <FormInput
-                  type='text'
-                  id='nickname'
-                  name='nickname'
-                  placeholder='user'
-                  onChange={() => {
-                    clearErrors('root');
-                  }}
-                />
-              </div>
-              {/* 비밀번호 */}
-              <div className='flex flex-col gap-2.5'>
-                <label htmlFor='password'>비밀번호</label>
-                <FormInput
-                  type='password'
-                  id='password'
-                  name='password'
-                  placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
-                  onChange={() => {
-                    clearErrors('root');
-                    if (getValues('passwordConfirmation')) {
-                      trigger('passwordConfirmation');
-                    }
-                  }}
-                />
-              </div>
-              {/* 비밀번호 확인 */}
-              <div className='flex flex-col gap-2.5'>
-                <label htmlFor='passwordConfirmation'>비밀번호 확인</label>
-                <FormInput
-                  type='password'
-                  id='passwordConfirmation'
-                  name='passwordConfirmation'
-                  placeholder='비밀번호 확인'
-                  onChange={() => {
-                    clearErrors('root');
-                  }}
-                />
-              </div>
-            </div>
+    <AuthLayout className='min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem]'>
+      <ErrorModal open={open} onOpenChange={setOpen} errorMessage={errorMessage} />
 
-            {/* 회원가입 오류 출력 */}
-            {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
-            <Button
-              variant='purpleDark'
-              size='md'
-              width='md'
-              className='text-lg font-bold mb-10 mt-8'
-              disabled={!isValid}
-            >
-              가입하기
-            </Button>
-          </form>
-        </FormProvider>
-        <span className='text-gray-500'>
-          계정이 이미 있으신가요?{' '}
-          <Link href='/signin' className='text-purpleDark font-medium underline'>
-            로그인하기
-          </Link>
-        </span>
-      </div>
-    </div>
+      <AuthLogo />
+      {/* 폼 시작 */}
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(handleOnClickSignup)}>
+          <div className='flex flex-col items-center gap-4 md:gap-6'>
+            {/* 이메일 */}
+            <div className='flex flex-col gap-2.5'>
+              <label htmlFor='email'>이메일</label>
+              <FormInput
+                type='email'
+                id='email'
+                name='email'
+                placeholder='user@email.com'
+                onChange={() => {
+                  clearErrors('root');
+                }}
+              />
+            </div>
+            {/* 닉네임 */}
+            <div className='flex flex-col gap-2.5'>
+              <label htmlFor='nickname'>닉네임</label>
+              <FormInput
+                type='text'
+                id='nickname'
+                name='nickname'
+                placeholder='user'
+                onChange={() => {
+                  clearErrors('root');
+                }}
+              />
+            </div>
+            {/* 비밀번호 */}
+            <div className='flex flex-col gap-2.5'>
+              <label htmlFor='password'>비밀번호</label>
+              <FormInput
+                type='password'
+                id='password'
+                name='password'
+                placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
+                onChange={() => {
+                  clearErrors('root');
+                  if (getValues('passwordConfirmation')) {
+                    trigger('passwordConfirmation');
+                  }
+                }}
+              />
+            </div>
+            {/* 비밀번호 확인 */}
+            <div className='flex flex-col gap-2.5'>
+              <label htmlFor='passwordConfirmation'>비밀번호 확인</label>
+              <FormInput
+                type='password'
+                id='passwordConfirmation'
+                name='passwordConfirmation'
+                placeholder='비밀번호 확인'
+                onChange={() => {
+                  clearErrors('root');
+                }}
+              />
+            </div>
+          </div>
+
+          {/* 회원가입 오류 출력 */}
+          {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
+          <Button
+            variant='purpleDark'
+            size='md'
+            width='md'
+            className='text-lg font-bold mb-10 mt-8'
+            disabled={!isValid}
+          >
+            가입하기
+          </Button>
+        </form>
+      </FormProvider>
+      <span className='text-gray-500'>
+        계정이 이미 있으신가요?{' '}
+        <Link href='/signin' className='text-purpleDark font-medium underline'>
+          로그인하기
+        </Link>
+      </span>
+    </AuthLayout>
   );
 };
 
