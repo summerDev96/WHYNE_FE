@@ -57,16 +57,8 @@ const Signup = () => {
     formState: { errors, isValid },
   } = methods;
 
-  const handleRegister = async (params: SignupRequest): Promise<SignupResponse> => {
-    return await createUser(params);
-  };
-
-  const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
-    return await loginUser(params);
-  };
-
   const registerMutation = useMutation<SignupResponse, AxiosError, SignupRequest>({
-    mutationFn: handleRegister,
+    mutationFn: createUser,
     onSuccess: (_, variables) => {
       const { email, password } = variables;
       loginMutation.mutate({ email, password });
@@ -83,8 +75,9 @@ const Signup = () => {
   });
 
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
-    mutationFn: handleLogin,
+    mutationFn: loginUser,
     onSuccess: (data) => {
+      /* 로그인 후 로컬스토리지 토큰 저장 */
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       router.push('/');
@@ -97,6 +90,18 @@ const Signup = () => {
 
   const handleOnClickSignup: SubmitHandler<SignupData> = (formData) => {
     registerMutation.mutate(formData);
+  };
+
+  /* 공통 에러가 이미 있는 경우, 인풋 입력 시 초기화 하는 메소드  */
+  const resetCommonErrorMessage = () => {
+    if (errors.root) clearErrors('root');
+  };
+
+  /* 비밀번호 확인 값 입력 시, 비밀번호 확인 값을 유효성 체크하도록 함 */
+  const validatePasswordConfirmation = () => {
+    if (getValues('passwordConfirmation')) {
+      trigger('passwordConfirmation');
+    }
   };
 
   /* useAuthRedirect 훅에서 유저 데이터 요청 후 리디렉트 처리 */
@@ -120,9 +125,7 @@ const Signup = () => {
                 id='email'
                 name='email'
                 placeholder='user@email.com'
-                onChange={() => {
-                  clearErrors('root');
-                }}
+                onChange={resetCommonErrorMessage}
               />
             </div>
             {/* 닉네임 */}
@@ -133,9 +136,7 @@ const Signup = () => {
                 id='nickname'
                 name='nickname'
                 placeholder='user'
-                onChange={() => {
-                  clearErrors('root');
-                }}
+                onChange={resetCommonErrorMessage}
               />
             </div>
             {/* 비밀번호 */}
@@ -147,10 +148,9 @@ const Signup = () => {
                 name='password'
                 placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
                 onChange={() => {
-                  clearErrors('root');
-                  if (getValues('passwordConfirmation')) {
-                    trigger('passwordConfirmation');
-                  }
+                  resetCommonErrorMessage();
+                  /* 비밀번호 확인 값이 있으면 유효성 체크하도록 함 */
+                  validatePasswordConfirmation();
                 }}
               />
             </div>
@@ -162,9 +162,7 @@ const Signup = () => {
                 id='passwordConfirmation'
                 name='passwordConfirmation'
                 placeholder='비밀번호 확인'
-                onChange={() => {
-                  clearErrors('root');
-                }}
+                onChange={resetCommonErrorMessage}
               />
             </div>
           </div>

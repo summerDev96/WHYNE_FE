@@ -25,7 +25,7 @@ const ErrorModal = ({ open, onOpenChange, errorMessage, onConfirm }: ErrorModalP
             className='flex-auto text-base font-bold'
             onClick={() => {
               onOpenChange(false);
-              if (onConfirm) onConfirm();
+              onConfirm?.();
             }}
           >
             확인

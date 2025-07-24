@@ -45,12 +45,8 @@ const SignIn = () => {
     formState: { errors, isValid },
   } = methods;
 
-  const handleLogin = async (params: LoginRequest): Promise<LoginResponse> => {
-    return await loginUser(params);
-  };
-
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
-    mutationFn: handleLogin,
+    mutationFn: loginUser,
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
