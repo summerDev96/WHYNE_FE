@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 lg:mt-[80px]'>
+    <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 xl:mt-[80px]'>
       <header>
-        <div className='relative h-[403px] md:h-[394px] lg:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden rounded-lg'>
+        <div className='relative h-[403px] md:h-[394px] xl:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden rounded-lg'>
           <div className='flex flex-col items-center h-full'>
             <div>
               <Image
@@ -15,14 +15,14 @@ export default function Home() {
                 alt='와인 로고 이미지'
                 width={100}
                 height={100}
-                className='w-[81px] md:w-[100px] h-[23px] md:h-[30px] text-primary mt-[58px] md:mt-[80px] lg:mt-[112px]'
+                className='w-[81px] md:w-[100px] h-[23px] md:h-[30px] text-primary mt-[58px] md:mt-[80px] xl:mt-[112px]'
               />
             </div>
             <span className='text-white text-center custom-text-xl-bold md:custom-text-2xl-bold mt-6 md:mt-8'>
               한 곳에서 관리하는 <br />
               나만의 와인창고
             </span>
-            <div className='relative w-[720px] h-[420px] mt-auto mx-auto translate-y-[80px] md:translate-y-[40px] lg:translate-y-[120px] scale-[1] md:scale-[0.7] lg:scale-[1]'>
+            <div className='relative w-[720px] h-[420px] mt-auto mx-auto translate-y-[80px] md:translate-y-[40px] xl:translate-y-[120px] scale-[1] md:scale-[0.7] xl:scale-[1]'>
               {/* 기준 박스 translate-y 아래로-ㅁㅁ만큼 밀어내기 */}
               <div className='absolute top-4 left-1/2 w-[240px] h-[188px] bg-white rounded-xl z-30 -translate-x-1/2 shadow-xl'>
                 <ImageCard
@@ -105,7 +105,7 @@ export default function Home() {
       </header>
 
       <main>
-        <div className='mx-auto md:px-[32px] xl:px-0 max-w-[640px]  min-w-[343px] mt-12 md:mt-[80px] lg:mt-[160px]'>
+        <div className='mx-auto md:px-[32px] xl:px-0 max-w-[640px]  min-w-[343px] mt-12 md:mt-[80px] xl:mt-[160px]'>
           <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl'>
             <div className='absolute top-[24px] md:top-[56px] left-[24px] md:left-[32px]'>
               <span className='custom-text-2lg-bold md:custom-text-xl-bold'>
@@ -176,7 +176,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[64px] md:mb-[80px] lg:mb-[104px] rounded-2xl overflow-hidden  '>
+          <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[64px] md:mb-[80px] xl:mb-[104px] rounded-2xl overflow-hidden  '>
             <div className='absolute top-[24px] md:top-[55px] left-[24px] md:left-[28px]'>
               <span className='custom-text-2lg-bold md:custom-text-xl-bold'>
                 직관적인
