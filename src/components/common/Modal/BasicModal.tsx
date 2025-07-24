@@ -50,7 +50,9 @@ const BasicModal = ({
             </DialogClose>
           )}
           <DialogHeader>
-            <DialogTitle className='text-xl md:text-2xl text-left'>{title}</DialogTitle>
+            <DialogTitle className='custom-text-xl-bold md:custom-text-2xl-bold text-left'>
+              {title}
+            </DialogTitle>
             <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
           </DialogHeader>
 
