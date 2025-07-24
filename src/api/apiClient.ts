@@ -37,34 +37,26 @@ const handleCommonError = (error: AxiosError) => {
 };
 
 // 리프레쉬 토큰 및 에러 처리 메소드
-const handleRefreshTokenError = async (error: AxiosError): Promise<AxiosResponse | null> => {
+const handleRequestRefreshToken = async (
+  error: AxiosError,
+  refreshToken: string,
+): Promise<AxiosResponse | null> => {
   const originalRequest = error.config as RetryRequestConfig;
-  const refreshToken = localStorage.getItem('refreshToken');
 
-  if (error.response?.status !== 401 || originalRequest._retry) return null;
-
+  if (originalRequest._retry) return null;
   originalRequest._retry = true;
 
-  try {
-    if (!refreshToken) {
-      return null;
-    }
-    console.log('update');
-    const data = await updateAccessToken({ refreshToken });
+  const data = await updateAccessToken({ refreshToken });
 
-    // 갱신받은 access 토큰 저장
-    localStorage.setItem('accessToken', data.accessToken);
+  // 갱신받은 access 토큰 저장
+  localStorage.setItem('accessToken', data.accessToken);
 
-    // 새 토큰으로 헤더 수정
-    if (originalRequest.headers) {
-      originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-    }
-
-    return apiClient(originalRequest); // 토큰 갱신 후 재요청
-  } catch (requestError) {
-    console.log(requestError, '인증이 만료되었습니다. 다시 로그인해주세요.');
-    return Promise.reject(requestError);
+  // 새 토큰으로 헤더 수정
+  if (originalRequest.headers) {
+    originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
   }
+
+  return apiClient(originalRequest); // 토큰 갱신 후 재요청
 };
 
 /* Axios 인터셉터 설정 */
@@ -76,18 +68,20 @@ apiClient.interceptors.request.use(addAccessToken);
 apiClient.interceptors.response.use(
   (res) => res.data,
   async (error) => {
+    const status = error.response?.status;
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (status !== 401 || !refreshToken) return handleCommonError(error);
     try {
-      const result = await handleRefreshTokenError(error);
+      const result = await handleRequestRefreshToken(error, refreshToken);
       if (result) return result;
     } catch (refreshTokenError) {
-      // 토큰 삭제 처리
+      // 토큰 삭제 처리 후 리디렉트
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       Router.replace('/signin');
       return handleCommonError(refreshTokenError as AxiosError);
     }
-
-    return handleCommonError(error);
   },
 );
 
