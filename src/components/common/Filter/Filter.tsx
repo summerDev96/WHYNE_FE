@@ -23,7 +23,6 @@ const Filter = ({ showBorder = false }: FilterProps) => {
       <div className='flex flex-col gap-3'>
         <span className='custom-text-xl-bold'>WINE TYPES</span>
         <div className='flex gap-4'>
-          {/* todo: 공통 뱃지로 변경 필요 */}
           {wineTypeOptions.map((option, index) => (
             <Badge
               key={`${option}-${index}`}
@@ -49,7 +48,6 @@ const Filter = ({ showBorder = false }: FilterProps) => {
       <span className={cn(showBorder && borderClass, 'my-[1.9rem]')}></span>
       <div className='flex flex-col gap-2.5'>
         <span className='custom-text-xl-bold'>RATING</span>
-        {/* todo: 공통 라디오, 라벨 컴포넌트로 변경 필요 */}
         <RadioGroup value={rating} onValueChange={setRating}>
           <div className='flex items-center gap-3'>
             {/* 전체인 경우 rating값을 아예 안보내는 것 같아 임의로 all로 설정 */}
