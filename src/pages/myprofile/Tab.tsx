@@ -1,9 +1,17 @@
-// components/TabNav.tsx
 type Tab = 'reviews' | 'wines';
 
-export function TabNav({ current, onChange }: { current: Tab; onChange: (t: Tab) => void }) {
+interface TabNavProps {
+  current: Tab;
+  onChange: (t: Tab) => void;
+  reviewsCount: number;
+  winesCount: number;
+}
+
+export function TabNav({ current, onChange, reviewsCount, winesCount }: TabNavProps) {
+  const count = current === 'reviews' ? reviewsCount : winesCount;
+
   return (
-    <nav>
+    <nav className='flex justify-between items-center'>
       <div className='flex justify-start gap-4'>
         {(['reviews', 'wines'] as Tab[]).map((tab) => (
           <button
@@ -17,6 +25,7 @@ export function TabNav({ current, onChange }: { current: Tab; onChange: (t: Tab)
           </button>
         ))}
       </div>
+      <span className='custom-text-xs-regular text-primary'>총 {count}개</span>
     </nav>
   );
 }
