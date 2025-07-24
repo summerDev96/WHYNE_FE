@@ -1,12 +1,14 @@
+import React from 'react';
+
 import DotIcon from '@/assets/icons/dot.svg';
 import { MyCard } from '@/components/common/card/MyCard';
+import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
 
-// mockUser.ts 에서 이렇게 export 했다고 가정
-import type { Review } from './mockUser';
+import { mockUserReviewsResponse } from './mockUser';
 
 interface ReviewListProps {
-  items: Review[];
+  items: typeof mockUserReviewsResponse.list;
 }
 
 export function ReviewList({ items }: ReviewListProps) {
@@ -16,13 +18,24 @@ export function ReviewList({ items }: ReviewListProps) {
         <MyCard
           key={r.id}
           rating={<Badge variant='star'>★ {r.rating.toFixed(1)}</Badge>}
-          timeAgo={r.timeAgo}
-          title={r.title}
-          review={r.review}
+          timeAgo={new Date(r.createdAt).toLocaleDateString()} // 또는 상대 시간 포맷 라이브러리 사용
+          title={r.user.nickname}
+          review={r.content}
           rightSlot={
-            <button className='w-6 h-6 text-gray-500'>
-              <DotIcon />
-            </button>
+            <MenuDropdown
+              trigger={
+                <button className='w-6 h-6 text-gray-500'>
+                  <DotIcon />
+                </button>
+              }
+              options={[
+                { label: '수정', value: 'edit' },
+                { label: '삭제', value: 'delete' },
+              ]}
+              onSelect={(value) => {
+                console.log(`"${value}" clicked for review id: ${r.id}`);
+              }}
+            />
           }
         />
       ))}
