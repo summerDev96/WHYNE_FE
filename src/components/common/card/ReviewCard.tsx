@@ -83,17 +83,12 @@ ReviewCard.ReviewBody = function ReviewBody({ reviewId, flavorSliderSlot }: Revi
   if (!reviewText && !flavorSliderSlot) null;
 
   return (
-    <>
-      <p
-        className={cn(
-          'mt-9 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800',
-          cardTransition,
-        )}
-      >
+    <div className={cardTransition}>
+      <p className='mt-9 text-[14px] md:text-[16px] leading-6 md:leading-[26px] text-gray-800'>
         {reviewText}
       </p>
-      <div className={cn('mt-4 md:mt-6 xl:mt-5', cardTransition)}>{flavorSliderSlot}</div>
-    </>
+      <div className='mt-4 md:mt-6 xl:mt-5'>{flavorSliderSlot}</div>
+    </div>
   );
 };
 
