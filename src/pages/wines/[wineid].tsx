@@ -1,15 +1,10 @@
 import React from 'react';
 
-import Star from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
-import { ReviewCard } from '@/components/common/card/ReviewCard';
-import UserDefaultImg from '@/components/common/UserDefaultImg';
-import FlavorSliderList from '@/components/wineDetail/FlavorSliderList';
-import Kebab from '@/components/wineDetail/Kebab';
-import LikeButton from '@/components/wineDetail/LikeButton';
 import { testReviews, wineInfo } from '@/components/wineDetail/mock';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
+import WineReviewCard from '@/components/wineDetail/WineReviewCard';
 
 export default function WineInfoById() {
   const { name, region, price, image } = wineInfo;
@@ -29,29 +24,7 @@ export default function WineInfoById() {
           <ul>
             {testReviews.map((review) => (
               <li key={review.id} className='mb-[16px] md:mb-[24px] xl:mb-[20px]'>
-                <ReviewCard
-                  userIcon={<UserDefaultImg className='size-10 md:size-16' />}
-                  menuSlot={<Kebab />}
-                  likeSlot={<LikeButton isLike={false} />}
-                  tags={review.aroma}
-                  timeAgo={review.updatedAt}
-                  username={review.user.name}
-                  rating={
-                    <span className='inline-flex gap-1 items-center'>
-                      <Star className='size-3 md:size-4 md:mt-[-2px]' /> {review.rating}
-                    </span>
-                  }
-                  reviewText={review.content}
-                  flavorSliderSlot={
-                    <FlavorSliderList
-                      lightBold={review.lightBold}
-                      smoothTannic={review.smoothTannic}
-                      drySweet={review.drySweet}
-                      softAcidic={review.softAcidic}
-                    />
-                  }
-                  className='w-full xl:w-[800px]'
-                ></ReviewCard>
+                <WineReviewCard review={review} />
               </li>
             ))}
           </ul>

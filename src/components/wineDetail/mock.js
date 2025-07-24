@@ -11,7 +11,22 @@ const review1 = {
   smoothTannic: 40,
   drySweet: 50,
   softAcidic: 90,
-  id: Math.random() * 100,
+  id: '1',
+};
+
+const review2 = {
+  ...review1,
+  id: '2',
+};
+
+const review3 = {
+  ...review1,
+  id: '3',
+};
+
+const review4 = {
+  ...review1,
+  id: '4',
 };
 
 const wineInfo = {
@@ -20,8 +35,8 @@ const wineInfo = {
   region: 'Western Cape, South Africa',
   price: 360000,
 };
-const testReviews = [review1, review1, review1, review1];
-export { wineInfo, testReviews };
+const testReviews = [review1, review2, review3, review4];
+export { wineInfo, testReviews, review1 };
 
 /*--------------응답 예시------------------*/
 // const example = {
