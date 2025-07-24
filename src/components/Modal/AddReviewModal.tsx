@@ -138,7 +138,7 @@ const AddReviewModal = () => {
               <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
                 Sentinel Carbernet Sauviginon 2016
               </span>
-              <span className='mb-0'>
+              <span className='mb-0 w-[120px] md:w-[160px] h-[24px] md:h-[32px] flex items-center'>
                 <StarRating
                   value={watch('rating')}
                   onChange={(rating) => setValue('rating', rating)}
@@ -154,7 +154,7 @@ const AddReviewModal = () => {
             })}
             placeholder='후기를 작성해 주세요'
             className={cn(
-              'custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
+              'h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
               errors.content && 'border-red-500',
             )}
             rows={5}
@@ -164,10 +164,10 @@ const AddReviewModal = () => {
               {errors.content.message}
             </div>
           )}{' '}
-          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
             와인의 맛은 어땠나요?
           </p>
-          <div>
+          <div className='mb-[40px]'>
             <div className='mb-[16px] md:mb-[18px]'>
               <FlavorSlider
                 value={watch('sliderLightBold')}
@@ -218,7 +218,7 @@ const AddReviewModal = () => {
               />
             </div>
           </div>
-          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px]'>
             기억에 남는 향이 있나요?
           </p>
           <div className='flex flex-wrap gap-[10px]'>

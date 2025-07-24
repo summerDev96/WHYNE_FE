@@ -20,7 +20,7 @@ const StarRating = ({ value, onChange }: StarRatingProps) => {
             className='focus:outline-none'
           >
             <FaStar
-              className={`w-[16px] md:w-[22px] h-[16px] md:h-[22px] ${ratingValue <= value ? 'text-primary' : 'text-gray-300'}`}
+              className={`w-[18px] md:w-[24px] h-[18px] md:h-[24px] ${ratingValue <= value ? 'text-primary' : 'text-gray-300'}`}
             />
           </button>
         );
