@@ -1,13 +1,16 @@
+import React from 'react';
+
 import ConfirmModal from '@/components/common/Modal/ConfirmModal';
 import { Button } from '@/components/ui/button';
 
 interface ErrorModalProps {
   open: boolean;
   onOpenChange: (value: boolean) => void;
+  onConfirm?: () => void;
   errorMessage: string;
 }
 
-const ErrorModal = ({ open, onOpenChange, errorMessage }: ErrorModalProps) => {
+const ErrorModal = ({ open, onOpenChange, errorMessage, onConfirm }: ErrorModalProps) => {
   return (
     <ConfirmModal
       open={open}
@@ -20,7 +23,10 @@ const ErrorModal = ({ open, onOpenChange, errorMessage }: ErrorModalProps) => {
             width='xl'
             variant='purpleDark'
             className='flex-auto text-base font-bold'
-            onClick={() => onOpenChange(false)}
+            onClick={() => {
+              onOpenChange(false);
+              if (onConfirm) onConfirm();
+            }}
           >
             확인
           </Button>

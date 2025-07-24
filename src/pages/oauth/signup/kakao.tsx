@@ -1,26 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import { signInKakao } from '@/api/auth';
-import ConfirmModal from '@/components/common/Modal/ConfirmModal';
-import { Button } from '@/components/ui/button';
+import ErrorModal from '@/components/common/Modal/ErrorModal';
+import useErrorModal from '@/hooks/useErrorModal';
 import { KakakoSignInRequest, KakakoSignInResponse } from '@/types/AuthTypes';
 
+/* 카카오 로그인 버튼 클릭 시 API 호출하여 로그인/회원가입 처리 */
 const KakaoLoginCallbackPage = () => {
   const router = useRouter();
   const { code } = router.query;
 
-  const [showModal, setShowModal] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const { open, setOpen, handleError, errorMessage } = useErrorModal();
 
-  // 에러 처리: 모달로 메시지 출력
-  const handleError = () => {
-    setErrorMsg('카카오 로그인을 재시도해주세요');
-    setShowModal(true);
-  };
-
+  /* 카카오 회원가입/로그인 요청 */
   const handleKakaoAuth = async (): Promise<KakakoSignInResponse> => {
     const params: KakakoSignInRequest = {
       state: '',
@@ -38,42 +33,27 @@ const KakaoLoginCallbackPage = () => {
   });
 
   useEffect(() => {
+    /* API 에러 시 모달로 에러 출력 */
     if (error) {
-      // 1. 400 잘못된 인가 코드입니다.
-      handleError();
+      handleError(new Error('카카오 로그인을 재시도해주세요'));
     }
 
+    /* API 성공 시 로그인 처리 */
     if (data) {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       router.replace('/');
     }
-  }, [data, error, router, code]);
+  }, [data, error, router, code, handleError]);
 
   return (
-    <ConfirmModal
-      open={showModal}
-      onOpenChange={setShowModal}
-      buttons={
-        <>
-          <Button
-            size='xl'
-            width='xl'
-            variant='purpleDark'
-            className='flex-auto text-base font-bold'
-            onClick={() => {
-              setShowModal(false);
-              router.replace('/signin');
-            }}
-          >
-            확인
-          </Button>
-        </>
-      }
-    >
-      {/* 모달 내용 영역 */}
-      {errorMsg}
-    </ConfirmModal>
+    /* 에러 모달에서 확인 버튼 클릭 시 로그인 화면으로 리디렉트 처리 */
+    <ErrorModal
+      open={open}
+      onOpenChange={setOpen}
+      onConfirm={() => router.replace('/signin')}
+      errorMessage={errorMessage}
+    ></ErrorModal>
   );
 };
 
