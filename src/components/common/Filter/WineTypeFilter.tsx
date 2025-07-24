@@ -6,11 +6,11 @@ import useFilterStore, { WineType } from '@/stores/filterStore';
 
 import DualSlider from '../slider/DualSlider';
 
-interface FilterProps {
+interface WineTypeFilterProps {
   showBorder: boolean;
 }
 
-const Filter = ({ showBorder = false }: FilterProps) => {
+const WineTypeFilter = ({ showBorder = false }: WineTypeFilterProps) => {
   const { type, setType, minPrice, maxPrice, setPriceRange, rating, setRating } = useFilterStore();
 
   const wineTypeOptions: WineType[] = ['Red', 'White', 'Sparkling'];
@@ -78,4 +78,4 @@ const Filter = ({ showBorder = false }: FilterProps) => {
   );
 };
 
-export default Filter;
+export default WineTypeFilter;
