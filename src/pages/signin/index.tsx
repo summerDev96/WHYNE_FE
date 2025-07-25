@@ -85,7 +85,7 @@ const SignIn = () => {
       {/* 폼 시작 */}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleOnClickLogin)}>
-          <div className='flex flex-col items-center gap-4 md:gap-6'>
+          <div className='flex flex-col items-center gap-4 md:gap-9'>
             {/* 이메일 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='email'>이메일</label>
@@ -122,7 +122,7 @@ const SignIn = () => {
               variant='purpleDark'
               size='md'
               width='md'
-              className='text-lg font-bold mt-8'
+              className='text-lg font-bold mt-10'
               disabled={!isValid}
             >
               로그인

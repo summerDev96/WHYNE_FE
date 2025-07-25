@@ -116,7 +116,7 @@ const Signup = () => {
       {/* 폼 시작 */}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleOnClickSignup)}>
-          <div className='flex flex-col items-center gap-4 md:gap-6'>
+          <div className='flex flex-col items-center gap-4 md:gap-9'>
             {/* 이메일 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='email'>이메일</label>
@@ -173,7 +173,7 @@ const Signup = () => {
             variant='purpleDark'
             size='md'
             width='md'
-            className='text-lg font-bold mb-10 mt-8'
+            className='text-lg font-bold mb-10 mt-10'
             disabled={!isValid}
           >
             가입하기
