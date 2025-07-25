@@ -2,7 +2,7 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import LogoIcon from '@/assets/logo.svg';
+import LogoIcon from '@/assets/icons/logo.svg';
 import { cn } from '@/lib/utils';
 
 interface Props {

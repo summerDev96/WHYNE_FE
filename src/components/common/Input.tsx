@@ -1,8 +1,7 @@
 // 샤드cn은 아닌데 조합해서 쓸 것 같아서 components/ui에 넣어뒀습니다.
 import React, { forwardRef, InputHTMLAttributes } from 'react';
 
-// import { FieldValues, UseFormReturn } from 'react-hook-form';
-import SearchIcon from '@/assets/search.svg';
+import SearchIcon from '@/assets/icons/search.svg';
 import { cn } from '@/lib/utils';
 
 interface Props extends React.ComponentProps<'input'> {
@@ -63,7 +62,7 @@ Input.displayName = 'Input';
 
 //md 768이상  xl 1280이상
 const variantStyles = {
-  base: ' rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans',
+  base: 'rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans',
   default: 'px-[20px] py-[11px] w-[303px] md:w-[400px]',
   search: 'w-[210px] py-[7px] px-[45px] rounded-[50px] md:w-[400px]',
   name: 'px-[20px] py-[11px]  w-full',
