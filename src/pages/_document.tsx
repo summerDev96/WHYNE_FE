@@ -8,7 +8,6 @@ export default function Document() {
       <Head>
         <link rel='icon' href='/favicon.ico' />
         <meta charSet='UTF-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='description' content='와인 리뷰 사이트' />
         <meta property='og:title' content='WINE' />
         <meta property='og:description' content='와인 리뷰 사이트' />
