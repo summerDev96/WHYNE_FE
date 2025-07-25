@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 import { ImageCard } from '../common/card/ImageCard';
-import WineTypeFilter from '../common/Filter/WineTypeFilter';
 
 export const ContentSection = () => {
   return (
@@ -64,16 +63,11 @@ export const ContentSection = () => {
               나에게 맞는 와인을 쉽게 검색해요.
             </p>
           </div>
-          <div
-            style={{
-              width: '200px',
-              height: 'auto',
-              overflow: 'hidden',
-              transformOrigin: 'top left',
-              transform: 'scale(0.7)', // 200 / 328 ≈ 0.61
-            }}
-          >
-            <WineTypeFilter showBorder={true} />
+          <div className='absolute top-[185px] left-[42px] hidden md:block'>
+            <Image width={180} height={100} src='/assets/lendingfilter2.png' />
+          </div>
+          <div className='absolute top-[245px] left-[32px] hidden md:block'>
+            <Image width={200} height={100} src='/assets/lendingfilter1.png' />
           </div>
           <Image
             width={280}
@@ -87,7 +81,7 @@ export const ContentSection = () => {
           className='pointer-events-none absolute inset-0 rounded-xl'
           style={{
             background:
-              'linear-gradient(to top, #EBEEF4 0%, transparent 5%, transparent 95%, #EBEEF4 100%)',
+              'linear-gradient(to top, #EBEEF4 0%, transparent 10%, transparent 90%, #EBEEF4 100%)',
           }}
         />
       </div>
