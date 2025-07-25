@@ -69,7 +69,7 @@ export const HeroSection = () => {
             </div>
 
             {/* 좌우 아래 박스 */}
-            <div className='absolute top-[80px] left-[calc(50%-480px)] w-[240px] h-[185px] bg-primary rounded-xl z-10 shadow-xl'>
+            <div className='absolute top-[80px] left-[calc(50%-480px)] w-[240px] h-[185px] rounded-xl z-10 shadow-xl'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -83,7 +83,7 @@ export const HeroSection = () => {
                 </div>
               </ImageCard>
             </div>
-            <div className='absolute top-[80px] left-[calc(50%+240px)] w-[240px] h-[185px] bg-[#6A42DB] rounded-xl z-10 shadow-xl'>
+            <div className='absolute top-[80px] left-[calc(50%+240px)] w-[240px] h-[185px] rounded-xl z-10 shadow-xl'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
