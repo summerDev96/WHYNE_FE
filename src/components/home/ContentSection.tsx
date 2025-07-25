@@ -4,7 +4,7 @@ import { ImageCard } from '../common/card/ImageCard';
 
 export const ContentSection = () => {
   return (
-    <div className='mx-auto md:px-[32px] xl:px-0 max-w-[640px]  min-w-[343px] mt-12 md:mt-[80px] xl:mt-[160px]'>
+    <div className='mx-auto max-w-[640px]  min-w-[343px] mt-12 md:mt-[80px] xl:mt-[160px]'>
       <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl'>
         <div className='absolute top-[24px] md:top-[56px] left-[24px] md:left-[32px]'>
           <span className='custom-text-2lg-bold md:custom-text-xl-bold'>
