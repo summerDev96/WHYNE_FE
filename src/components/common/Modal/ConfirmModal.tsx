@@ -15,7 +15,6 @@ const ConfirmModal = ({
   open,
   onOpenChange,
   buttons,
-  title,
   showCloseButton = false,
   children,
 }: ConfirmModalProps) => {
@@ -27,12 +26,11 @@ const ConfirmModal = ({
       className='max-w-[353px] px-4 pb-6 gap-10'
     >
       <Modal.Header>
-        <Modal.Title
-          title={title}
-          className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'
-        ></Modal.Title>
+        <Modal.Title className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'>
+          {children}
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
+      <Modal.Body></Modal.Body>
       <Modal.Footer>{buttons}</Modal.Footer>
     </Modal>
   );

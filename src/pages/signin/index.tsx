@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -12,6 +12,7 @@ import KakaoIcon from '@/assets/icons/kakao.svg';
 import AuthLayout from '@/components/auth/AuthLayout';
 import AuthLogo from '@/components/auth/AuthLogo';
 import FormInput from '@/components/common/FormInput';
+import ConfirmModal from '@/components/common/Modal/ConfirmModal';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
@@ -29,6 +30,8 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>;
 
 const SignIn = () => {
+  const [show, setShow] = useState(true);
+
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
   const { userData, isLoading } = useAuthRedirect();
   const router = useRouter();
@@ -80,6 +83,12 @@ const SignIn = () => {
   return (
     <AuthLayout className='min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem]'>
       <ErrorModal open={open} onOpenChange={setOpen} errorMessage={errorMessage} />
+
+      <ConfirmModal open={show} onOpenChange={setShow}>
+        내용임다 응?
+      </ConfirmModal>
+
+      {/* <BasicModal /> */}
 
       <AuthLogo />
       {/* 폼 시작 */}

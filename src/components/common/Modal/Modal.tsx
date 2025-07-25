@@ -53,8 +53,8 @@ Modal.Header = function Header({ children }: ModalHeaderProps) {
   );
 };
 
-Modal.Title = function Title({ title, className }: ModalTitleProps) {
-  return <DialogTitle className={className}>{title}</DialogTitle>;
+Modal.Title = function Title({ title, className, children }: ModalTitleProps) {
+  return <DialogTitle className={className}>{children ?? title}</DialogTitle>;
 };
 
 Modal.Body = function Body({ children }: ModalBodyProps) {

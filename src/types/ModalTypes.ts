@@ -20,6 +20,7 @@ export type ModalHeaderProps = {
 export type ModalTitleProps = {
   title?: string;
   className?: string;
+  children?: React.ReactNode;
 };
 
 export type ModalBodyProps = {
