@@ -1,6 +1,7 @@
 import Image from 'next/image';
 
 import { ImageCard } from '../common/card/ImageCard';
+import WineTypeFilter from '../common/Filter/WineTypeFilter';
 
 export const ContentSection = () => {
   return (
@@ -63,7 +64,17 @@ export const ContentSection = () => {
               나에게 맞는 와인을 쉽게 검색해요.
             </p>
           </div>
-          <div></div>
+          <div
+            style={{
+              width: '200px',
+              height: 'auto',
+              overflow: 'hidden',
+              transformOrigin: 'top left',
+              transform: 'scale(0.7)', // 200 / 328 ≈ 0.61
+            }}
+          >
+            <WineTypeFilter showBorder={true} />
+          </div>
           <Image
             width={280}
             height={100}
