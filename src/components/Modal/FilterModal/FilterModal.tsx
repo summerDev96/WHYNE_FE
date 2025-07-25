@@ -53,7 +53,7 @@ const FilterModal = () => {
         }
       >
         <form>
-          <WineTypeFilter showBorder={true} hasMargin={false} />
+          <WineTypeFilter className='mt-[20px] mb-[25px] ' showBorder={true} hasMargin={false} />
         </form>
       </BasicModal>
     </div>
