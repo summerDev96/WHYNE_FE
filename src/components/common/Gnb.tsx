@@ -10,13 +10,15 @@ import UserDefaultImg from './UserDefaultImg';
 
 function Gnb() {
   return (
-    //inset-x-0 -> x축:left,right둘 다 0
-    <header className='z-50 fixed top-0 inset-x-0 mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px]'>
-      <nav className='flex justify-between items-center bg-black  w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
-        <Logo />
-        <AuthMenu />
-      </nav>
-    </header>
+    <div className='z-50 fixed top-0 inset-x-0 bg-white/70 backdrop-blur-md'>
+      {/*  ㄴ백드롭 필터 적용*/}
+      <header className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px]'>
+        <nav className='flex justify-between items-center bg-black  w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
+          <Logo />
+          <AuthMenu />
+        </nav>
+      </header>
+    </div>
   );
 }
 
