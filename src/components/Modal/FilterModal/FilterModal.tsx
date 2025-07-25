@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Filterbtn from '@/assets/icons/filterbtn.svg';
 import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
-// import useFilterStore from '@/stores/filterStore';
+import useFilterStore from '@/stores/filterStore';
 
 import BasicModal from '../../common/Modal/BasicModal';
 import { Button } from '../../ui/button';
@@ -10,11 +10,12 @@ import { Button } from '../../ui/button';
 const FilterModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  //   const reset = useFilterStore((state) => state.maxPrice);
+  const reset = useFilterStore((state) => state.reset);
 
   //모달창 끄면 리셋되게
   const closeModalReset = (isOpen: boolean) => {
     setShowRegisterModal(isOpen);
+    if (!isOpen) reset();
   };
   ////
   return (
@@ -31,7 +32,7 @@ const FilterModal = () => {
         buttons={
           <div className='flex gap-2'>
             <Button
-              //   onClick={reset}
+              onClick={reset}
               variant='purpleLight'
               size='xl'
               className='w-[96px] md:w-[96px]'
@@ -52,7 +53,7 @@ const FilterModal = () => {
         }
       >
         <form>
-          <WineTypeFilter showBorder={true} />
+          <WineTypeFilter showBorder={true} hasMargin={false} />
         </form>
       </BasicModal>
     </div>
