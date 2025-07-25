@@ -102,7 +102,7 @@ ReviewCard.ToggleButton = function TogleButton({ reviewId }: ToggleButtonProps) 
       variant='onlyCancel'
       onClick={() => toggleReviewOpen(reviewId)}
       className={cn(
-        'border-0 mx-auto  [&_svg]:w-[30px] [&_svg]:h-[30px] block transition-all duration-500 ease-in-out mt-[-30px]',
+        'border-0 mx-auto [&_svg]:w-[30px] [&_svg]:h-[30px] block transition-all duration-500 ease-in-out',
         {
           'scale-y-[-1] mt-0': isOpen,
         },

@@ -9,26 +9,28 @@ import useReviewCardStore from '@/stores/reviewCardStore';
 
 //컨텍스트말고 주스탄드 기반 컴파운드 패턴
 interface Props {
-  content: string;
-  user: {
-    name: string;
+  review: {
+    content: string;
+    user: {
+      name: string;
+    };
+    updatedAt: string;
+    aroma: string[];
+    rating: string;
+    lightBold: number;
+    smoothTannic: number;
+    drySweet: number;
+    softAcidic: number;
+    id: string;
   };
-  updatedAt: string;
-  aroma: string[];
-  rating: string;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  id: string;
 }
 
-function WineReviewCard({ review }: { review: Props }) {
+function WineReviewCard({ review }: Props) {
   const setReviews = useReviewCardStore((state) => state.setReviews);
 
   useEffect(() => {
     setReviews(review);
-  }, []);
+  }, [review, setReviews]);
 
   const { id, lightBold, smoothTannic, drySweet, softAcidic } = review;
 

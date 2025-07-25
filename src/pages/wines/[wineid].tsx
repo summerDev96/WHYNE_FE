@@ -5,6 +5,7 @@ import { testReviews, wineInfo } from '@/components/wineDetail/mock';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
 import WineReviewCard from '@/components/wineDetail/WineReviewCard';
+import { cn } from '@/lib/utils';
 
 export default function WineInfoById() {
   const { name, region, price, image } = wineInfo;
@@ -14,7 +15,11 @@ export default function WineInfoById() {
       <ImageCard
         imageSrc={image}
         imageClassName={IMAGE_CLASS_NAME}
-        className='mx-auto relative w-full h-[190px] md:h-[260px] border rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px]'
+        className={cn(
+          'mx-auto relative w-full h-[190px] md:h-[260px]  rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
+          'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
+          'shadow-sm',
+        )}
       >
         <WineContent name={name} region={region} price={price} />
       </ImageCard>

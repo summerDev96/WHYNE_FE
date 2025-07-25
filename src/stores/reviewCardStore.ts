@@ -36,7 +36,10 @@ export const reviewStore = create<ReviewStates>((set) => ({
           ...state.allReviews,
           [reviewData.id]: {
             ...reviewData,
-            isOpen: state.allReviews[reviewData.id]?.isOpen ?? false,
+            isOpen:
+              Object.keys(state.allReviews).length === 0 //처음에 allReviews비어있으면 isOpen :true
+                ? true
+                : (state.allReviews[reviewData.id]?.isOpen ?? false),
           },
         },
       };
