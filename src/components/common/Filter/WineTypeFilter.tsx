@@ -7,10 +7,16 @@ import useFilterStore, { WineType } from '@/stores/filterStore';
 import DualSlider from '../slider/DualSlider';
 
 interface WineTypeFilterProps {
-  showBorder: boolean;
+  showBorder?: boolean;
+  hasMargin?: boolean;
+  className?: string;
 }
 
-const WineTypeFilter = ({ showBorder = false }: WineTypeFilterProps) => {
+const WineTypeFilter = ({
+  showBorder = false,
+  hasMargin = true,
+  className,
+}: WineTypeFilterProps) => {
   const { type, setType, minPrice, maxPrice, setPriceRange, rating, setRating } = useFilterStore();
 
   const wineTypeOptions: WineType[] = ['Red', 'White', 'Sparkling'];
@@ -19,7 +25,7 @@ const WineTypeFilter = ({ showBorder = false }: WineTypeFilterProps) => {
   const borderClass = 'border-b border-gray-100';
 
   return (
-    <div className='max-w-[20.5rem] m-8 flex flex-col'>
+    <div className={cn('max-w-[20.5rem] flex flex-col', hasMargin && 'm-8', className)}>
       <div className='flex flex-col gap-3'>
         <span className='custom-text-xl-bold'>WINE TYPES</span>
         <div className='flex gap-4'>
