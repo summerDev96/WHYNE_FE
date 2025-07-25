@@ -40,11 +40,14 @@ const BasicModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
         <DialogContent
-          className={`${widthClass[type]} flex flex-col rounded-xl [&>button:last-child]:hidden`}
+          className={`${widthClass[type]} flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden`}
         >
           {showCloseButton && (
             <DialogClose asChild>
-              <button className='absolute top-4 right-5' aria-label='Close'>
+              <button
+                className='absolute top-4 right-5 focus:outline-none focus:border-none'
+                aria-label='Close'
+              >
                 <Close width={24} height={24} className='text-gray-500' />
               </button>
             </DialogClose>
@@ -56,8 +59,11 @@ const BasicModal = ({
             <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
           </DialogHeader>
 
-          {/* 컨텐츠 영역 */}
-          {children}
+          <div className='overflow-auto max-h-[calc(95vh - 10rem)]'>
+            {/* 컨텐츠 영역 */}
+            {children}
+          </div>
+
           <DialogFooter className='w-full flex flex-row justify-between gap-2'>
             {buttons}
           </DialogFooter>

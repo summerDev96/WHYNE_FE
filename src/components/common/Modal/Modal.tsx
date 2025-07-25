@@ -1,0 +1,74 @@
+import React from 'react';
+
+// import Close from '@/assets/icons/close.svg';
+import {
+  Dialog, // Dialog,
+  // DialogClose,
+  // DialogContent,
+  // DialogDescription,
+  // DialogFooter,
+  // DialogHeader,
+  // DialogTitle,
+} from '@/components/ui/dialog';
+import useModalStore from '@/stores/modalStore';
+import { ModalProps } from '@/types/ModalTypes';
+
+// interface ModalProps {
+//   type?: 'register' | 'review' | 'filter';
+//   title?: string;
+//   children?: React.ReactNode;
+//   buttons?: React.ReactNode;
+//   open: boolean;
+//   onOpenChange: (open: boolean) => void;
+//   showCloseButton?: boolean;
+// }
+
+// const widthClass = {
+//   register: 'w-full max-w-[375px] md:max-w-none md:w-[460px]',
+//   review: 'w-full max-w-[375px] md:max-w-none md:w-[528px]',
+//   filter: 'max-w-[375px]',
+// };
+
+const Modal = ({ children }: ModalProps) => {
+  const { open, onOpenChange } = useModalStore();
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {children}
+    </Dialog>
+  );
+};
+
+{
+  /* <Dialog open={open} onOpenChange={onOpenChange}>
+  <form>
+    <DialogContent
+      className={`${widthClass[type]} flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden`}
+    >
+      {showCloseButton && (
+        <DialogClose asChild>
+          <button
+            className='absolute top-4 right-5 focus:outline-none focus:border-none'
+            aria-label='Close'
+          >
+            <Close width={24} height={24} className='text-gray-500' />
+          </button>
+        </DialogClose>
+      )}
+      <DialogHeader>
+        <DialogTitle className='custom-text-xl-bold md:custom-text-2xl-bold text-left'>
+          {title}
+        </DialogTitle>
+        <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
+      </DialogHeader>
+
+      <div className='overflow-auto max-h-[calc(95vh - 10rem)]'>
+        {children}
+      </div>
+
+      <DialogFooter className='w-full flex flex-row justify-between gap-2'>{buttons}</DialogFooter>
+    </DialogContent>
+  </form>
+</Dialog>; */
+}
+
+export default Modal;
