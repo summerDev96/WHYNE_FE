@@ -24,6 +24,11 @@
 }
 
 @layer utilities {
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    box-shadow: 0 0 0px 1000px white inset;
+  }
+
   /* Text-3xl */
   .custom-text-3xl-bold {
     font-size: 32px;
