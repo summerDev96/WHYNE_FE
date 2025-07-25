@@ -48,7 +48,7 @@ export default function Profile({ nickname, profileImageUrl }: ProfileProps) {
   };
 
   return (
-    <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white max-h-[530px] xl:justify-between xl:py-7 shadow-md'>
+    <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white xl:justify-between xl:py-7 xl:h-[530px] shadow-md'>
       {/* 프로필 섹션: 이미지 & 현재 닉네임 */}
       <div className='flex items-center gap-4 xl:flex-col xl:gap-8'>
         <div className='w-16 h-16 rounded-full overflow-hidden xl:w-40 xl:h-40'>
