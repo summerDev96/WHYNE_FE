@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { ContentSection } from '@/components/home/ContentSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import { Button } from '@/components/ui/button';
@@ -10,14 +12,16 @@ export default function Home() {
         <ContentSection />
       </main>
       <footer>
-        <Button
-          variant='purpleDark'
-          size='onlyLanding'
-          width='onlyLanding'
-          className='block mx-auto mb-[62px]'
-        >
-          와인 보러가기
-        </Button>
+        <Link href='/wines'>
+          <Button
+            variant='purpleDark'
+            size='onlyLanding'
+            width='onlyLanding'
+            className='block mx-auto mb-[62px]'
+          >
+            와인 보러가기
+          </Button>
+        </Link>
       </footer>
     </div>
   );
