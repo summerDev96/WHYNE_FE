@@ -14,12 +14,12 @@ type FilterState = {
 
 const useFilterStore = create<FilterState>((set) => ({
   type: 'Red',
-  setType: (val) => set({ type: val }),
+  setType: (type) => set({ type }),
   minPrice: 0,
   maxPrice: 1000000,
-  setPriceRange: ([min, max]) => set({ minPrice: min, maxPrice: max }),
+  setPriceRange: ([minPrice, maxPrice]) => set({ minPrice, maxPrice }),
   rating: 'all',
-  setRating: (val) => set({ rating: val }),
+  setRating: (rating) => set({ rating }),
 }));
 
 export default useFilterStore;
