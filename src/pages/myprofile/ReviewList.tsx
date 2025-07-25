@@ -55,7 +55,13 @@ export function ReviewList() {
         <MyCard
           key={review.id}
           // 별점 뱃지
-          rating={<Badge variant='star'>★ {review.rating.toFixed(1)}</Badge>}
+          rating={
+            <Badge variant='star'>
+              <span className='inline-block w-full h-full pt-[2px]'>
+                ★ {review.rating.toFixed(1)}
+              </span>
+            </Badge>
+          }
           // 작성일
           timeAgo={new Date(review.createdAt).toLocaleDateString()}
           // 작성자 닉네임

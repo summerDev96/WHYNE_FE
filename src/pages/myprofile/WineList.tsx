@@ -81,7 +81,9 @@ export function WineList() {
               {w.region} {/* 생산 지역 */}
             </p>
             <Badge variant='priceBadge'>
-              ₩ {w.price.toLocaleString()} {/* 가격 표시 */}
+              <span className='inline-block w-full h-full pt-[3px]'>
+                {/* 가격 표시 */}₩ {w.price.toLocaleString()}
+              </span>
             </Badge>
           </div>
         </ImageCard>
