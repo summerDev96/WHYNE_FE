@@ -64,10 +64,10 @@ export const ContentSection = () => {
             </p>
           </div>
           <div className='absolute top-[185px] left-[42px] hidden md:block'>
-            <Image width={180} height={100} src='/assets/lendingfilter2.png' />
+            <Image width={180} height={100} alt='필터이미지2' src='/assets/lendingfilter2.png' />
           </div>
           <div className='absolute top-[245px] left-[32px] hidden md:block'>
-            <Image width={200} height={100} src='/assets/lendingfilter1.png' />
+            <Image width={200} height={100} alt='필터이미지1' src='/assets/lendingfilter1.png' />
           </div>
           <Image
             width={280}
