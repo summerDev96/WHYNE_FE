@@ -27,7 +27,8 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
   const { errors } = useFormState({ name });
 
   const [passwordType, setPasswordType] = useState(type);
-  const isPassword = type === 'password';
+  const isPasswordType = type === 'password';
+  const showPassword = passwordType === 'text';
 
   function getErrorMessage(errors: FieldErrors) {
     const errMsg = errors[name]?.message;
@@ -45,7 +46,7 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
     <div className='relative'>
       <Input
         {...inputProps}
-        type={isPassword ? passwordType : type}
+        type={isPasswordType ? passwordType : type}
         id={id}
         name={name}
         placeholder={placeholder}
@@ -55,13 +56,16 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
           onChange?.(e);
         }}
       />
-      {isPassword && (
-        <span
+      {isPasswordType && (
+        <button
+          type='button'
           className='absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-500'
+          aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보이기'}
+          aria-pressed={showPassword}
           onClick={togglePasswordIcon}
         >
-          {passwordType === 'password' ? <PasswordIconOff /> : <PasswordIconOn />}
-        </span>
+          {showPassword ? <PasswordIconOn /> : <PasswordIconOff />}
+        </button>
       )}
     </div>
   );
