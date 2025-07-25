@@ -54,11 +54,14 @@ export const reviewStore = create<ReviewStates>((set) => ({
       },
     }));
   },
+
+  //스토어 초기화는 굳이? 어차피 새로고침하면 사라지지 않나요?
 }));
 
 //use-sync-external-store 패키지 설치 후 useStoreWithEqualityFn으로 타입 지정해야 shallow제대로 인식
 //-> 이거 외에 패키지 설치 안하는 방식으로 이것저것 해봤는데 도무지 못 찾겠네요 ㅠ
 
+//aroma가 배열이라 shallow필요할 것 같긴 함
 const useReviewCardStore = <T>(selector: (state: ReviewStates) => T): T =>
   useStoreWithEqualityFn(reviewStore, selector, shallow);
 
