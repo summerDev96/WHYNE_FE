@@ -4,16 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { cn } from '@/lib/utils';
+
 import MenuDropdown from './dropdown/MenuDropdown';
 import Logo from './Logo';
 import UserDefaultImg from './UserDefaultImg';
 
 function Gnb() {
+  const { pathname } = useRouter();
+
   return (
-    <div className='z-50 fixed top-0 inset-x-0 bg-white/70 backdrop-blur-md'>
-      {/*  ㄴ백드롭 필터 적용*/}
-      <header className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px]'>
-        <nav className='flex justify-between items-center bg-black  w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
+    <div className='z-50 fixed top-0 inset-x-0'>
+      <div
+        className={cn(
+          'absolute inset-0 h-12 backdrop-blur-[2px]',
+          pathname === '/' ? 'bg-gray-100/70' : 'bg-white/60',
+        )}
+      />
+      <div className='absolute inset-0  bg-gradient-to-b from-white/80 to-transparent' />
+
+      <header className='relative z-10 mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[343px]'>
+        <nav className='flex justify-between items-center bg-black w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
           <Logo />
           <AuthMenu />
         </nav>
