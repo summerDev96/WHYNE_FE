@@ -21,6 +21,7 @@ const config: Config = {
         ...shadTheme.colors,
         purpleDark: '#6A42DB',
         purpleLight: '#F1EDFC',
+        kakaoYellow: '#FEE500',
       },
     },
   },
