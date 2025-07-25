@@ -10,16 +10,22 @@ type FilterState = {
   setPriceRange: (range: [number, number]) => void;
   rating: string;
   setRating: (val: string) => void;
+  reset: () => void;
+};
+
+const initialFilterState = {
+  type: 'Red' as WineType,
+  minPrice: 0,
+  maxPrice: 1000000,
+  rating: 'all',
 };
 
 const useFilterStore = create<FilterState>((set) => ({
-  type: 'Red',
+  ...initialFilterState,
   setType: (type) => set({ type }),
-  minPrice: 0,
-  maxPrice: 1000000,
   setPriceRange: ([minPrice, maxPrice]) => set({ minPrice, maxPrice }),
-  rating: 'all',
   setRating: (rating) => set({ rating }),
+  reset: () => set(initialFilterState),
 }));
 
 export default useFilterStore;
