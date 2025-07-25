@@ -4,13 +4,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { cn } from '@/lib/utils';
+
 import MenuDropdown from './dropdown/MenuDropdown';
 import Logo from './Logo';
 import UserDefaultImg from './UserDefaultImg';
 
 function Gnb() {
+  const { pathname } = useRouter();
+
   return (
-    <div className='z-50 fixed top-0 inset-x-0 bg-white/70 backdrop-blur-md'>
+    <div
+      className={cn('z-50 fixed top-0 inset-x-0 bg-white/70 backdrop-blur-md', {
+        'bg-gray-100/70 backdrop-blur-md': pathname === '/', //랜딩 페이지용 배경 색
+      })}
+    >
       {/*  ㄴ백드롭 필터 적용*/}
       <header className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px]'>
         <nav className='flex justify-between items-center bg-black  w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
