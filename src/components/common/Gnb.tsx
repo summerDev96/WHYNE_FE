@@ -12,19 +12,21 @@ import UserDefaultImg from './UserDefaultImg';
 
 function Gnb() {
   const { pathname } = useRouter();
+  const isLanding = pathname === '/';
 
   return (
     <div className='z-50 fixed top-0 inset-x-0'>
       <div
         className={cn('absolute inset-0 h-12 backdrop-blur-[2px] bg-white/60', {
-          'bg-gray-100/60': pathname === '/',
+          'bg-gray-100/60': isLanding,
         })}
       />
       <div
-        className={cn('absolute inset-0  bg-gradient-to-b from-white/80 to-transparent', {
-          'bg-gray/60': pathname === '/',
+        className={cn('absolute inset-0 bg-gradient-to-b from-white/80 to-transparent', {
+          'bg-gray/60': isLanding,
         })}
       />
+
       <header className='relative z-10 mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[343px]'>
         <nav className='flex justify-between items-center bg-black w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
           <Logo />
