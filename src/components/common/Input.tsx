@@ -42,7 +42,13 @@ const Input = forwardRef<HTMLInputElement, Props>(
           )}
           {...rest}
         />
-        <div role='alert' className='text-red-500 mt-[4px]'>
+        <div
+          role='alert'
+          className={cn('text-red-500 mt-[4px] absolute left-0', {
+            'top-12': variant !== 'search',
+            'top-10': variant === 'search',
+          })}
+        >
           {errorMessage}
         </div>
       </div>
