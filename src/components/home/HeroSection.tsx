@@ -1,5 +1,6 @@
 import Image from 'next/image';
 
+import HeroSectionLayout from './HeroSectionLayout';
 import { ImageCard } from '../common/card/ImageCard';
 
 export const HeroSection = () => {
@@ -22,7 +23,7 @@ export const HeroSection = () => {
           </span>
           <div className='relative w-[720px] h-[420px] mt-auto mx-auto translate-y-[80px] md:translate-y-[40px] xl:translate-y-[120px] scale-[1] md:scale-[0.7] xl:scale-[1]'>
             {/* 기준 박스 translate-y 아래로-ㅁㅁ만큼 밀어내기 */}
-            <div className='absolute top-4 left-1/2 w-[240px] h-[188px] bg-white rounded-xl z-30 -translate-x-1/2 shadow-xl'>
+            <HeroSectionLayout className='top-4 left-1/2 z-30 -translate-x-1/2'>
               <ImageCard
                 imageSrc='/assets/lendingwine3.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -36,10 +37,10 @@ export const HeroSection = () => {
                   </p>
                 </div>
               </ImageCard>
-            </div>
+            </HeroSectionLayout>
 
             {/* 좌우 위 박스 */}
-            <div className='absolute top-10 left-[calc(50%-340px)] w-[240px] h-[185px] rounded-xl z-20 shadow-xl'>
+            <HeroSectionLayout className='top-10 left-[calc(50%-340px)] z-20'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -52,8 +53,8 @@ export const HeroSection = () => {
                   </p>
                 </div>
               </ImageCard>
-            </div>
-            <div className='absolute top-10 left-[calc(50%+100px)] w-[240px] h-[185px] rounded-xl z-20 shadow-xl'>
+            </HeroSectionLayout>
+            <HeroSectionLayout className='top-10 left-[calc(50%+100px)] z-20'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -66,10 +67,10 @@ export const HeroSection = () => {
                   </p>
                 </div>
               </ImageCard>
-            </div>
+            </HeroSectionLayout>
 
             {/* 좌우 아래 박스 */}
-            <div className='absolute top-[80px] left-[calc(50%-480px)] w-[240px] h-[185px] rounded-xl z-10 shadow-xl'>
+            <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -82,8 +83,8 @@ export const HeroSection = () => {
                   </p>
                 </div>
               </ImageCard>
-            </div>
-            <div className='absolute top-[80px] left-[calc(50%+240px)] w-[240px] h-[185px] rounded-xl z-10 shadow-xl'>
+            </HeroSectionLayout>
+            <HeroSectionLayout className='top-[80px] left-[calc(50%+240px)] z-10'>
               <ImageCard
                 imageSrc='/assets/lendingwine1.png'
                 imageClassName='h-full w-[44px] object-contain '
@@ -96,7 +97,7 @@ export const HeroSection = () => {
                   </p>
                 </div>
               </ImageCard>
-            </div>
+            </HeroSectionLayout>
           </div>
         </div>
       </div>
