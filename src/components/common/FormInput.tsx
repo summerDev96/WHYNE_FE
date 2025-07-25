@@ -39,7 +39,6 @@ const FormInput = <T extends FieldValues>(props: FormInputProps<T>) => {
 
   const togglePasswordIcon = () => {
     setPasswordType((prev) => (prev === 'password' ? 'text' : 'password'));
-    console.log('아이콘 클릭 시 토글');
   };
 
   return (
