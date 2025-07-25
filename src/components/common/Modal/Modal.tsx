@@ -24,7 +24,7 @@ const Modal = ({ open, onOpenChange, showCloseButton = true, children, className
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          'flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden',
+          'flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden focus:outline-none focus:border-none',
           className,
         )}
       >

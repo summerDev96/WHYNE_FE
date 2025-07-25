@@ -1,41 +1,52 @@
 import React from 'react';
 
-import ConfirmModal from '@/components/common/Modal/ConfirmModal';
 import { Button } from '@/components/ui/button';
+
+import Modal from './Modal';
 
 interface ErrorModalProps {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: (open: boolean) => void;
   onConfirm?: () => void;
+  showCloseButton?: boolean;
   errorMessage: string;
+  children?: React.ReactNode;
 }
 
-const ErrorModal = ({ open, onOpenChange, errorMessage, onConfirm }: ErrorModalProps) => {
+const ErrorModal = ({
+  open,
+  onOpenChange,
+  onConfirm,
+  showCloseButton = false,
+  errorMessage,
+}: ErrorModalProps) => {
   return (
-    <ConfirmModal
+    <Modal
       open={open}
       onOpenChange={onOpenChange}
-      /* 버튼커스텀 영역 */
-      buttons={
-        <>
-          <Button
-            size='xl'
-            width='xl'
-            variant='purpleDark'
-            className='flex-auto text-base font-bold'
-            onClick={() => {
-              onOpenChange(false);
-              onConfirm?.();
-            }}
-          >
-            확인
-          </Button>
-        </>
-      }
+      showCloseButton={showCloseButton}
+      className='max-w-[353px] px-4 pb-6 gap-10'
     >
-      {/* 모달 내용 영역 */}
-      {errorMessage}
-    </ConfirmModal>
+      <Modal.Header>
+        <Modal.Title className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'>
+          {errorMessage}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Footer>
+        <Button
+          size='xl'
+          width='xl'
+          variant='purpleDark'
+          className='flex-auto text-base font-bold focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none'
+          onClick={() => {
+            onOpenChange(false);
+            onConfirm?.();
+          }}
+        >
+          확인
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
