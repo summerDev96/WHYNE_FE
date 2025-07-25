@@ -63,6 +63,7 @@ export const ContentSection = () => {
               나에게 맞는 와인을 쉽게 검색해요.
             </p>
           </div>
+          <div></div>
           <Image
             width={280}
             height={100}
