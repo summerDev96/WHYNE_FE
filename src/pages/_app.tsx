@@ -34,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <div
           className={clsx({
             'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
+            'bg-gray-100': pathname === '/',
           })}
         >
           <Component {...pageProps} />
