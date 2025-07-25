@@ -12,9 +12,9 @@ const badgeVariants = cva(
       variant: {
         //모달에서 테블릿,데탑 h-46 px-2.5 py-4.5 별로 조금씩다름 나중에 조정필요
         chooseFlavor:
-          'bg-white text-black custom-text-md-medium md:custom-text-lg-medium border border-gray-300 hover:bg-primary hover:text-white hover:border-primary h-[36px] rounded-full px-2.5 py-1.5',
+          'bg-white text-black custom-text-md-medium md:custom-text-lg-medium border border-gray-300 hover:bg-primary-100 hover:text-white hover:border-primary h-[36px] rounded-full px-2.5 py-1.5 md:px-[18px] md:py-2.5',
         chooseWineType:
-          'bg-white text-black custom-text-md-medium md:custom-text-lg-medium border border-gray-300 hover:bg-primary hover:text-white hover:border-primary h-[36px] md:h-[42px] rounded-full px-2.5 py-1.5',
+          'bg-white text-black custom-text-md-medium md:custom-text-lg-medium border border-gray-300 hover:bg-primary hover:text-white hover:border-primary h-[36px] md:h-[42px] rounded-full px-2.5 py-1.5 md:px-[18px] md:py-2.5',
         priceBadge:
           'bg-primary-100 text-primary custom-text-md-bold md:custom-text-2lg-bold h-[29px] md:h-[42px] px-2.5 py-[2.5px] md:px-2.5 md:py-1.5 rounded-[10px] md:rounded-[12px]',
         flavor:
