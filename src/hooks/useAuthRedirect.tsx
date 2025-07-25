@@ -27,7 +27,7 @@ const useAuthRedirect = () => {
     }
   }, [userData, router]);
 
-  return { userData, isLoading };
+  return { userData, isLoading, hasToken };
 };
 
 export default useAuthRedirect;
