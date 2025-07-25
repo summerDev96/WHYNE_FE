@@ -66,7 +66,7 @@ export function ReviewList() {
           rightSlot={
             <MenuDropdown
               trigger={
-                <button className='w-6 h-6 text-gray-500'>
+                <button className='w-6 h-6 text-gray-500 hover:text-primary transition-colors'>
                   <DotIcon />
                 </button>
               }
