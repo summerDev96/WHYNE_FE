@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -31,15 +31,17 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <QueryClientProvider client={queryClient}>
-        {!hideHeader && <Gnb />}
-        <div
-          className={clsx({
-            'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
-            'bg-gray-100': isLanding,
-          })}
-        >
-          <Component {...pageProps} />
-        </div>
+        <HydrationBoundary state={pageProps.dehydratedState}>
+          {!hideHeader && <Gnb />}
+          <div
+            className={clsx({
+              'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
+              'bg-gray-100': isLanding,
+            })}
+          >
+            <Component {...pageProps} />
+          </div>
+        </HydrationBoundary>
       </QueryClientProvider>
     </>
   );
