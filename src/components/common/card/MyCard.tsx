@@ -33,10 +33,10 @@ export function MyCard({ rating, timeAgo, title, review, rightSlot, className }:
       </div>
 
       {/* 제목 */}
-      <h3 className='text-md font-semibold text-gray-900'>{title}</h3>
+      <h3 className='custom-text-md-medium md:custom-text-lg-medium text-gray-300'>{title}</h3>
 
       {/* 리뷰 내용 */}
-      <p className='text-sm text-gray-700'>{review}</p>
+      <p className='custom-text-md-regular md:custom-text-lg-regular text-gray-800'>{review}</p>
     </div>
   );
 }
