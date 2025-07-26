@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import apiClient from '@/api/apiClient';
+import { uploadImage, postWine, PostWineRequest } from '@/api/addwine';
 import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
 
-import SelectDropdown from '../common/dropdown/SelectDropdown';
-import Input from '../common/Input';
-import BasicModal from '../common/Modal/BasicModal';
-import { Button } from '../ui/button';
+import SelectDropdown from '../../common/dropdown/SelectDropdown';
+import Input from '../../common/Input';
+import BasicModal from '../../common/Modal/BasicModal';
+import { Button } from '../../ui/button';
 
 interface WineForm {
   wineName: string;
@@ -18,38 +18,6 @@ interface WineForm {
   wineImage: FileList;
   wineType: string;
 }
-
-////api 이미지 url용////
-export const uploadImage = async (file: File): Promise<string> => {
-  const formData = new FormData();
-  console.log('file' + file);
-  formData.append('image', file);
-
-  const data: { url: string } = await apiClient.post(
-    `/${process.env.NEXT_PUBLIC_TEAM}/images/upload`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    },
-  );
-  console.log('data.url:::' + data.url);
-  return data.url;
-};
-////
-////api로 Post////
-export const PostWine = async (data: {
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  type: 'RED' | 'WHITE' | 'SPARKLING';
-}) => {
-  const response = await apiClient.post(`${process.env.NEXT_PUBLIC_TEAM}/wines`, data);
-  return response.data;
-};
-////
 
 const AddWineModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -86,17 +54,18 @@ const AddWineModal = () => {
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage[0];
+      console.log('1');
       const imageUrl = await uploadImage(file);
-
-      const requestData = {
+      console.log('2');
+      const requestData: PostWineRequest = {
         name: form.wineName,
         region: form.wineOrigin,
         image: imageUrl,
         price: Number(form.winePrice),
         type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
       };
-
-      await PostWine(requestData);
+      console.log('3');
+      await postWine(requestData);
 
       console.log('와인등록완료');
       reset({
