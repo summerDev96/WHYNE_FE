@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
+import { postReview } from '@/api/addreview';
 import { cn } from '@/lib/utils';
 
 import StarRating from './StarRating';
@@ -43,8 +44,32 @@ const aromaOptions = [
   '가죽',
 ];
 
+const aromaMap: Record<string, string> = {
+  체리: 'CHERRY',
+  베리: 'BERRY',
+  오크: 'OAK',
+  바닐라: 'VANILLA',
+  후추: 'PEPPER',
+  제빵: 'BAKERY',
+  풀: 'GRASS',
+  사과: 'APPLE',
+  복숭아: 'PEACH',
+  시트러스: 'CITRUS',
+  트로피컬: 'TROPICAL',
+  미네랄: 'MINERAL',
+  꽃: 'FLOWER',
+  담뱃잎: 'TOBACCO',
+  흙: 'EARTH',
+  초콜릿: 'CHOCOLATE',
+  스파이스: 'SPICE',
+  카라멜: 'CARAMEL',
+  가죽: 'LEATHER',
+};
+
 const AddReviewModal = () => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  const wineId: number = 1365;
 
   const {
     register,
@@ -84,13 +109,26 @@ const AddReviewModal = () => {
   };
   ////
 
-  const onSubmit = (data: ReviewForm) => {
-    const fullData = {
-      ...data,
-    };
-    console.log(fullData);
-    reset();
-    setShowRegisterModal(false);
+  const onSubmit = async (data: ReviewForm) => {
+    try {
+      const fullData = {
+        wineId, //프롭스로 받아오기
+        rating: data.rating,
+        lightBold: data.sliderLightBold,
+        smoothTannic: data.sliderSmoothTanic,
+        drySweet: data.sliderdrySweet,
+        softAcidic: data.slidersoftAcidic,
+        aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
+        content: data.content,
+      };
+      console.log(fullData);
+      await postReview(fullData);
+      console.log('리뷰등록완료');
+      reset();
+      setShowRegisterModal(false);
+    } catch (error) {
+      console.log('리뷰등록실패', error);
+    }
   };
 
   //모달창 끄면 리셋되게
@@ -158,14 +196,14 @@ const AddReviewModal = () => {
             })}
             placeholder='후기를 작성해 주세요'
             className={cn(
-              'h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
+              'relative h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
               errors.content && 'border-red-500',
             )}
             rows={5}
           />
           {errors.content && (
-            <div role='alert' className='text-red-500 mt-[4px]'>
-              {errors.content.message}
+            <div role='alert' className='absolute text-red-500 mt-[4px]'>
+              <p>{errors.content.message}</p>
             </div>
           )}
           <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
@@ -176,8 +214,8 @@ const AddReviewModal = () => {
               <FlavorSlider
                 value={watch('sliderLightBold')}
                 min={0}
-                max={100}
-                step={5}
+                max={10}
+                step={1}
                 onChange={(value) => setValue('sliderLightBold', value)}
                 labelLeft='가벼워요'
                 labelRight='진해요'
@@ -188,8 +226,8 @@ const AddReviewModal = () => {
               <FlavorSlider
                 value={watch('sliderSmoothTanic')}
                 min={0}
-                max={100}
-                step={5}
+                max={10}
+                step={1}
                 onChange={(value) => setValue('sliderSmoothTanic', value)}
                 labelLeft='부드러워요'
                 labelRight='떫어요'
@@ -200,8 +238,8 @@ const AddReviewModal = () => {
               <FlavorSlider
                 value={watch('sliderdrySweet')}
                 min={0}
-                max={100}
-                step={5}
+                max={10}
+                step={1}
                 onChange={(value) => setValue('sliderdrySweet', value)}
                 labelLeft='드라이해요'
                 labelRight='달아요'
@@ -213,8 +251,8 @@ const AddReviewModal = () => {
               <FlavorSlider
                 value={watch('slidersoftAcidic')}
                 min={0}
-                max={100}
-                step={5}
+                max={10}
+                step={1}
                 onChange={(value) => setValue('slidersoftAcidic', value)}
                 labelLeft='안셔요'
                 labelRight='많이셔요'
@@ -232,8 +270,8 @@ const AddReviewModal = () => {
                 variant='chooseFlavor'
                 onClick={() => toggleAroma(item)}
                 className={cn(
-                  'cursor-pointer px-2.5 md:px-[18px] py-1.5 md:py-2.5',
-                  isSelected(item) && 'bg-primary text-white border-primary',
+                  'cursor-pointer px-2.5 md:px-[18px] py-1.5 md:py-2.5 hover:bg-primary-100 hover:text-primary hover:border-primary-100',
+                  isSelected(item) && 'bg-primary text-white',
                 )}
               >
                 {item}
