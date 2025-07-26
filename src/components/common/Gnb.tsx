@@ -80,7 +80,7 @@ function UserDropdown({ userImage }: Props) {
   const queryClient = useQueryClient();
 
   function onSelect(value: string) {
-    if (value === 'mypage') router.push('/mypage');
+    if (value === 'myprofile') router.push('/myprofile');
     if (value === 'logout') handleLogout();
   }
 
@@ -95,7 +95,7 @@ function UserDropdown({ userImage }: Props) {
   return (
     <MenuDropdown
       options={[
-        { label: '마이페이지', value: 'mypage' },
+        { label: '마이페이지', value: 'myprofile' },
         { label: '로그아웃', value: 'logout' },
       ]}
       onSelect={onSelect}
