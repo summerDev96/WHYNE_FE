@@ -28,7 +28,7 @@ interface MenuDropdownProps {
 
 export default function MenuDropdown({ options, onSelect, trigger }: MenuDropdownProps) {
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       {/* 드롭다운 트리거 버튼 */}
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
       {/* 드롭다운 메뉴 영역 */}
