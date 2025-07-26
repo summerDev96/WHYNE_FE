@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 
 import SearchButton from '@/assets/icons/SearchButton.svg';
-import Filter from '@/components/common/Filter/Filter';
+import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
 import Input from '@/components/common/Input';
 import WineListCard from '@/components/common/winelist/WineListCard';
 import { Button } from '@/components/ui/button';
@@ -10,17 +10,23 @@ export default function WineFilter() {
   // const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-    <div className='relative w-full'>
+    <div className='w-full'>
       {/* PC: 필터 + 검색창 + 등록 버튼 */}
-      <div className='hidden xl:flex flex-row max-w-[1140px] mx-auto mt-[40px] gap-[20px]'>
-        <aside className='w-[240px] flex flex-col xl:ml-[-20px]'>
-          <div className='w-[290px] h-[550px] pt-[60px]'>
-            <Filter />
+      <div className='hidden xl:flex  max-w-[1140px] mx-auto mt-[30px] gap-[24px]'>
+        <div className='flex-shrink-0 w-[260px] h-auto flex flex-col gap-[50px] ml-[-28px]'>
+          {/* gap-[30px] 적용을 위해 flex container로 묶음 */}
+          <div className='pt-[70px] '>
+            <WineTypeFilter className='h-[450px]' />
           </div>
-          <Button variant='purpleDark' size='sm' width='full' className='mx-[20px] mb-[70px]'>
+          <Button
+            variant='purpleDark'
+            size='md'
+            width={null}
+            className='ml-[30px] mb-[200px] w-[284px]'
+          >
             와인 등록하기
           </Button>
-        </aside>
+        </div>
 
         <div className='flex-1 flex flex-col items-end gap-[24px] text-gray-500 [&_label]:top-[10px] md:[&_label]:top-[14px] xl:[&_label]:top-[14px]'>
           <Input
@@ -34,7 +40,7 @@ export default function WineFilter() {
             '
           />
           {/* WineListCard PC에서만 노출 */}
-          <div className='hidden xl:flex'>
+          <div className='hidden xl:flex pt-[20px]'>
             <WineListCard />
           </div>
         </div>

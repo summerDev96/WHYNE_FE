@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import NextIcon from '@/assets/icons/Next.svg';
 import StarIcon from '@/assets/icons/Star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
@@ -50,66 +52,84 @@ export default function WineListCard() {
   return (
     <div className='gap-[24px] mt-[12px] max-w-[1140px] mx-auto'>
       {mockWines.map((wine) => (
-        <div
-          key={wine.id}
-          className='w-[800px] rounded-[16px] border border-gray-300 bg-white flex flex-col mb-[50px]'
-        >
-          <ImageCard
-            imageSrc={wine.image}
-            className='relative border-none px-[60px] pt-[40px] pb-0'
-            imageClassName='w-[60px] h-[208px]'
-          >
-            {/* ✅ 세로 정렬 안에 가로 정렬 2개 (name+region) (rating+stars) */}
-            <div className='flex flex-col gap-[16px] pr-[30px] ml-[70px] w-[549px]'>
-              {/* 상단 : name/region + rating/stars */}
-              <div className='flex justify-between gap-[50px]'>
-                {/* 좌측 name + region */}
-                <div className='flex flex-col justify-start'>
-                  <div className='custom-text-3xl-semibold text-gray-800 mb-[8px]'>{wine.name}</div>
-                  <div className='custom-text-lg-regular text-gray-500'>{wine.region}</div>
-                </div>
+        <Link href={`/wines/${wine.id}`} passHref legacyBehavior key={wine.id}>
+          <a className='block no-underline'>
+            <div className='w-full rounded-[12px] border border-gray-300 bg-white flex flex-col mb-[32px] xl:w-[800px] xl:rounded-[16px] xl:mb-[50px]'>
+              <ImageCard
+                imageSrc={wine.image}
+                className='relative border-none px-[16px] pt-[20px] pb-0 xl:px-[60px] xl:pt-[40px]'
+                imageClassName='w-[60px] h-[208px]'
+              >
+                <div className='flex flex-col gap-[16px] pr-0 ml-[16px] w-full xl:pr-[30px] xl:ml-[70px] xl:w-[549px]'>
+                  <div className='flex flex-col gap-[8px] xl:flex-row xl:justify-between xl:gap-[50px]'>
+                    {/* 좌측 name/region */}
+                    <div className='flex flex-col justify-start'>
+                      <div className='text-[18px] font-semibold text-gray-800 mb-[4px] relative -top-[7px] xl:custom-text-3xl-semibold xl:mb-[8px]'>
+                        {wine.name}
+                      </div>
+                      <div className='text-[14px] text-gray-500 relative top-[10px] xl:custom-text-lg-regular'>
+                        {wine.region}
+                      </div>
+                    </div>
 
-                {/* 우측 rating + 별점 */}
-                <div className='flex flex-col items-start justify-start gap-[35px] pl-[30px] pt-[20px]'>
-                  <div className=' text-[50px] font-black'>{wine.rating.toFixed(1)}</div>
-                  <div className='flex '>
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <StarIcon
-                        key={i}
-                        className={
-                          wine.rating >= i + 1 ? 'w-4 h-4 fill-primary' : 'w-4 h-4 fill-gray-300'
-                        }
-                        style={{ width: '24px', height: '24px' }}
-                      />
-                    ))}
+                    {/* 우측 rating */}
+                    <div className='flex flex-row items-center gap-[8px] pt-[8px] xl:flex-col xl:items-start xl:justify-start xl:pl-[30px] xl:pt-[20px]'>
+                      <div className='text-[28px] font-bold relative -top-[4px] xl:text-[50px] xl:font-black'>
+                        {wine.rating.toFixed(1)}
+                      </div>
+                      <div className='flex flex-col gap-[4px] mt-[22px]'>
+                        <div className='flex gap-[4px]'>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <StarIcon
+                              key={i}
+                              className={
+                                wine.rating >= i + 1
+                                  ? 'w-4 h-4 fill-primary'
+                                  : 'w-4 h-4 fill-gray-300'
+                              }
+                              style={{ width: '20px', height: '20px' }}
+                            />
+                          ))}
+                        </div>
+                        <div className='text-[14px] text-gray-500 text-nowrap xl:mt-[12px]'>
+                          47개의 후기
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 가격 + 버튼 */}
+                  <div className='flex justify-between items-center w-full'>
+                    <Button
+                      variant='purpleLight'
+                      size='xs'
+                      width='sm'
+                      fontSize={null}
+                      className='text-[16px] text-primary mt-[4px] xl:custom-text-2lg-bold xl:mt-[7px]'
+                    >
+                      ₩ {wine.price.toLocaleString()}
+                    </Button>
+                    {/* ✅ NextIcon → 버튼화 + hover 스타일 */}
+                    <button type='button' className='group p-[4px] rounded-[4px]'>
+                      <NextIcon className='w-[24px] h-[24px] text-gray-300 group-hover:text-gray-500 xl:w-[30px] xl:h-[30px]' />
+                    </button>
                   </div>
                 </div>
-              </div>
+              </ImageCard>
 
-              {/* 하단 : price + next */}
-              <div className='flex justify-between items-center w-full'>
-                <Button
-                  variant='purpleLight' // 버튼 스타일: 흰 배경 + 테두리
-                  size='xs'
-                  width='sm'
-                  fontSize={null}
-                  className='custom-text-2lg-bold text-primary mt-[7px]' // ✅ 컬러 유지 + 위쪽 여백
-                >
-                  ₩ {wine.price.toLocaleString()}
-                </Button>
-                <NextIcon className='w-[30px] h-[30px] text-gray-300' />
+              {/* 구분선 + 후기 */}
+              <div className='w-full h-[1px] bg-gray-300' />
+              <div className='px-[16px] py-[20px] xl:px-[60px] xl:py-[20px]'>
+                <div className='text-[14px] font-semibold text-gray-800 mb-[4px] xl:text-[16px]'>
+                  최신 후기
+                </div>
+                <div className='text-[14px] font-normal text-gray-500 leading-[24px] xl:text-[16px] xl:leading-[26px]'>
+                  {wine.review}
+                </div>
               </div>
             </div>
-          </ImageCard>
-
-          <div className='w-full h-[1px] bg-gray-300' />
-          <div className='px-[60px] py-[20px]'>
-            <div className='text-[16px] font-semibold text-gray-800 mb-[4px]'>최신 후기</div>
-            <div className='text-[16px] font-normal text-gray-500 leading-[26px]'>
-              {wine.review}
-            </div>
-          </div>
-        </div>
+          </a>
+        </Link>
       ))}
     </div>
   );

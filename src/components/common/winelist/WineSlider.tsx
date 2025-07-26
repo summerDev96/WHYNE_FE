@@ -5,29 +5,28 @@ export default function WineSlider() {
     <section
       className='
         w-full
-        h-[241px]               // 모바일 높이
-        mt-[15px]               // 모바일 상단 여백
-        rounded-[12px]          // 모바일 둥글기
-        px-[16px]               // 모바일 좌우 패딩
-        bg-gray-100             // 배경색
+        h-[241px]
+        mt-[15px]
+        rounded-[12px]
+        px-[16px]
+        bg-gray-100 
 
-        md:h-[299px]            // 태블릿 높이
-        md:mt-[20px]           // 태블릿 상단 여백
-        md:rounded-[16px]       // 태블릿 radius
-        md:px-[20px]            // 태블릿 패딩
+        md:mt-[20px]           
+        md:rounded-[16px]     
+        md:px-[20px]          
 
-        xl:max-w-[1140px]       // PC 최대 너비
-        xl:mt-[20px]           // PC 상단 여백
-        xl:px-0                 // PC padding 제거
-        xl:mx-auto              // PC 중앙 정렬
+        xl:max-w-[1140px]      
+        xl:mt-[20px]           
+        xl:px-0                 
+        xl:mx-auto             
       '
     >
       {/* 섹션 제목 */}
       <h2
         className='
-          custom-text-2lg-bold     // 모바일 폰트 (18px bold)
-          md:custom-text-xl-bold   // 태블릿/PC 폰트 (20px bold)
-          p-[20px] md:p-[30px]   // 위쪽 간격
+          custom-text-2lg-bold     
+          md:custom-text-xl-bold   
+          p-[20px] md:p-[30px] 
           text-gray-800
           
         '
