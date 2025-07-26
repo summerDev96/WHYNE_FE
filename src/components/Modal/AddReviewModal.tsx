@@ -66,10 +66,8 @@ const aromaMap: Record<string, string> = {
   가죽: 'LEATHER',
 };
 
-const AddReviewModal = () => {
+const AddReviewModal = ({ wineId }: { wineId: number }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-
-  const wineId: number = 1365;
 
   const {
     register,
