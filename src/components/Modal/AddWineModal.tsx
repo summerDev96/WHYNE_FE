@@ -272,20 +272,24 @@ const AddWineModal = () => {
             }
           />
           {errors.wineType?.message && (
-            <p className='text-red-500 mt-1'>{errors.wineType.message}</p>
+            <div className='relative'>
+              <p className='text-red-500 absolute '>{errors.wineType.message}</p>
+            </div>
           )}
           <Input
             id='wineType'
-            type='hidden'
+            type='text'
+            className='custom-text-md-regular md:custom-text-lg-regular hidden '
             {...register('wineType', {
               required: '타입을 선택해 주세요.',
+              onChange: () => clearErrors('wineType'),
             })}
           />
-          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+          <p className='custom-text-md-medium md:custom-text-lg-medium mt-[24px] md:mt-[26px]'>
             와인 사진
           </p>
           <Input
-            className='custom-text-md-regular md:custom-text-lg-regular hidden'
+            className='custom-text-md-regular md:custom-text-lg-regular hidden '
             id='wineImage'
             type='file'
             accept='image/*'
@@ -300,9 +304,8 @@ const AddWineModal = () => {
               register('wineImage').ref(e);
               fileInputRef.current = e;
             }}
-            errorMessage={errors.wineImage?.message}
           />
-          <div className='mt-2'>
+          <div className='mt-2 mb-5'>
             <div
               className='w-[140px] aspect-square bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center relative cursor-pointer'
               onClick={trigerFileSelect}
@@ -316,6 +319,11 @@ const AddWineModal = () => {
                 </div>
               )}
             </div>
+            {errors.wineImage?.message && (
+              <div className='relative'>
+                <p className='text-red-500 absolute mt-1'>{errors.wineImage.message}</p>
+              </div>
+            )}
           </div>
         </form>
       </BasicModal>
