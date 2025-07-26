@@ -4,13 +4,13 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
 import { postReview } from '@/api/addreview';
+import StarRating from '@/components/Modal/ReviewModal/StarRating';
 import { cn } from '@/lib/utils';
 
-import StarRating from './StarRating';
-import BasicModal from '../common/Modal/BasicModal';
-import FlavorSlider from '../common/slider/FlavorSlider';
-import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
+import BasicModal from '../../common/Modal/BasicModal';
+import FlavorSlider from '../../common/slider/FlavorSlider';
+import { Badge } from '../../ui/badge';
+import { Button } from '../../ui/button';
 
 interface ReviewForm {
   rating: number;
