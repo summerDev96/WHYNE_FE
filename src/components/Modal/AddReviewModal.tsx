@@ -79,6 +79,7 @@ const AddReviewModal = () => {
     reset,
     watch,
     setValue,
+    setError,
   } = useForm<ReviewForm>({
     defaultValues: {
       sliderLightBold: 0,
@@ -106,29 +107,34 @@ const AddReviewModal = () => {
     } else {
       setValue('aroma', [...aroma, item]);
     }
+    clearErrors('aroma');
   };
   ////
 
   const onSubmit = async (data: ReviewForm) => {
-    try {
-      const fullData = {
-        wineId, //프롭스로 받아오기
-        rating: data.rating,
-        lightBold: data.sliderLightBold,
-        smoothTannic: data.sliderSmoothTanic,
-        drySweet: data.sliderdrySweet,
-        softAcidic: data.slidersoftAcidic,
-        aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
-        content: data.content,
-      };
-      console.log(fullData);
-      await postReview(fullData);
-      console.log('리뷰등록완료');
-      reset();
-      setShowRegisterModal(false);
-    } catch (error) {
-      console.log('리뷰등록실패', error);
-    }
+    if (!data.aroma || data.aroma.length === 0) {
+      setError('aroma', { type: 'errmsg', message: '최소 하나의 향을 선택해주세요.' });
+      return;
+    } else
+      try {
+        const fullData = {
+          wineId, //프롭스로 받아오기
+          rating: data.rating,
+          lightBold: data.sliderLightBold,
+          smoothTannic: data.sliderSmoothTanic,
+          drySweet: data.sliderdrySweet,
+          softAcidic: data.slidersoftAcidic,
+          aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
+          content: data.content,
+        };
+        console.log(fullData);
+        await postReview(fullData);
+        console.log('리뷰등록완료');
+        reset();
+        setShowRegisterModal(false);
+      } catch (error) {
+        console.log('리뷰등록실패', error);
+      }
   };
 
   //모달창 끄면 리셋되게
@@ -153,7 +159,7 @@ const AddReviewModal = () => {
         buttons={
           <Button
             onClick={handleSubmit(onSubmit)}
-            type='submit'
+            type='button'
             variant='purpleDark'
             size='xl'
             width='full'
@@ -260,10 +266,13 @@ const AddReviewModal = () => {
               />
             </div>
           </div>
-          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px]'>
-            기억에 남는 향이 있나요?
-          </p>
-          <div className='flex flex-wrap gap-[10px]'>
+          <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
+          {errors.aroma && (
+            <div role='alert' className='absolute text-red-500'>
+              {errors.aroma.message}
+            </div>
+          )}
+          <div className='relative flex flex-wrap gap-[10px] mt-6'>
             {aromaOptions.map((item) => (
               <Badge
                 key={item}
