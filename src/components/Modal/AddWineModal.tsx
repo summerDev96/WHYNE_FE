@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import axiosInstance from '@/api/axios';
+import apiClient from '@/api/apiClient';
 import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
 
@@ -19,25 +19,26 @@ interface WineForm {
   wineType: string;
 }
 
-////api 테스트용////
-export const uploadImage = async (file: File) => {
-  //토큰에 막혀서 추가함//
-  const token = localStorage.getItem('accessToken');
-  ////
-  console.log(token);
-
+////api 이미지 url용////
+export const uploadImage = async (file: File): Promise<string> => {
   const formData = new FormData();
+  console.log('file' + file);
   formData.append('image', file);
 
-  const response = await axiosInstance.post(`/16-4/images/upload`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ${token}`,
+  const data: { url: string } = await apiClient.post(
+    `/${process.env.NEXT_PUBLIC_TEAM}/images/upload`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
-  });
-  return response.data.imageUrl;
+  );
+  console.log('data.url:::' + data.url);
+  return data.url;
 };
-
+////
+////api로 Post////
 export const PostWine = async (data: {
   name: string;
   region: string;
@@ -45,7 +46,7 @@ export const PostWine = async (data: {
   price: number;
   type: 'RED' | 'WHITE' | 'SPARKLING';
 }) => {
-  const response = await axiosInstance.post(`/16-4/wines`, data);
+  const response = await apiClient.post(`${process.env.NEXT_PUBLIC_TEAM}/wines`, data);
   return response.data;
 };
 ////
@@ -82,20 +83,7 @@ const AddWineModal = () => {
     mode: 'onBlur',
   });
 
-  // const onSubmit = (data: WineForm) => {
-  //   const fullData = {
-  //     ...data,
-  //     category,
-  //   };
-  //   console.log(fullData);
-  //   reset();
-  //   setShowRegisterModal(false);
-  // };
-
   const onSubmit = async (form: WineForm) => {
-    ////데이터확인
-    console.log(form);
-    ////
     try {
       const file = form.wineImage[0];
       const imageUrl = await uploadImage(file);
@@ -298,6 +286,7 @@ const AddWineModal = () => {
               onChange: (e) => {
                 clearErrors('wineImage');
                 handleImageChange(e);
+                console.log(e.target.files?.[0]);
               },
             })}
             ref={(e) => {
