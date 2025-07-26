@@ -66,7 +66,7 @@ const aromaMap: Record<string, string> = {
   가죽: 'LEATHER',
 };
 
-const AddReviewModal = ({ wineId }: { wineId: number }) => {
+const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const {
@@ -182,7 +182,7 @@ const AddReviewModal = ({ wineId }: { wineId: number }) => {
             />
             <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
               <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
-                Sentinel Carbernet Sauviginon 2016
+                {wineName}
               </span>
               <span className='mb-0 w-[120px] md:w-[160px] h-[24px] md:h-[32px] flex items-center'>
                 <StarRating
