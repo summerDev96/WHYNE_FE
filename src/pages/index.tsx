@@ -11,13 +11,13 @@ export default function Home() {
       <main>
         <ContentSection />
       </main>
-      <footer>
+      <footer className='pb-[62px]'>
         <Link href='/wines'>
           <Button
             variant='purpleDark'
             size='onlyLanding'
             width='onlyLanding'
-            className='block mx-auto mb-[62px]'
+            className='block mx-auto'
           >
             와인 보러가기
           </Button>
