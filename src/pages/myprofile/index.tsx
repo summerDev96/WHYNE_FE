@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { mockMyReviewsPage1, mockMyWinesPage1 } from './mockUser';
-import Profile from './Profile';
-import { ReviewList } from './ReviewList';
-import { TabNav } from './Tab';
-import { WineList } from './WineList';
+import { mockMyReviewsPage1, mockMyWinesPage1 } from '@/components/myprofile/mockUser';
+import Profile from '@/components/myprofile/Profile';
+import { ReviewList } from '@/components/myprofile/ReviewList';
+import { TabNav } from '@/components/myprofile/Tab';
+import { WineList } from '@/components/myprofile/WineList';
 
 export default function MyProfile() {
   // 탭 상태: 'reviews' | 'wines'
