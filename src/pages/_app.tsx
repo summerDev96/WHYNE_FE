@@ -22,6 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
     '/_error',
   ];
   const hideHeader = pagesWithoutGnb.includes(pathname);
+  const isLanding = pathname === '/';
 
   return (
     <>
@@ -34,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <div
           className={clsx({
             'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
-            'bg-gray-100': pathname === '/',
+            'bg-gray-100': isLanding,
           })}
         >
           <Component {...pageProps} />
