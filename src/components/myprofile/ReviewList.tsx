@@ -2,25 +2,12 @@ import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
+import { getMyReviews } from '@/api/myReviews';
 import DotIcon from '@/assets/icons/dot.svg';
 import { MyCard } from '@/components/common/card/MyCard';
 import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
-
-import { mockMyReviewsPage1 } from './mockUser';
-
-/**
- * Review 타입 정의 (mock 데이터에서 추론)
- */
-type Review = (typeof mockMyReviewsPage1.list)[number];
-
-/**
- * 데이터 가져오는 함수 (현재는 mock, 추후 API 호출로 교체)
- * 데이터 패치 내용은 무한스크롤 훅 구현 후 수정될 예정입니다
- */
-async function fetchReviews(): Promise<Review[]> {
-  return mockMyReviewsPage1.list;
-}
+import { MyReviewsResponse, MyReview } from '@/types/MyReviewsTypes';
 
 /**
  * ReviewList 컴포넌트
@@ -28,14 +15,13 @@ async function fetchReviews(): Promise<Review[]> {
  * - 로딩 및 에러 상태를 처리한 뒤, MyCard 컴포넌트로 리스트를 렌더링
  */
 export function ReviewList() {
+  const LIMIT = 10;
+
   // React Query로 리뷰 데이터 요청
-  const {
-    data: items = [],
-    isLoading,
-    isError,
-  } = useQuery<Review[], Error>({
-    queryKey: ['myReviews'],
-    queryFn: fetchReviews,
+  const { data, isLoading, isError } = useQuery<MyReviewsResponse, Error>({
+    queryKey: ['myReviews', { cursor: 0, limit: LIMIT }],
+    queryFn: () => getMyReviews(0, LIMIT),
+    staleTime: 5 * 60 * 1000,
   });
 
   // 로딩 중 표시
@@ -44,14 +30,16 @@ export function ReviewList() {
   }
 
   // 에러 시 표시
-  if (isError) {
+  if (isError || !data) {
     return <p className='text-center py-4'>리뷰 불러오기 실패</p>;
   }
+  // **데이터 확인용 로그**
+  console.log('✔ ReviewsResponse:', data);
 
   // 실제 리뷰 리스트 렌더링
   return (
     <div className='space-y-4 mt-4'>
-      {items.map((review) => (
+      {data.list.map((review: MyReview) => (
         <MyCard
           key={review.id}
           // 별점 뱃지
