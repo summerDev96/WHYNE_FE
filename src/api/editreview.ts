@@ -12,5 +12,5 @@ interface UpdateReviewRequest {
 }
 
 export const updateReview = async ({ reviewId, ...body }: UpdateReviewRequest) => {
-  return (apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`), body);
+  return apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`, body);
 };
