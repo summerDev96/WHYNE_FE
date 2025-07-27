@@ -146,7 +146,6 @@ const EditReviewModal = ({
       console.log('리뷰 수정 요청 데이터:', fullData);
       await updateReview(fullData);
       console.log('리뷰 수정 완료');
-      reset(fullData);
       setShowEditModal(false);
     } catch (error) {
       console.error('리뷰 수정 실패', error);
