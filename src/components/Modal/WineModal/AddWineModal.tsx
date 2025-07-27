@@ -209,7 +209,7 @@ const AddWineModal = () => {
             타입
           </p>
           <SelectDropdown
-            value={category}
+            selectedValue={category}
             options={categoryOptions}
             onChange={(value) => {
               setCategory(value);
