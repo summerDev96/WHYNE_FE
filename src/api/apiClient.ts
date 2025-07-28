@@ -1,9 +1,12 @@
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import Router from 'next/router';
 
+import { getCookie, getServerCookie, setCookie } from '@/lib/cookie';
 import { RetryRequestConfig } from '@/types/AuthTypes';
 
 import { updateAccessToken } from './auth';
+
+const isClient = typeof window !== 'undefined';
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
@@ -21,16 +24,18 @@ apiClient.interceptors.response.use(
   (res) => res.data,
   async (error) => {
     const status = error.response?.status;
-    const refreshToken = localStorage.getItem('refreshToken');
+    // 클라이언트: 토큰 삭제 처리 후 리디렉트
+    // 서버사이드: getServerSideProps에서 처리 필요
+    if (!isClient) return Promise.reject(error);
+    const refreshToken = getCookie({ name: 'refreshToken' });
 
     if (status !== 401 || !refreshToken) return handleCommonError(error);
     try {
       const result = await handleRequestRefreshToken(error, refreshToken);
       if (result) return result;
     } catch (refreshTokenError) {
-      // 토큰 삭제 처리 후 리디렉트
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      setCookie({ name: 'accessToken', value: '', maxAge: 0 });
+      setCookie({ name: 'refreshToken', value: '', maxAge: 0 });
       Router.replace('/signin');
       return handleCommonError(refreshTokenError as AxiosError);
     }
@@ -41,7 +46,14 @@ export default apiClient;
 
 // 토큰 추가 메소드
 function addAccessToken(config: InternalAxiosRequestConfig) {
-  const accessToken = localStorage.getItem('accessToken');
+  let accessToken;
+
+  if (isClient) {
+    accessToken = getCookie({ name: 'accessToken' });
+  } else {
+    const cookieHeader = config.headers?.cookie;
+    accessToken = getServerCookie({ cookieHeader, name: 'accessToken' });
+  }
   if (accessToken && config.headers) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -63,7 +75,8 @@ function handleCommonError(error: AxiosError) {
   return Promise.reject(error);
 }
 
-// 리프레쉬 토큰 및 에러 처리 메소드
+// 클라이언트: 리프레쉬 토큰 및 에러 처리 메소드
+// 서버사이드: getServerSideProps에서 처리 필요
 async function handleRequestRefreshToken(
   error: AxiosError,
   refreshToken: string,
@@ -76,7 +89,7 @@ async function handleRequestRefreshToken(
   const data = await updateAccessToken({ refreshToken });
 
   // 갱신받은 access 토큰 저장
-  localStorage.setItem('accessToken', data.accessToken);
+  setCookie({ name: 'accessToken', value: data.accessToken, maxAge: 1800 });
 
   // 새 토큰으로 헤더 수정
   if (originalRequest.headers) {

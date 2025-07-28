@@ -16,6 +16,7 @@ import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
 import useErrorModal from '@/hooks/useErrorModal';
+import { setAuthCookiesWithCallback } from '@/lib/cookie';
 import {
   emailSchema,
   nicknameSchema,
@@ -77,10 +78,9 @@ const Signup = () => {
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: loginUser,
     onSuccess: (data) => {
+      const { accessToken, refreshToken } = data;
       /* 로그인 후 로컬스토리지 토큰 저장 */
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      router.push('/');
+      setAuthCookiesWithCallback({ accessToken, refreshToken, callback: () => router.push('/') });
     },
     onError: (error) => {
       // API 에러를 모달로 출력
@@ -110,7 +110,9 @@ const Signup = () => {
 
   return (
     <AuthLayout className='min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem]'>
-      <ErrorModal open={open} onOpenChange={setOpen} errorMessage={errorMessage} />
+      <ErrorModal open={open} onOpenChange={setOpen}>
+        {errorMessage}
+      </ErrorModal>
 
       <AuthLogo />
       {/* 폼 시작 */}

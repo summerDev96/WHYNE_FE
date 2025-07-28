@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import { getCookie } from '@/lib/cookie';
+
 const useTokenCheck = () => {
   const [hasToken, setHasToken] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    setHasToken(!!token);
+    const accessToken = getCookie({ name: 'accessToken' });
+    setHasToken(!!accessToken);
   }, []);
 
   return hasToken;

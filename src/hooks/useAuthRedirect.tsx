@@ -13,7 +13,7 @@ const useAuthRedirect = () => {
 
   const { data: userData, isLoading } = useQuery({
     queryKey: ['getUser'],
-    queryFn: getUser,
+    queryFn: () => getUser,
     enabled: hasToken,
     retry: false,
   });
