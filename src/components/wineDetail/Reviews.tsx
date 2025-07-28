@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { WineReview } from '@/types/WineTypes';
+
 import NoReviews from './NoReviews';
 import WineReviewCard from './WineReviewCard';
-
-import { WineReview } from '@/types/WineTypes';
 
 interface Props {
   reviews: WineReview[];

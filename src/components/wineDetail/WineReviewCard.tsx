@@ -6,7 +6,6 @@ import FlavorSliderList from '@/components/wineDetail/FlavorSliderList';
 import Kebab from '@/components/wineDetail/Kebab';
 import LikeButton from '@/components/wineDetail/LikeButton';
 import useReviewCardStore from '@/stores/reviewCardStore';
-
 import { WineReview } from '@/types/WineTypes';
 
 //컨텍스트말고 주스탄드 기반 컴파운드 패턴
