@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import { getUser } from '@/api/user';
 import { cn } from '@/lib/utils';
+import { GetUserResponse } from '@/types/UserTypes';
 
 import MenuDropdown from './dropdown/MenuDropdown';
 import Logo from './Logo';
 import UserDefaultImg from './UserDefaultImg';
 
 function Gnb() {
-  const { pathname } = useRouter();
-
   return (
     <div className='z-50 fixed top-0 inset-x-0'>
-      <div
-        className={cn('absolute inset-0  bg-gradient-to-b from-white/80 to-transparent', {
-          'bg-gradient-to-b bg-gray/60 to-transparent': pathname === '/',
-        })}
-      />
-      <div className='absolute inset-0  bg-gradient-to-b from-white/80 to-transparent' />
-
+      {/* Header 부분 (상단 여백 + GNB) */}
       <header className='relative z-10 mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[343px]'>
         <nav className='flex justify-between items-center bg-black w-full h-[50px] md:h-[70px] rounded-[12px] md:rounded-[16px] mt-[16px] md:mt-[24px] px-[20px] md:px-[60px]'>
           <Logo />
           <AuthMenu />
         </nav>
       </header>
+
+      {/* 블러 처리 및 마스크 적용 (Tailwind arbitrary properties) */}
+      <div
+        className={cn(
+          'absolute inset-x-0 top-0 h-[94px] backdrop-blur-[2px] pointer-events-none',
+          '[mask-image:linear-gradient(to_bottom,black_10%,transparent_100%)]',
+          '[-webkit-mask-image:linear-gradient(to_bottom,black_10%,transparent_100%)]',
+        )}
+      />
     </div>
   );
 }
@@ -36,18 +40,28 @@ export default Gnb;
 
 function AuthMenu() {
   const { pathname } = useRouter();
-  // const { user } = useAuth();
 
-  /*테스트용 코드*/
-  let user = null; //로그인x상태
-  user = { image: '' }; //로그인o 상태 //여기 주석 풀었다 했다하면서 확인할 수 있어여
-  /*        */
+  const hasAccessToken =
+    typeof window === 'undefined' ? false : !!localStorage.getItem('accessToken');
+
+  //아이디:abc@123.com 비번:12345678
+  const { data: user, isError } = useQuery<GetUserResponse>({
+    queryKey: ['currentUser'],
+    queryFn: getUser,
+    staleTime: 5 * 60 * 1000, // 5분 동안 캐시 유지
+    retry: false,
+    enabled: hasAccessToken, //로컬스토리지에 엑세스 토큰 있을 때만 요청 보내서 유효한 토큰인지 확인해봐
+  });
+
+  useEffect(() => {
+    if (isError) alert('사용자 정보를 불러오지 못했습니다. 다시 로그인 해주세요.');
+  }, [isError]); //요청 자체가 실패했을 때만 //초기 마운트 시에는 false일테니 if문에서 거르기
 
   return user ? (
-    <UserDropdown userImage={''} />
+    <UserDropdown userImage={user.image} />
   ) : (
     <div className='flex items-center gap-[20px] md:gap-[40px] text-white md:text-[16px] custom-text-md-medium font-sans'>
-      <Link href='/login'>로그인</Link>
+      <Link href='/signin'>로그인</Link>
       {pathname === '/' && <Link href='/signup'>회원가입</Link>}
     </div>
   );
@@ -59,16 +73,25 @@ interface Props {
 
 function UserDropdown({ userImage }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   function onSelect(value: string) {
-    if (value === 'mypage') router.push('/mypage');
-    if (value === 'logout') alert('스토리지에 있는 엑세스토큰 삭제');
+    if (value === 'myprofile') router.push('/myprofile');
+    if (value === 'logout') handleLogout();
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    queryClient.removeQueries({ queryKey: ['currentUser'] });
+    //-> removeQueries vs invalidateQueries :리무브는 아예 삭제 인밸리데이트는 stale상태로
+    router.push('/');
   }
 
   return (
     <MenuDropdown
       options={[
-        { label: '마이페이지', value: 'mypage' },
+        { label: '마이페이지', value: 'myprofile' },
         { label: '로그아웃', value: 'logout' },
       ]}
       onSelect={onSelect}
