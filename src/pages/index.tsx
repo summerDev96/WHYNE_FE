@@ -2,14 +2,11 @@ import Link from 'next/link';
 
 import { ContentSection } from '@/components/home/ContentSection';
 import { HeroSection } from '@/components/home/HeroSection';
-import DeleteModal from '@/components/Modal/DeleteModal/DeleteModal';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 xl:mt-[80px]'>
-      <DeleteModal type='wine' id={1369} trigger={<Button>와인삭제</Button>} />
-      <DeleteModal type='review' id={3093} trigger={<Button>리뷰삭제</Button>} />
       <HeroSection />
       <main>
         <ContentSection />
