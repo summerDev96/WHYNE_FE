@@ -12,6 +12,7 @@ import { CookieHeaderParams } from '@/types/CookieTypes';
 
 import { updateAccessToken } from './auth';
 
+// 서버사이드 렌더링의 경우 context를 전달받음
 export const createApiClient = (context?: ApiClientContext) => {
   const cookieHeader = context?.req?.headers.cookie || '';
 
@@ -53,6 +54,8 @@ export const createApiClient = (context?: ApiClientContext) => {
 
   return instance;
 };
+
+export const apiClient = createApiClient();
 
 // 토큰 추가 메소드
 function createAddAccessToken({ cookieHeader }: CookieHeaderParams) {

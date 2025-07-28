@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 
 import { getUser } from '@/api/user';
