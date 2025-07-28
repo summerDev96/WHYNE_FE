@@ -51,12 +51,23 @@ const AddWineModal = () => {
     mode: 'onBlur',
   });
 
+  const resetForm = () => {
+    reset({
+      wineName: '',
+      winePrice: NaN,
+      wineOrigin: '',
+      wineImage: {} as FileList,
+      wineType: '',
+    });
+    setCategory('');
+    setPreviewImage(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage[0];
-      console.log('1');
       const imageUrl = await uploadImage(file);
-      console.log('2');
       const requestData: PostWineRequest = {
         name: form.wineName,
         region: form.wineOrigin,
@@ -64,24 +75,14 @@ const AddWineModal = () => {
         price: Number(form.winePrice),
         type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
       };
-      console.log('3');
       await postWine(requestData);
 
       console.log('와인등록완료');
-      reset({
-        wineName: '',
-        winePrice: NaN,
-        wineOrigin: '',
-        wineImage: {} as FileList,
-        wineType: '',
-      });
-      setPreviewImage(null);
-      fileInputRef.current && (fileInputRef.current.value = '');
-      setCategory('');
+      resetForm();
       setShowRegisterModal(false);
     } catch (error) {
       console.error('와인등록실패', error);
-      alert('와인등ㄹ곡실패');
+      alert('와인등록실패');
     }
   };
 
@@ -98,16 +99,7 @@ const AddWineModal = () => {
     setShowRegisterModal(isOpen);
     if (!isOpen) {
       setTimeout(() => {
-        reset({
-          wineName: '',
-          winePrice: NaN,
-          wineOrigin: '',
-          wineImage: {} as FileList,
-          wineType: '',
-        });
-        setCategory('');
-        setPreviewImage(null); //이미지 미리보기 초기화
-        fileInputRef.current && (fileInputRef.current.value = '');
+        resetForm();
       }, 50);
     }
   };
@@ -127,16 +119,7 @@ const AddWineModal = () => {
           <div className='flex gap-2'>
             <Button
               onClick={() => {
-                reset({
-                  wineName: '',
-                  winePrice: NaN,
-                  wineOrigin: '',
-                  wineImage: {} as FileList,
-                  wineType: '',
-                });
-                setCategory('');
-                setPreviewImage(null);
-                fileInputRef.current && (fileInputRef.current.value = '');
+                resetForm();
                 setShowRegisterModal(false);
               }}
               variant='purpleLight'
