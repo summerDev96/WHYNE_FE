@@ -1,0 +1,261 @@
+import React, { useRef, useState } from 'react';
+
+import { useForm } from 'react-hook-form';
+
+import { updateWine } from '@/api/editwine';
+import { uploadImage } from '@/api/editwine';
+import SelectDropdown from '@/components/common/dropdown/SelectDropdown';
+import Input from '@/components/common/Input';
+import BasicModal from '@/components/common/Modal/BasicModal';
+import { Button } from '@/components/ui/button';
+
+interface WineForm {
+  wineName: string;
+  winePrice: number;
+  wineOrigin: string;
+  wineImage: FileList;
+  wineType: string;
+}
+
+interface WineData {
+  wineId: number;
+  name: string;
+  price: number;
+  region: string;
+  image: string;
+  type: 'RED' | 'WHITE' | 'SPARKLING';
+  avgRating: number;
+}
+
+const EditWineModal = ({ wine }: { wine: WineData }) => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(wine.image);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+    reset,
+    setValue,
+    trigger,
+    watch,
+  } = useForm<WineForm>({
+    defaultValues: {
+      wineName: wine.name,
+      winePrice: wine.price,
+      wineOrigin: wine.region,
+      wineType: wine.type,
+    },
+  });
+
+  const category = watch('wineType');
+  const selectedCategoryLabel = {
+    RED: 'Red',
+    WHITE: 'White',
+    SPARKLING: 'Sparkling',
+  }[category];
+
+  const categoryOptions = [
+    { label: 'Red', value: 'RED' },
+    { label: 'White', value: 'WHITE' },
+    { label: 'Sparkling', value: 'SPARKLING' },
+  ];
+
+  const triggerFileSelect = () => fileInputRef.current?.click();
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const onSubmit = async (form: WineForm) => {
+    try {
+      const file = form.wineImage?.[0];
+      const imageUrl = file ? await uploadImage(file) : wine.image;
+
+      await updateWine({
+        wineId: wine.wineId,
+        name: form.wineName,
+        price: Number(form.winePrice),
+        region: form.wineOrigin,
+        type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
+        image: imageUrl,
+        avgRating: wine.avgRating,
+      });
+
+      setShowEditModal(false);
+    } catch (error) {
+      console.log('와인수정실패', error);
+    }
+  };
+
+  const closeModalReset = (isOpen: boolean) => {
+    setShowEditModal(isOpen);
+    if (!isOpen) {
+      reset;
+      setPreviewImage(wine.image);
+    }
+  };
+
+  return (
+    <div>
+      <Button variant='purpleDark' size='xs' onClick={() => setShowEditModal(true)}>
+        와인수정하기
+      </Button>
+      <BasicModal
+        type='register'
+        title='내가 등록한 와인'
+        open={showEditModal}
+        onOpenChange={closeModalReset}
+        buttons={
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            type='submit'
+            variant='purpleDark'
+            size='xl'
+            width='full'
+            fontSize='lg'
+          >
+            수정 완료
+          </Button>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data'>
+          {/* 와인 이름 */}
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            와인 이름
+          </p>
+          <Input
+            className='custom-text-md-regular md:custom-text-lg-regular'
+            id='wineName'
+            type='text'
+            placeholder='와인 이름 입력'
+            {...register('wineName', {
+              required: '와인 이름을 입력해주세요.',
+              onChange: () => clearErrors('wineName'),
+            })}
+            errorMessage={errors.wineName?.message}
+          />
+
+          {/* 가격 */}
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            가격
+          </p>
+          <Input
+            className='[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none custom-text-md-regular md:custom-text-lg-regular'
+            id='winePrice'
+            type='number'
+            placeholder='가격 입력'
+            {...register('winePrice', {
+              required: '가격을 입력해주세요.',
+              onChange: () => clearErrors('winePrice'),
+            })}
+            errorMessage={errors.winePrice?.message}
+          />
+
+          {/* 원산지 */}
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            원산지
+          </p>
+          <Input
+            className='custom-text-md-regular md:custom-text-lg-regular'
+            id='wineOrigin'
+            type='text'
+            placeholder='원산지 입력'
+            {...register('wineOrigin', {
+              required: '원산지를 입력해주세요.',
+              onChange: () => clearErrors('wineOrigin'),
+            })}
+            errorMessage={errors.wineOrigin?.message}
+          />
+
+          {/* 타입 */}
+          <p className='custom-text-md-medium md:custom-text-lg-medium mb-[10px] md:mb-[12px] mt-[22px] md:mt-[24px]'>
+            타입
+          </p>
+          <SelectDropdown
+            selectedValue={category}
+            options={categoryOptions}
+            onChange={(value) => {
+              setValue('wineType', value);
+              trigger('wineType');
+            }}
+            placeholder='타입 선택'
+            trigger={
+              <button
+                type='button'
+                className={`w-full h-[42px] md:h-[48px] px-4 py-2 border rounded-[12px] md:rounded-[16px] text-left ${
+                  category ? 'text-black' : 'text-gray-500'
+                }`}
+              >
+                <>
+                  <span>{selectedCategoryLabel || '타입 선택'}</span>
+                  {/* <DropdownIcon className='ml-2 w-4 h-4 bg-black' /> */}
+                </>
+              </button>
+            }
+          />
+          {errors.wineType?.message && (
+            <div className='relative'>
+              <p className='text-red-500 absolute mt-1'>{errors.wineType.message}</p>
+            </div>
+          )}
+          <Input
+            id='wineType'
+            type='text'
+            className='custom-text-md-regular md:custom-text-lg-regular hidden'
+            {...register('wineType', {
+              required: '타입을 선택해주세요.',
+              onChange: () => clearErrors('wineType'),
+            })}
+          />
+
+          {/* 와인 사진 */}
+          <p className='custom-text-md-medium md:custom-text-lg-medium mt-[24px] md:mt-[26px]'>
+            와인 사진
+          </p>
+          <Input
+            id='wineImage'
+            type='file'
+            accept='image/*'
+            className='custom-text-md-regular md:custom-text-lg-regular hidden'
+            {...register('wineImage', {
+              onChange: (e) => {
+                clearErrors('wineImage');
+                handleImageChange(e);
+              },
+            })}
+            ref={(e) => {
+              register('wineImage').ref(e);
+              fileInputRef.current = e;
+            }}
+          />
+          <div className='mt-2 mb-5'>
+            <div
+              className='w-[140px] aspect-square bg-gray-100 rounded-2xl overflow-hidden flex items-center justify-center relative cursor-pointer'
+              onClick={triggerFileSelect}
+            >
+              {previewImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={previewImage} alt='미리보기' className='w-full h-full object-cover' />
+              ) : (
+                <div className='flex flex-col items-center text-gray-400'>
+                  {/* <CameraIcon className='w-6 h-6 mb-2' /> */}
+                </div>
+              )}
+            </div>
+            {errors.wineImage?.message && (
+              <div className='relative'>
+                <p className='text-red-500 absolute mt-1'>{errors.wineImage.message}</p>
+              </div>
+            )}
+          </div>
+        </form>
+      </BasicModal>
+    </div>
+  );
+};
+export default EditWineModal;
