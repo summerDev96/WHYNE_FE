@@ -7,22 +7,11 @@ import Kebab from '@/components/wineDetail/Kebab';
 import LikeButton from '@/components/wineDetail/LikeButton';
 import useReviewCardStore from '@/stores/reviewCardStore';
 
+import { WineReview } from '@/types/WineTypes';
+
 //컨텍스트말고 주스탄드 기반 컴파운드 패턴
 interface Props {
-  review: {
-    content: string;
-    user: {
-      name: string;
-    };
-    updatedAt: string;
-    aroma: string[];
-    rating: string;
-    lightBold: number;
-    smoothTannic: number;
-    drySweet: number;
-    softAcidic: number;
-    id: string;
-  };
+  review: WineReview;
 }
 
 function WineReviewCard({ review }: Props) {
@@ -32,7 +21,7 @@ function WineReviewCard({ review }: Props) {
     setReviews(review);
   }, [review, setReviews]);
 
-  const { id, lightBold, smoothTannic, drySweet, softAcidic } = review;
+  const { id, lightBold, smoothTannic, drySweet, softAcidic, isLiked } = review;
 
   return (
     <ReviewCard>
@@ -40,7 +29,7 @@ function WineReviewCard({ review }: Props) {
         userIcon={<UserDefaultImg className='size-10 md:size-16' />}
         reviewId={id}
       >
-        <LikeButton isLike={false} />
+        <LikeButton isLike={isLiked} />
         <Kebab />
       </ReviewCard.UserHeader>
       <ReviewCard.TagAndRating reviewId={id}></ReviewCard.TagAndRating>
