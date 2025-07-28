@@ -1,20 +1,43 @@
 import { useState } from 'react';
 
+import apiClient from '@/api/apiClient';
 import FullLikeIcon from '@/assets/icons/fullLike.svg';
 import LikeIcon from '@/assets/icons/like.svg';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface Props {
-  isLike?: boolean;
+//추후 wineid ssr하면 애네도 클라이언트 못쓰니까
+//ssr부터 하고 수정하면서 분리시키기
+async function postLike(reviewId: number) {
+  console.log('좋아요!');
+  return apiClient.post(`${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}/like`);
 }
 
-function LikeButton({ isLike }: Props) {
+async function deleteLike(reviewId: number) {
+  console.log('싫어요!');
+  return apiClient.delete(`${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}/like`);
+}
+
+interface Props {
+  isLike?: boolean;
+  reviewId: number;
+}
+
+function LikeButton({ isLike, reviewId }: Props) {
   const [isClicked, setIsClicked] = useState(isLike);
 
-  function handleToggle() {
-    setIsClicked(!isClicked);
+  async function handleToggle() {
+    setIsClicked((prev) => !prev); //미리 업데이트
     //좋아요 api 요청 보내기
+    // /{teamId}/reviews/{id}/like
+
+    try {
+      isClicked === true ? await deleteLike(reviewId) : await postLike(reviewId);
+    } catch (err) {
+      //모달 호출 후 집어 넣기
+
+      setIsClicked((prev) => !prev); //실패하면 업데이트 했던 거 취소
+    }
   }
 
   return (
