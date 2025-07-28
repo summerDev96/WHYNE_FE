@@ -2,8 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 
-import { updateWine } from '@/api/editwine';
-import { uploadImage } from '@/api/editwine';
+import { updateWine, uploadImage } from '@/api/editwine';
 import SelectDropdown from '@/components/common/dropdown/SelectDropdown';
 import Input from '@/components/common/Input';
 import BasicModal from '@/components/common/Modal/BasicModal';
@@ -16,7 +15,6 @@ interface WineForm {
   wineImage: FileList;
   wineType: string;
 }
-
 interface WineData {
   wineId: number;
   name: string;
@@ -95,7 +93,7 @@ const EditWineModal = ({ wine }: { wine: WineData }) => {
   const closeModalReset = (isOpen: boolean) => {
     setShowEditModal(isOpen);
     if (!isOpen) {
-      reset;
+      reset();
       setPreviewImage(wine.image);
     }
   };
