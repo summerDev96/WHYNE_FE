@@ -21,7 +21,7 @@ function Reviews({ reviews, reviewCount }: Props) {
           </li>
         ))
       ) : (
-        <NoReviews className='w-full xl:w-[800px] pt-[80px]' />
+        <NoReviews className='w-full xl:w-[1140px] pt-[80px]' />
       )}
     </ul>
   );

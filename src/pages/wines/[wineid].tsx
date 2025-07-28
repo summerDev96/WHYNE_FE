@@ -29,7 +29,7 @@ export default function WineInfoById() {
   return (
     <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
       <ImageCard
-        imageSrc={''}
+        imageSrc={data.image}
         imageClassName={IMAGE_CLASS_NAME}
         className={cn(
           'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
