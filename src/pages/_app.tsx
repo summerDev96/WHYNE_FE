@@ -13,19 +13,29 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/login', '/signup', '/signin', '/_error'];
+  const pagesWithoutGnb = [
+    '/login',
+    '/signup',
+    '/signin',
+    '/oauth/kakao',
+    '/oauth/signup/kakao',
+    '/_error',
+  ];
   const hideHeader = pagesWithoutGnb.includes(pathname);
+  const isLanding = pathname === '/';
 
   return (
     <>
       <Head>
         <title>WINE</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <QueryClientProvider client={queryClient}>
         {!hideHeader && <Gnb />}
         <div
           className={clsx({
             'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
+            'bg-gray-100': isLanding,
           })}
         >
           <Component {...pageProps} />
