@@ -27,7 +27,7 @@ export function ReviewCard({ children }: ReviewCardProps) {
 }
 
 ReviewCard.UserHeader = function UserHeader({ userIcon, reviewId, children }: UserHeaderProps) {
-  const username = useReviewCardStore((state) => state.allReviews[reviewId]?.user.name);
+  const username = useReviewCardStore((state) => state.allReviews[reviewId]?.user.nickname);
   const timeAgo = useReviewCardStore((state) => state.allReviews[reviewId]?.updatedAt);
 
   return (

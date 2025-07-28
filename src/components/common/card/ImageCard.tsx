@@ -2,6 +2,7 @@ import React from 'react';
 
 import Image from 'next/image';
 
+import WinePlaceholder from '@/assets/icons/wine-placeholder.svg';
 import { cn } from '@/lib/utils';
 
 interface ImageCardProps {
@@ -23,13 +24,20 @@ export function ImageCard({
     <div className={cn('flex w-full rounded-xl bg-white p-4 border border-gray-300', className)}>
       {/* 왼쪽 이미지 */}
       <div className='flex-shrink-0'>
-        <Image
-          src={imageSrc}
-          alt='와인 이미지'
-          width={80}
-          height={112}
-          className={cn('h-28 w-20 rounded-md object-cover', imageClassName)}
-        />
+        {imageSrc !== '' ? (
+          <Image
+            src={imageSrc}
+            alt='와인 이미지'
+            width={80}
+            height={112}
+            className={cn('h-28 w-20 rounded-md object-cover', imageClassName)}
+            onError={WinePlaceholder}
+          />
+        ) : (
+          <div className={cn('text-primary', imageClassName, 'bottom-[-10px]')}>
+            <WinePlaceholder />
+          </div>
+        )}
       </div>
 
       {/* 오른쪽 텍스트 & 상단 버튼 */}

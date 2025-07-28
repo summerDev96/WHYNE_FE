@@ -2,32 +2,24 @@ import { create } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 
+import { WineReview } from '@/types/WineTypes';
+
 //리뷰카드 컴파운트 패턴용 스토어
-interface ReviewItemTypes {
-  content: string;
-  user: { name: string };
-  updatedAt: string;
-  aroma: string[];
-  rating: string;
-  lightBold: number;
-  smoothTannic: number;
-  drySweet: number;
-  softAcidic: number;
-  id: string;
+interface ReviewItemTypes extends WineReview {
   isOpen: boolean;
 }
 
 interface ReviewsbyId {
-  [id: string]: ReviewItemTypes;
+  [id: number]: ReviewItemTypes;
 }
 
 interface ReviewStates {
   allReviews: ReviewsbyId;
   setReviews: (review: Omit<ReviewItemTypes, 'isOpen'>) => void;
-  toggleReviewOpen: (reviewId: string) => void;
+  toggleReviewOpen: (reviewId: number) => void;
 }
 
-export const reviewStore = create<ReviewStates>((set) => ({
+const reviewStore = create<ReviewStates>((set) => ({
   allReviews: {},
   setReviews: (reviewData) => {
     set((state) => {

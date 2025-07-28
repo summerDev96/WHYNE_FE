@@ -83,6 +83,8 @@ function UserDropdown({ userImage }: Props) {
   function handleLogout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    document.cookie = 'accessToken=; Path=/; Max-Age=0';
+    document.cookie = 'refreshToken=; Path=/; Max-Age=0';
     queryClient.removeQueries({ queryKey: ['currentUser'] });
     //-> removeQueries vs invalidateQueries :리무브는 아예 삭제 인밸리데이트는 stale상태로
     router.push('/');

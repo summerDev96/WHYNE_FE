@@ -4,7 +4,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
 import apiClient from '@/api/apiClient';
-import { getWineInfo } from '@/api/apiServer';
+import { getWineInfoForClient } from '@/api/wineid';
+
+/*이 페이지 자체가 테스트용 추후 삭제*/
 
 interface GetWineListResponse {
   totalCount: number;
@@ -37,56 +39,6 @@ interface GetWineListResponse {
   ];
 }
 
-// interface GetWineInfoResponse {
-//   id: number;
-//   name: string;
-//   region: string;
-//   image: string;
-//   price: number;
-//   type: string;
-//   avgRating: number;
-//   reviewCount: number;
-//   recentReview: {
-//     user: {
-//       id: number;
-//       nickname: string;
-//       image: string;
-//     };
-//     updatedAt: string;
-//     createdAt: string;
-//     content: string;
-//     aroma: string[];
-//     rating: number;
-//     id: number;
-//   };
-//   userId: number;
-//   reviews: [
-//     {
-//       id: number;
-//       rating: number;
-//       lightBold: number;
-//       smoothTannic: number;
-//       drySweet: number;
-//       softAcidic: number;
-//       aroma: string[];
-//       content: string;
-//       createdAt: string;
-//       updatedAt: string;
-//       user: {
-//         id: number;
-//         nickname: string;
-//         image: string;
-//       };
-//       isLiked: {};
-//     },
-//   ];
-//   avgRatings: {
-//     additionalProp1: number;
-//     additionalProp2: number;
-//     additionalProp3: number;
-//   };
-// }
-
 export const getWines = (): Promise<GetWineListResponse> => {
   return apiClient.get(`/${process.env.NEXT_PUBLIC_TEAM}/wines`);
 };
@@ -96,14 +48,18 @@ function WineList() {
 
   const queryClient = useQueryClient();
 
+  //테스트용 캐시 지우기
+  queryClient.removeQueries({ queryKey: ['wineDetail'] });
+
   const prefetchWineInfo = async (wineid: number) => {
     await queryClient.prefetchQuery({
       queryKey: ['wineDetail', wineid],
-      queryFn: () => getWineInfo(wineid),
+      queryFn: () => getWineInfoForClient(wineid),
       staleTime: 1000 * 60 * 5,
     });
   };
 
+  // // 데이터 프리패칭용
   useEffect(() => {
     wines.forEach((wine) => {
       prefetchWineInfo(wine.id);
