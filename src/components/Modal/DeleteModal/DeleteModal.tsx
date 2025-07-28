@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { deleteWine } from '@/api/delete';
+import { deleteReview } from '@/api/delete';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
 
-const DeleteModal = ({ wineId }: { wineId: number }) => {
+interface DeleteModalProps {
+  type: 'wine' | 'review';
+  id: number;
+  trigger: React.ReactNode;
+}
+
+const DeleteModal = ({ type, id, trigger }: DeleteModalProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const onSubmit = async (wineId: number) => {
+  const handleDelete = async () => {
     try {
-      await deleteWine(wineId);
+      if (type === 'wine') {
+        await deleteWine(id);
+        console.log('와인 삭제 성공');
+      } else if (type === 'review') {
+        await deleteReview(id);
+        console.log('리뷰 삭제 성공');
+      }
       setShowDeleteModal(false);
     } catch (error) {
       console.log('삭제실패 : ', error);
@@ -18,7 +31,7 @@ const DeleteModal = ({ wineId }: { wineId: number }) => {
 
   return (
     <div>
-      <Button onClick={() => setShowDeleteModal(true)}>삭제하기</Button>
+      <span onClick={() => setShowDeleteModal(true)}>{trigger}</span>
       <BasicModal
         type='register'
         title=''
@@ -38,7 +51,7 @@ const DeleteModal = ({ wineId }: { wineId: number }) => {
               취소
             </Button>
             <Button
-              onClick={() => onSubmit(wineId)}
+              onClick={handleDelete}
               type='button'
               variant='purpleDark'
               size='xl'
