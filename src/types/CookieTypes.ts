@@ -1,22 +1,49 @@
-export interface getCookieType {
+import { ServerResponse } from 'http';
+
+export interface GetClientCookieParams {
   name: string;
 }
 
-export interface setCookieType {
+export interface SetCookieType {
   name: string;
   value: string;
   maxAge: number;
 }
 
-export interface setCookieCallbackType {
+export interface SetCookieCallbackParams {
   accessToken: string;
   refreshToken: string;
   callback: () => void;
 }
 
-export interface ServerCookieParams {
+export type ClearAuthCookiesParams = () => void;
+
+export interface GetServerCookieParams {
   cookieHeader: string | undefined;
   name: string;
 }
 
-export type ServerCookieReturn = string | undefined;
+export type GetServerCookieReturn = string | undefined;
+
+export interface SetServerCookieParams {
+  response: ServerResponse;
+  name: string;
+  value: string;
+  maxAge: number;
+}
+
+export interface CookieHeaderParams {
+  cookieHeader?: string | undefined;
+}
+
+export interface GetCookieParams {
+  name: string;
+  cookieHeader?: string | undefined;
+}
+
+export interface SetCookieParams {
+  name: string;
+  value: string;
+  maxAge: number;
+  response?: ServerResponse;
+}

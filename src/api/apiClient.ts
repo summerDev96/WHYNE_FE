@@ -1,63 +1,70 @@
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import Router from 'next/router';
 
-import { getCookie, getServerCookie, setCookie } from '@/lib/cookie';
-import { RetryRequestConfig } from '@/types/AuthTypes';
+import { clearAuthCookiesWithCallback, getCookie, setCookie } from '@/lib/cookie';
+import {
+  ApiClientContext,
+  RefreshTokenRequest,
+  RefreshTokenResponse,
+  RetryRequestConfig,
+} from '@/types/AuthTypes';
+import { CookieHeaderParams } from '@/types/CookieTypes';
 
 import { updateAccessToken } from './auth';
 
-const isClient = typeof window !== 'undefined';
+export const createApiClient = (context?: ApiClientContext) => {
+  const cookieHeader = context?.req?.headers.cookie || '';
 
-// axios 인스턴스 생성
-const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-  timeout: 10_000,
-  headers: { 'Content-Type': 'application/json' },
-});
+  // axios 인스턴스 생성
+  const instance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+    timeout: 10_000,
+    headers: { 'Content-Type': 'application/json' },
+  });
 
-/* Axios 인터셉터 설정 */
-// 토큰 추가 인터셉터
-apiClient.interceptors.request.use(addAccessToken);
+  /* Axios 인터셉터 설정 */
+  // 토큰 추가 인터셉터
+  instance.interceptors.request.use(createAddAccessToken({ cookieHeader }));
 
-// 에러 처리 및 리프레쉬 토큰 추가 인터셉터
-apiClient.interceptors.response.use(
-  (res) => res.data,
-  async (error) => {
-    const status = error.response?.status;
-    // 클라이언트: 토큰 삭제 처리 후 리디렉트
-    // 서버사이드: getServerSideProps에서 처리 필요
-    if (!isClient) return Promise.reject(error);
-    const refreshToken = getCookie({ name: 'refreshToken' });
+  // 에러 처리 및 리프레쉬 토큰 추가 인터셉터
+  instance.interceptors.response.use(
+    (res) => res.data,
+    async (error) => {
+      const status = error.response?.status;
+      const refreshToken = getCookie({ name: 'refreshToken', cookieHeader });
 
-    if (status !== 401 || !refreshToken) return handleCommonError(error);
-    try {
-      const result = await handleRequestRefreshToken(error, refreshToken);
-      if (result) return result;
-    } catch (refreshTokenError) {
-      setCookie({ name: 'accessToken', value: '', maxAge: 0 });
-      setCookie({ name: 'refreshToken', value: '', maxAge: 0 });
-      Router.replace('/signin');
-      return handleCommonError(refreshTokenError as AxiosError);
-    }
-  },
-);
+      if (status !== 401 || !refreshToken) return handleCommonError(error);
 
-export default apiClient;
+      try {
+        const result = await handleRequestRefreshToken({
+          instance,
+          error,
+          refreshToken,
+          response: context?.res,
+        });
+        if (result) return result;
+      } catch (refreshTokenError) {
+        clearAuthCookiesWithCallback(() => Router.replace('/signin'));
+
+        return handleCommonError(refreshTokenError as AxiosError);
+      }
+    },
+  );
+
+  return instance;
+};
 
 // 토큰 추가 메소드
-function addAccessToken(config: InternalAxiosRequestConfig) {
-  let accessToken;
+function createAddAccessToken({ cookieHeader }: CookieHeaderParams) {
+  return function addAccessToken(config: InternalAxiosRequestConfig) {
+    if ((config as RetryRequestConfig)._retry) return config;
 
-  if (isClient) {
-    accessToken = getCookie({ name: 'accessToken' });
-  } else {
-    const cookieHeader = config.headers?.cookie;
-    accessToken = getServerCookie({ cookieHeader, name: 'accessToken' });
-  }
-  if (accessToken && config.headers) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
+    const accessToken = getCookie({ name: 'accessToken', cookieHeader });
+    if (accessToken && config.headers) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  };
 }
 
 // 공통 에러 처리 메소드
@@ -75,12 +82,13 @@ function handleCommonError(error: AxiosError) {
   return Promise.reject(error);
 }
 
-// 클라이언트: 리프레쉬 토큰 및 에러 처리 메소드
-// 서버사이드: getServerSideProps에서 처리 필요
-async function handleRequestRefreshToken(
-  error: AxiosError,
-  refreshToken: string,
-): Promise<AxiosResponse | null> {
+// 리프레쉬 토큰 및 에러 처리 메소드
+async function handleRequestRefreshToken({
+  instance,
+  error,
+  refreshToken,
+  response,
+}: RefreshTokenRequest): RefreshTokenResponse {
   const originalRequest = error.config as RetryRequestConfig;
 
   if (originalRequest._retry) return null;
@@ -88,13 +96,15 @@ async function handleRequestRefreshToken(
 
   const data = await updateAccessToken({ refreshToken });
 
-  // 갱신받은 access 토큰 저장
-  setCookie({ name: 'accessToken', value: data.accessToken, maxAge: 1800 });
+  setCookie({ response, name: 'accessToken', value: data.accessToken, maxAge: 1800 });
 
-  // 새 토큰으로 헤더 수정
-  if (originalRequest.headers) {
-    originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-  }
+  originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 
-  return apiClient(originalRequest); // 토큰 갱신 후 재요청
+  const retryRequestConfig = {
+    ...originalRequest,
+    baseURL: instance.defaults.baseURL,
+    headers: originalRequest.headers,
+  };
+
+  return await instance.request(retryRequestConfig); // 토큰 갱신 후 재요청
 }

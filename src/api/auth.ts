@@ -1,4 +1,3 @@
-import apiClient from '@/api/apiClient';
 import {
   AccessTokenRequest,
   AccessTokenResponse,
@@ -10,18 +9,20 @@ import {
   SignupResponse,
 } from '@/types/AuthTypes';
 
+import { createApiClient } from './apiClient';
+
 export const createUser = (data: SignupRequest): Promise<SignupResponse> => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signUp`, data);
+  return createApiClient().post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signUp`, data);
 };
 
 export const loginUser = (data: LoginRequest): Promise<LoginResponse> => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn`, data);
+  return createApiClient().post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn`, data);
 };
 
 export const updateAccessToken = (data: AccessTokenRequest): Promise<AccessTokenResponse> => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/refresh-token`, data);
+  return createApiClient().post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/refresh-token`, data);
 };
 
 export const signInKakao = (data: KakakoSignInRequest): Promise<KakakoSignInResponse> => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
+  return createApiClient().post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
 };
