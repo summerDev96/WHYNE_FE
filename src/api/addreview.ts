@@ -1,4 +1,4 @@
-import apiClient from '@/api/apiClient';
+import apiClient from './apiClient';
 
 interface PostReviewRequest {
   wineId: number;
@@ -11,6 +11,15 @@ interface PostReviewRequest {
   content: string;
 }
 
+interface PostReviewResponse {
+  success: boolean;
+  message?: string;
+}
+
 export const postReview = async (data: PostReviewRequest) => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/reviews`, data);
+  const response = await apiClient.post<PostReviewResponse>(
+    `/${process.env.NEXT_PUBLIC_TEAM}/reviews`,
+    data,
+  );
+  return response.data;
 };

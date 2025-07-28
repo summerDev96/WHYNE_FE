@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
@@ -20,6 +22,20 @@ interface ReviewForm {
   slidersoftAcidic: number;
   aroma: Array<string>;
   content: string;
+}
+interface ReviewRequest {
+  wineId: number;
+  rating: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
+  aroma: string[];
+  content: string;
+}
+interface ReviewResponse {
+  success: boolean;
+  message?: string;
 }
 
 const aromaOptions = [
@@ -90,6 +106,19 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     },
   });
 
+  const reviewMutation = useMutation<ReviewResponse, AxiosError, ReviewRequest>({
+    //mutation function
+    mutationFn: postReview, //실제 서버에 리뷰를 보내는 역할
+    onSuccess: (data) => {
+      console.log('리뷰 등록 성공', data);
+      reset();
+      setShowRegisterModal(false);
+    },
+    onError: (error) => {
+      console.log('리뷰 등록 실패', error);
+    },
+  });
+
   //falvor선택
   const aroma = watch('aroma');
   const isSelected = (item: string) => aroma?.includes(item);
@@ -113,26 +142,18 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     if (!data.aroma || data.aroma.length === 0) {
       setError('aroma', { type: 'errmsg', message: '최소 하나의 향을 선택해주세요.' });
       return;
-    } else
-      try {
-        const fullData = {
-          wineId, //프롭스로 받아오기
-          rating: data.rating,
-          lightBold: data.sliderLightBold,
-          smoothTannic: data.sliderSmoothTanic,
-          drySweet: data.sliderdrySweet,
-          softAcidic: data.slidersoftAcidic,
-          aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
-          content: data.content,
-        };
-        console.log(fullData);
-        await postReview(fullData);
-        console.log('리뷰등록완료');
-        reset();
-        setShowRegisterModal(false);
-      } catch (error) {
-        console.log('리뷰등록실패', error);
-      }
+    }
+    const fullData: ReviewRequest = {
+      wineId,
+      rating: data.rating,
+      lightBold: data.sliderLightBold,
+      smoothTannic: data.sliderSmoothTanic,
+      drySweet: data.sliderdrySweet,
+      softAcidic: data.slidersoftAcidic,
+      aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
+      content: data.content,
+    };
+    reviewMutation.mutate(fullData);
   };
 
   //모달창 끄면 리셋되게
