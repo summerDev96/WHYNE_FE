@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import Router from 'next/router';
 
+import { updateAccessToken } from '@/api/auth';
 import { clearAuthCookiesWithCallback, getCookie, setCookie } from '@/lib/cookie';
 import {
   ApiClientContext,
@@ -9,8 +10,6 @@ import {
   RetryRequestConfig,
 } from '@/types/AuthTypes';
 import { CookieHeaderParams } from '@/types/CookieTypes';
-
-import { updateAccessToken } from './auth';
 
 // 서버사이드 렌더링의 경우 context를 전달받음
 export const createApiClient = (context?: ApiClientContext) => {
@@ -55,7 +54,8 @@ export const createApiClient = (context?: ApiClientContext) => {
   return instance;
 };
 
-export const apiClient = createApiClient();
+const apiClient = createApiClient();
+export default apiClient;
 
 // 토큰 추가 메소드
 function createAddAccessToken({ cookieHeader }: CookieHeaderParams) {

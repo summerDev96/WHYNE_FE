@@ -1,3 +1,4 @@
+import apiClient from '@/api/apiClient';
 import {
   AccessTokenRequest,
   AccessTokenResponse,
@@ -8,8 +9,6 @@ import {
   SignupRequest,
   SignupResponse,
 } from '@/types/AuthTypes';
-
-import { apiClient } from './apiClient';
 
 export const createUser = (data: SignupRequest): Promise<SignupResponse> => {
   return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signUp`, data);
