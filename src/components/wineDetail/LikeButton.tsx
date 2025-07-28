@@ -6,8 +6,6 @@ import LikeIcon from '@/assets/icons/like.svg';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-//추후 wineid ssr하면 애네도 클라이언트 못쓰니까
-//ssr부터 하고 수정하면서 분리시키기
 async function postLike(reviewId: number) {
   console.log('좋아요!');
   return apiClient.post(`${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}/like`);
