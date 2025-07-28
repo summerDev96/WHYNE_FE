@@ -51,7 +51,7 @@ const mockWines = [
 
 export default function WineListCard() {
   return (
-    <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] xl:max-w-[800px] md:mx-auto md:px-0'>
+    <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] md:px-[20px] md:mt-[24px] xl:px-0 max-w-[1140px] mx-auto'>
       {mockWines.map((wine) => (
         <Link href={`/wines/${wine.id}`} key={wine.id} className='no-underline'>
           {/* 카드 컨테이너 */}
@@ -84,15 +84,15 @@ export default function WineListCard() {
                   <Button
                     variant='purpleLight'
                     className='
-    text-[14px] text-purpleDark font-bold leading-[24px] 
-    px-[10px] py-[4px] rounded-[10px] h-auto
+                    text-[14px] text-purpleDark font-bold leading-[24px] 
+                    px-[10px] py-[4px] rounded-[10px] h-auto
 
-    w-full max-w-[86px] md:max-w-none
+                    w-full max-w-[86px] md:max-w-none
 
-    md:text-[18px] md:leading-[26px] 
-    md:px-[15px] md:py-[8px] 
-    md:rounded-[12px] 
-    md:w-[110px] md:h-[42px] md:mt-[12px]'
+                    md:text-[18px] md:leading-[26px] 
+                    md:px-[15px] md:py-[8px] 
+                    md:rounded-[12px] 
+                    md:w-[110px] md:h-[42px] md:mt-[12px]'
                   >
                     ₩ {wine.price.toLocaleString()}
                   </Button>

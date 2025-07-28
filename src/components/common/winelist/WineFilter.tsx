@@ -1,5 +1,3 @@
-// import { useState } from 'react';
-
 import SearchButton from '@/assets/icons/SearchButton.svg';
 import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
 import Input from '@/components/common/Input';
@@ -10,7 +8,7 @@ export default function WineFilter() {
   // const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-    <div className='w-full'>
+    <div className='w-full max-w-[1140px] mx-auto'>
       {/* PC: 필터 + 검색창 + 등록 버튼 */}
       <div className='hidden xl:flex  max-w-[1140px] mx-auto mt-[30px] gap-[24px]'>
         <div className='flex-shrink-0 w-[260px] h-auto flex flex-col gap-[50px] ml-[-28px]'>
