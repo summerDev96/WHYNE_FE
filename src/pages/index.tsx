@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 export default function Home() {
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 xl:mt-[80px]'>
-      <DeleteModal />
+      <DeleteModal wineId={1373} />
       <HeroSection />
       <main>
         <ContentSection />
