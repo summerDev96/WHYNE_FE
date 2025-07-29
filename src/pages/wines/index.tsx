@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-
-import { useQueryClient } from '@tanstack/react-query';
-import Link from 'next/link';
+import React from 'react';
 
 import apiClient from '@/api/apiClient';
-import { getWineInfoForClient } from '@/api/wineid';
+import WineFilter from '@/components/common/winelist/WineFilter';
+import WineListCard from '@/components/common/winelist/WineListCard';
+import WineSlider from '@/components/common/winelist/WineSlider';
 
 /*이 페이지 자체가 테스트용 추후 삭제*/
 
@@ -43,39 +42,35 @@ export const getWines = (): Promise<GetWineListResponse> => {
   return apiClient.get(`/${process.env.NEXT_PUBLIC_TEAM}/wines`);
 };
 
-function WineList() {
-  const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
+export default function Wines() {
+  // const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  //테스트용 캐시 지우기
-  queryClient.removeQueries({ queryKey: ['wineDetail'] });
+  // //테스트용 캐시 지우기
+  // queryClient.removeQueries({ queryKey: ['wineDetail'] });
 
-  const prefetchWineInfo = async (wineid: number) => {
-    await queryClient.prefetchQuery({
-      queryKey: ['wineDetail', wineid],
-      queryFn: () => getWineInfoForClient(wineid),
-      staleTime: 1000 * 60 * 5,
-    });
-  };
+  // const prefetchWineInfo = async (wineid: number) => {
+  //   await queryClient.prefetchQuery({
+  //     queryKey: ['wineDetail', wineid],
+  //     queryFn: () => getWineInfoForClient(wineid),
+  //     staleTime: 1000 * 60 * 5,
+  //   });
+  // };
 
-  // // 데이터 프리패칭용
-  useEffect(() => {
-    wines.forEach((wine) => {
-      prefetchWineInfo(wine.id);
-    });
-  }, []);
-
+  // // // 데이터 프리패칭용
+  // useEffect(() => {
+  //   wines.forEach((wine) => {
+  //     prefetchWineInfo(wine.id);
+  //   });
+  // }, []);
   return (
     <div>
-      {wines.map((el) => (
-        <Link key={el.id} href={`/wines/${el.id}`}>
-          {el.id}
-          <br />
-        </Link>
-      ))}
+      <WineSlider />
+      <WineFilter />
+      <div className='xl:hidden'>
+        <WineListCard />
+      </div>
     </div>
   );
 }
-
-export default WineList;
