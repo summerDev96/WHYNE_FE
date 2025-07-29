@@ -89,7 +89,7 @@ export const HeroSection = () => {
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
                   <span className='font-extrabold text-4xl text-gray-800'>4.9</span>
-                  <AverageStar rating={4} />
+                  <AverageStar rating={4.2} />
                   <p className='custom-text-xs-regular text-gray-500'>
                     Sentinel Carbernet Sauvignon 2016
                   </p>
