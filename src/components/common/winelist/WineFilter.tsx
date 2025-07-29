@@ -6,9 +6,11 @@ import Input from '@/components/common/Input';
 import WineListCard from '@/components/common/winelist/WineListCard';
 import FilterModal from '@/components/Modal/FilterModal/FilterModal';
 import { Button } from '@/components/ui/button';
+import useSearchStore from '@/stores/searchStore';
 
 export default function WineFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { searchTerm, setSearchTerm } = useSearchStore();
 
   return (
     <div className='w-full max-w-[1140px] mx-auto'>
@@ -38,6 +40,8 @@ export default function WineFilter() {
               xl:w-[800px] h-[48px] px-[20px] py-[14px] pl-[55px]
               border border-gray-300 rounded-full
             '
+            value={searchTerm} // 검색어 연결
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className='hidden xl:flex pt-[20px]'>
             <WineListCard />
@@ -68,6 +72,8 @@ export default function WineFilter() {
               h-[48px] px-[20px] py-[14px] pl-[55px]
               border border-gray-300 rounded-full
             '
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
@@ -90,6 +96,8 @@ export default function WineFilter() {
             placeholder='와인을 검색해 보세요'
             variant='search'
             className='w-full h-[38px] px-[15px] py-[14px] pl-[55px] border border-gray-300 rounded-full'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 

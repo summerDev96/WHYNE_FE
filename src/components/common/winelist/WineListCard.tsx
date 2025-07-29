@@ -6,6 +6,7 @@ import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useFilterStore from '@/stores/filterStore';
+import useSearchStore from '@/stores/searchStore';
 
 interface Wine {
   id: number;
@@ -71,6 +72,8 @@ export default function WineListCard() {
   const maxPrice = useFilterStore((state) => state.maxPrice);
   const rating = useFilterStore((state) => state.rating);
 
+  const { searchTerm } = useSearchStore();
+
   const ratingRangeMap: Record<string, [number, number]> = {
     all: [0, 5],
     '4.6': [4.5, 5],
@@ -86,6 +89,16 @@ export default function WineListCard() {
     if (rating !== 'all') {
       const [min, max] = ratingRangeMap[rating] || [0, 5];
       if (wine.rating < min || wine.rating > max) return false;
+    }
+
+    if (searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      if (
+        !wine.name.toLowerCase().includes(lowerCaseSearchTerm) &&
+        !wine.region.toLowerCase().includes(lowerCaseSearchTerm)
+      ) {
+        return false;
+      }
     }
 
     return true;
