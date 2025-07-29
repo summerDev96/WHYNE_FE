@@ -193,7 +193,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
         <form
           onSubmit={handleSubmit(onSubmit)}
           encType='multipart/form-data'
-          className='my-[32px] md:my-[40px]'
+          className='my-[32px] md:my-[40px] px-4'
         >
           <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
             <Image
