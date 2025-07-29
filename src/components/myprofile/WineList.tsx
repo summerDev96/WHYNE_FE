@@ -12,7 +12,9 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import type { MyWine, MyWinesResponse } from '@/types/MyWinesTypes';
 
 const PAGE_LIMIT = 10;
-
+interface WineListProps {
+  setTotalCount: (count: number) => void;
+}
 /**
  * WineList 컴포넌트
  *
@@ -20,7 +22,7 @@ const PAGE_LIMIT = 10;
  * IntersectionObserver로 스크롤 끝에 도달 시 추가 페이지를 자동으로 로드
  *
  */
-export function WineList() {
+export function WineList({ setTotalCount }: WineListProps) {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   //useInfiniteQuery 훅으로 와인 데이터를 무한 스크롤 형태로 조회
@@ -33,8 +35,11 @@ export function WineList() {
     });
 
   useEffect(() => {
-    console.log('[WineList] pages raw:', data?.pages);
-  }, [data?.pages]);
+    if (data?.pages?.[0]?.totalCount != null) {
+      setTotalCount(data.pages[0].totalCount);
+    }
+  }, [data, setTotalCount]);
+
   // IntersectionObserver 훅 적용으로 스크롤 끝 감지
   useInfiniteScroll({
     targetRef: observerRef,

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -11,6 +11,10 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { MyReview } from '@/types/MyReviewsTypes';
 
 const PAGE_LIMIT = 10;
+
+interface ReviewListProps {
+  setTotalCount: (count: number) => void;
+}
 /**
  * ReviewList 컴포넌트
  *
@@ -18,7 +22,7 @@ const PAGE_LIMIT = 10;
  * IntersectionObserver로 스크롤 끝에 도달 시 다음 페이지를 자동으로 로드
  *
  */
-export function ReviewList() {
+export function ReviewList({ setTotalCount }: ReviewListProps) {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery 훅으로 리뷰 데이터를 무한 스크롤 형태로 조회
@@ -29,6 +33,12 @@ export function ReviewList() {
       initialPageParam: 0,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
     });
+  // xhx
+  useEffect(() => {
+    if (data?.pages?.[0]?.totalCount != null) {
+      setTotalCount(data.pages[0].totalCount);
+    }
+  }, [data, setTotalCount]);
 
   // IntersectionObserver 훅 적용으로 스크롤 끝 감지
   useInfiniteScroll({

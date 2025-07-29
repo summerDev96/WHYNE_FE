@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import { mockMyReviewsPage1, mockMyWinesPage1 } from '@/components/myprofile/mockUser';
 import Profile from '@/components/myprofile/Profile';
 import { ReviewList } from '@/components/myprofile/ReviewList';
 import { TabNav } from '@/components/myprofile/Tab';
@@ -9,6 +8,10 @@ import { WineList } from '@/components/myprofile/WineList';
 export default function MyProfile() {
   // 탭 상태: 'reviews' | 'wines'
   const [tab, setTab] = useState<'reviews' | 'wines'>('reviews');
+
+  // 각각의 totalCount를 상태로 관리
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [winesCount, setWinesCount] = useState(0);
 
   return (
     <div className='min-h-screen'>
@@ -21,12 +24,16 @@ export default function MyProfile() {
           <TabNav
             current={tab}
             onChange={setTab}
-            reviewsCount={mockMyReviewsPage1.totalCount}
-            winesCount={mockMyWinesPage1.totalCount}
+            reviewsCount={reviewsCount}
+            winesCount={winesCount}
           />
 
-          {/* 탭에 따라 ReviewList 또는 WineList에 props 전달 */}
-          {tab === 'reviews' ? <ReviewList /> : <WineList />}
+          {/* 탭에 따라 ReviewList 또는 WineList 렌더링 */}
+          {tab === 'reviews' ? (
+            <ReviewList setTotalCount={setReviewsCount} />
+          ) : (
+            <WineList setTotalCount={setWinesCount} />
+          )}
         </div>
       </main>
     </div>
