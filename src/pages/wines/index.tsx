@@ -44,7 +44,7 @@ export const getWines = (): Promise<GetWineListResponse> => {
 };
 
 function WineList() {
-  const wines = [{ id: 1361 }, { id: 1362 }, { id: 1363 }];
+  const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
 
   const queryClient = useQueryClient();
 
