@@ -28,7 +28,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
           <div className='flex justify-between order-1 md:flex-col xl:mb-5'>
             <div className='flex items-center md:mb-[30px] xl:mb-0'>
               <span className='text-[36px] md:text-[54px] font-extrabold mr-4 md:mr-5'>
-                {rating}
+                {rating.toFixed(1)}
               </span>
               <div>
                 <AverageStar rating={rating} />

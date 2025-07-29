@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -15,21 +15,21 @@ import { Button } from '../../ui/button';
 
 interface ReviewForm {
   rating: number;
-  sliderLightBold: number;
-  sliderSmoothTanic: number;
-  sliderdrySweet: number;
-  slidersoftAcidic: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
   aroma: Array<string>;
   content: string;
 }
 
 interface ReviewData {
-  reviewId: number;
+  id: number;
   rating: number;
-  sliderLightBold: number;
-  sliderSmoothTanic: number;
-  sliderdrySweet: number;
-  slidersoftAcidic: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
   aroma: string[];
   content: string;
 }
@@ -81,11 +81,14 @@ const aromaMap: Record<string, string> = {
 const EditReviewModal = ({
   wineName,
   reviewData,
+  showEditModal,
+  setShowEditModal,
 }: {
   wineName: string;
   reviewData: ReviewData;
+  showEditModal: boolean;
+  setShowEditModal: (state: boolean) => void;
 }) => {
-  const [showEditModal, setShowEditModal] = useState(false);
   const queryClient = useQueryClient();
 
   const updateReviewMutation = useMutation({
@@ -93,6 +96,7 @@ const EditReviewModal = ({
     onSuccess: () => {
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       setShowEditModal(false);
     },
     onError: (error) => {
@@ -112,10 +116,10 @@ const EditReviewModal = ({
   } = useForm<ReviewForm>({
     defaultValues: {
       rating: reviewData.rating,
-      sliderLightBold: reviewData.sliderLightBold,
-      sliderSmoothTanic: reviewData.sliderSmoothTanic,
-      sliderdrySweet: reviewData.sliderdrySweet,
-      slidersoftAcidic: reviewData.slidersoftAcidic,
+      lightBold: reviewData.lightBold,
+      smoothTannic: reviewData.smoothTannic,
+      drySweet: reviewData.drySweet,
+      softAcidic: reviewData.softAcidic,
       content: reviewData.content,
       aroma: reviewData.aroma.map((eng) => {
         const kor = Object.keys(aromaMap).find((key) => aromaMap[key] === eng);
@@ -146,12 +150,12 @@ const EditReviewModal = ({
       return;
     }
     const fullData = {
-      reviewId: reviewData.reviewId,
+      id: reviewData.id,
       rating: data.rating,
-      lightBold: data.sliderLightBold,
-      smoothTannic: data.sliderSmoothTanic,
-      drySweet: data.sliderdrySweet,
-      softAcidic: data.slidersoftAcidic,
+      lightBold: data.lightBold,
+      smoothTannic: data.smoothTannic,
+      drySweet: data.drySweet,
+      softAcidic: data.softAcidic,
       aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
       content: data.content,
     };
@@ -167,9 +171,6 @@ const EditReviewModal = ({
 
   return (
     <div>
-      <Button variant='purpleDark' size='xs' width='sm' onClick={() => setShowEditModal(true)}>
-        리뷰 수정하기
-      </Button>
       <BasicModal
         type='review'
         title='리뷰 수정'
@@ -234,41 +235,41 @@ const EditReviewModal = ({
 
           <div className='mb-[40px] space-y-[18px]'>
             <FlavorSlider
-              value={watch('sliderLightBold')}
+              value={watch('lightBold')}
               min={0}
               max={10}
               step={1}
-              onChange={(val) => setValue('sliderLightBold', val)}
+              onChange={(val) => setValue('lightBold', val)}
               labelLeft='가벼워요'
               labelRight='진해요'
               badgeLabel='바디감'
             />
             <FlavorSlider
-              value={watch('sliderSmoothTanic')}
+              value={watch('smoothTannic')}
               min={0}
               max={10}
               step={1}
-              onChange={(val) => setValue('sliderSmoothTanic', val)}
+              onChange={(val) => setValue('smoothTannic', val)}
               labelLeft='부드러워요'
               labelRight='떫어요'
               badgeLabel='타닌'
             />
             <FlavorSlider
-              value={watch('sliderdrySweet')}
+              value={watch('drySweet')}
               min={0}
               max={10}
               step={1}
-              onChange={(val) => setValue('sliderdrySweet', val)}
+              onChange={(val) => setValue('drySweet', val)}
               labelLeft='드라이해요'
               labelRight='달아요'
               badgeLabel='당도'
             />
             <FlavorSlider
-              value={watch('slidersoftAcidic')}
+              value={watch('softAcidic')}
               min={0}
               max={10}
               step={1}
-              onChange={(val) => setValue('slidersoftAcidic', val)}
+              onChange={(val) => setValue('softAcidic', val)}
               labelLeft='안 셔요'
               labelRight='많이 셔요'
               badgeLabel='산미'
