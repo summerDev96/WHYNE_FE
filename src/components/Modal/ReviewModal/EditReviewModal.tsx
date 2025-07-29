@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
@@ -85,6 +86,19 @@ const EditReviewModal = ({
   reviewData: ReviewData;
 }) => {
   const [showEditModal, setShowEditModal] = useState(false);
+  const queryClient = useQueryClient();
+
+  const updateReviewMutation = useMutation({
+    mutationFn: updateReview,
+    onSuccess: () => {
+      console.log('리뷰 수정 완료');
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      setShowEditModal(false);
+    },
+    onError: (error) => {
+      console.log('리뷰 수정 실패', error);
+    },
+  });
 
   const {
     register,
@@ -131,25 +145,17 @@ const EditReviewModal = ({
       setError('aroma', { type: 'errmsg', message: '최소 하나의 향을 선택해주세요.' });
       return;
     }
-
-    try {
-      const fullData = {
-        reviewId: reviewData.reviewId,
-        rating: data.rating,
-        lightBold: data.sliderLightBold,
-        smoothTannic: data.sliderSmoothTanic,
-        drySweet: data.sliderdrySweet,
-        softAcidic: data.slidersoftAcidic,
-        aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
-        content: data.content,
-      };
-      console.log('리뷰 수정 요청 데이터:', fullData);
-      await updateReview(fullData);
-      console.log('리뷰 수정 완료');
-      setShowEditModal(false);
-    } catch (error) {
-      console.error('리뷰 수정 실패', error);
-    }
+    const fullData = {
+      reviewId: reviewData.reviewId,
+      rating: data.rating,
+      lightBold: data.sliderLightBold,
+      smoothTannic: data.sliderSmoothTanic,
+      drySweet: data.sliderdrySweet,
+      softAcidic: data.slidersoftAcidic,
+      aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
+      content: data.content,
+    };
+    updateReviewMutation.mutate(fullData);
   };
 
   const closeModalReset = (isOpen: boolean) => {

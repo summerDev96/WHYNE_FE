@@ -11,6 +11,18 @@ interface UpdateReviewRequest {
   content: string;
 }
 
-export const updateReview = async ({ reviewId, ...body }: UpdateReviewRequest) => {
-  return apiClient.patch(`/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`, body);
+interface UpdateReviewResponse {
+  success: boolean;
+  message?: string;
+}
+
+export const updateReview = async ({
+  reviewId,
+  ...body
+}: UpdateReviewRequest): Promise<UpdateReviewResponse> => {
+  const response = await apiClient.patch<UpdateReviewResponse>(
+    `/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`,
+    body,
+  );
+  return response.data;
 };
