@@ -1,49 +1,64 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getMyWines } from '@/api/myWines';
 import DotIcon from '@/assets/icons/dot.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
-import type { MyWinesResponse, MyWine } from '@/types/MyWinesTypes';
+import type { MyWine, MyWinesResponse } from '@/types/MyWinesTypes';
+
+const PAGE_LIMIT = 10;
+
 /**
  * WineList 컴포넌트
- * - React Query의 useQuery 훅을 사용해 와인 데이터를 패칭
- * - 로딩 및 에러 상태를 처리한 뒤, ImageCard 컴포넌트로 리스트를 렌더링
+ *
+ * 무한 스크롤을 통해 사용자의 와인 목록을 페이징하여 불러옴
+ * IntersectionObserver로 스크롤 끝에 도달 시 추가 페이지를 자동으로 로드
+ *
  */
 export function WineList() {
-  const LIMIT = 10;
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // React Query로 와인 목록 패칭
-  const { data, isLoading, isError } = useQuery<MyWinesResponse, Error>({
-    queryKey: ['myWines', { cursor: 0, limit: LIMIT }],
-    queryFn: () => getMyWines(0, LIMIT),
-    staleTime: 5 * 60 * 1000,
+  //useInfiniteQuery 훅으로 와인 데이터를 무한 스크롤 형태로 조회
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['myWines'],
+      queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
+    });
+
+  useEffect(() => {
+    console.log('[WineList] pages raw:', data?.pages);
+  }, [data?.pages]);
+  // IntersectionObserver 훅 적용으로 스크롤 끝 감지
+  useInfiniteScroll({
+    targetRef: observerRef,
+    hasNextPage: !!hasNextPage,
+    fetchNextPage,
+    isFetching: isFetchingNextPage,
   });
 
-  // 로딩 중 표시
-  if (isLoading) {
-    return <p className='text-center py-4'>와인 불러오는 중…</p>;
-  }
+  // 로딩 및 에러 상태 처리 (임시)
+  if (isLoading) return <p className='text-center py-4'>와인 불러오는 중…</p>;
+  if (isError || !data) return <p className='text-center py-4'>와인 불러오기 실패</p>;
 
-  // 에러 시 표시
-  if (isError || !data) {
-    return <p className='text-center py-4'>와인 불러오기 실패</p>;
-  }
+  // 와인 목록 평탄화
+  const wines: MyWine[] = data?.pages?.flatMap((page) => page?.list ?? []) ?? [];
 
   return (
     <div className='flex flex-col mt-9 space-y-9 md:space-y-16 md:mt-16'>
-      {data.list.map((wine: MyWine) => (
+      {wines.map((wine) => (
         <ImageCard
           key={wine.id}
           className='relative pl-24 min-h-[164px] md:min-h-[228px] md:pl-44 md:pt-10'
           imageSrc={wine.image}
           imageClassName='object-contain absolute left-3 bottom-0 h-[185px] md:h-[270px] md:left-12'
           rightSlot={
-            // dot 아이콘 클릭 시 드롭다운 오픈
             <MenuDropdown
               trigger={
                 <button className='w-6 h-6 text-gray-500 hover:text-primary transition-colors'>
@@ -58,22 +73,23 @@ export function WineList() {
             />
           }
         >
-          {/* 카드 내부: 와인 정보 */}
           <div className='flex flex-col items-start justify-center h-full'>
             <h4 className='text-xl/6 font-semibold text-gray-800 mb-4 md:text-3xl md:mb-5'>
-              {wine.name} {/* 와인 이름 */}
+              {wine.name}
             </h4>
             <p className='custom-text-md-legular text-gray-500 mb-2 md:custom-text-lg-legular md:mb-4'>
-              {wine.region} {/* 생산 지역 */}
+              {wine.region}
             </p>
             <Badge variant='priceBadge'>
               <span className='inline-block w-full h-full pt-[3px]'>
-                {/* 가격 표시 */}₩ {wine.price.toLocaleString()}
+                ₩ {wine.price.toLocaleString()}
               </span>
             </Badge>
           </div>
         </ImageCard>
       ))}
+      {/* 옵저버 감지 요소 */}
+      <div ref={observerRef} className='w-1 h-1' />
     </div>
   );
 }

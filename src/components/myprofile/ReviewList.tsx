@@ -1,48 +1,56 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getMyReviews } from '@/api/myReviews';
 import DotIcon from '@/assets/icons/dot.svg';
 import { MyCard } from '@/components/common/card/MyCard';
 import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
-import { MyReviewsResponse, MyReview } from '@/types/MyReviewsTypes';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { MyReview } from '@/types/MyReviewsTypes';
 
+const PAGE_LIMIT = 10;
 /**
  * ReviewList 컴포넌트
- * - React Query의 useQuery 훅을 사용해 리뷰 데이터를 패칭
- * - 로딩 및 에러 상태를 처리한 뒤, MyCard 컴포넌트로 리스트를 렌더링
+ *
+ * 무한 스크롤을 통해 사용자의 리뷰 목록을 페이징하여 불러옴
+ * IntersectionObserver로 스크롤 끝에 도달 시 다음 페이지를 자동으로 로드
+ *
  */
 export function ReviewList() {
-  const LIMIT = 10;
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // React Query로 리뷰 데이터 요청
-  const { data, isLoading, isError } = useQuery<MyReviewsResponse, Error>({
-    queryKey: ['myReviews', { cursor: 0, limit: LIMIT }],
-    queryFn: () => getMyReviews(0, LIMIT),
-    staleTime: 5 * 60 * 1000,
+  // useInfiniteQuery 훅으로 리뷰 데이터를 무한 스크롤 형태로 조회
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['myReviews'],
+      queryFn: ({ pageParam = 0 }) => getMyReviews({ cursor: pageParam, limit: PAGE_LIMIT }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
+    });
+
+  // IntersectionObserver 훅 적용으로 스크롤 끝 감지
+  useInfiniteScroll({
+    targetRef: observerRef,
+    hasNextPage,
+    fetchNextPage,
+    isFetching: isFetchingNextPage,
   });
 
-  // 로딩 중 표시
-  if (isLoading) {
-    return <p className='text-center py-4'>리뷰 불러오는 중…</p>;
-  }
+  // 로딩 및 에러 상태 처리 (임시)
+  if (isLoading) return <p>불러오는 중…</p>;
+  if (isError) return <p>불러오기 실패</p>;
+  if (!data) return <p>리뷰 데이터가 없습니다.</p>;
 
-  // 에러 시 표시
-  if (isError || !data) {
-    return <p className='text-center py-4'>리뷰 불러오기 실패</p>;
-  }
-  // **데이터 확인용 로그**
-  console.log('✔ ReviewsResponse:', data);
+  // 리뮤 목록 평탄화
+  const reviews: MyReview[] = data?.pages?.flatMap((page) => page.list ?? []) ?? [];
 
-  // 실제 리뷰 리스트 렌더링
   return (
     <div className='space-y-4 mt-4'>
-      {data.list.map((review: MyReview) => (
+      {reviews.map((review) => (
         <MyCard
           key={review.id}
-          // 별점 뱃지
           rating={
             <Badge variant='star'>
               <span className='inline-block w-full h-full pt-[2px]'>
@@ -50,13 +58,9 @@ export function ReviewList() {
               </span>
             </Badge>
           }
-          // 작성일
           timeAgo={new Date(review.createdAt).toLocaleDateString()}
-          // 작성자 닉네임
           title={review.user.nickname}
-          // 리뷰 내용
           review={review.content}
-          // dot 아이콘 클릭 시 드롭다운 오픈
           rightSlot={
             <MenuDropdown
               trigger={
@@ -68,11 +72,13 @@ export function ReviewList() {
                 { label: '수정하기', value: 'edit' },
                 { label: '삭제하기', value: 'delete' },
               ]}
-              onSelect={(value) => console.log(`${value} clicked for review id: ${review.id}`)}
+              onSelect={(value) => console.log(`${value} clicked: review id=${review.id}`)}
             />
           }
         />
       ))}
+      {/* 옵저버 감지 요소 */}
+      <div ref={observerRef} className='w-1 h-1' />
     </div>
   );
 }
