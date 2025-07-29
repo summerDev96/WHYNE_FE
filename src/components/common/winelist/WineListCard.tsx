@@ -74,6 +74,7 @@ export default function WineListCard() {
 
   const { searchTerm } = useSearchStore();
 
+  /* 별점 범위 필터 */
   const ratingRangeMap: Record<string, [number, number]> = {
     all: [0, 5],
     '4.6': [4.5, 5],
@@ -83,14 +84,16 @@ export default function WineListCard() {
   };
 
   const filteredWines = mockWines.filter((wine) => {
+    /* 종류 필터 */
     if (type && wine.type !== type) return false;
+    /* 가격 범위 필터 */
     if (wine.price < minPrice || wine.price > maxPrice) return false;
-
+    /* 평점 필터 */
     if (rating !== 'all') {
       const [min, max] = ratingRangeMap[rating] || [0, 5];
       if (wine.rating < min || wine.rating > max) return false;
     }
-
+    /* 검색어 필터 (이름 or 지역) */
     if (searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase();
       if (
