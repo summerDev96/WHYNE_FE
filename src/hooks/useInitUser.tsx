@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { getUser } from '@/api/user';
 import { useUserStore } from '@/stores/userStore';
 
