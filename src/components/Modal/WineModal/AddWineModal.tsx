@@ -19,8 +19,12 @@ interface WineForm {
   wineType: string;
 }
 
-const AddWineModal = () => {
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
+interface AddWineModalProps {
+  showRegisterModal: boolean;
+  setShowRegisterModal: (state: boolean) => void;
+}
+
+const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalProps) => {
   const [category, setCategory] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -106,9 +110,6 @@ const AddWineModal = () => {
   ////
   return (
     <div>
-      <Button variant='purpleDark' size='lg' width='lg' onClick={() => setShowRegisterModal(true)}>
-        와인 등록하기
-      </Button>
       <BasicModal
         type='register'
         title='와인 등록'
