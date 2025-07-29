@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import HeroSectionLayout from './HeroSectionLayout';
 import { ImageCard } from '../common/card/ImageCard';
+import AverageStar from '../wineDetail/AverageStar';
 
 export const HeroSection = () => {
   return (
@@ -31,7 +32,7 @@ export const HeroSection = () => {
                 <div className='flex flex-col ml-[8px] w-[100px]'>
                   <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
                   {/* 모달쪽에 구현해둔 별점이 있음 */}
-                  <span>별점 나중에</span>
+                  <AverageStar rating={4} />
                   <p className='custom-text-xs-regular text-gray-500'>
                     Sentinel Carbernet Sauvignon 2016
                   </p>
@@ -46,25 +47,23 @@ export const HeroSection = () => {
                 imageClassName='h-full w-[44px] object-contain '
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
-                  <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                  <span>별점 나중에</span>
+                  <span className='font-extrabold text-4xl text-gray-800'>4.6</span>
+                  <AverageStar rating={4} />
                   <p className='custom-text-xs-regular text-gray-500'>
-                    Sentinel Carbernet Sauvignon 2016
+                    Ciel du Cheval Vaineyard Collaboration
                   </p>
                 </div>
               </ImageCard>
             </HeroSectionLayout>
             <HeroSectionLayout className='top-10 left-[calc(50%+100px)] z-20'>
               <ImageCard
-                imageSrc='/assets/lendingwine1.png'
+                imageSrc='/assets/lendingwine2.png'
                 imageClassName='h-full w-[44px] object-contain '
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
-                  <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                  <span>별점 나중에</span>
-                  <p className='custom-text-xs-regular text-gray-500'>
-                    Sentinel Carbernet Sauvignon 2016
-                  </p>
+                  <span className='font-extrabold text-4xl text-gray-800'>4.2</span>
+                  <AverageStar rating={4} />
+                  <p className='custom-text-xs-regular text-gray-500'>Palazzo della Torre 2017</p>
                 </div>
               </ImageCard>
             </HeroSectionLayout>
@@ -72,12 +71,12 @@ export const HeroSection = () => {
             {/* 좌우 아래 박스 */}
             <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10'>
               <ImageCard
-                imageSrc='/assets/lendingwine1.png'
+                imageSrc='/assets/lendingwine4.png'
                 imageClassName='h-full w-[44px] object-contain '
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
-                  <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                  <span>별점 나중에</span>
+                  <span className='font-extrabold text-4xl text-gray-800'>4.8</span>
+                  <AverageStar rating={4} />
                   <p className='custom-text-xs-regular text-gray-500'>
                     Sentinel Carbernet Sauvignon 2016
                   </p>
@@ -90,8 +89,8 @@ export const HeroSection = () => {
                 imageClassName='h-full w-[44px] object-contain '
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
-                  <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                  <span>별점 나중에</span>
+                  <span className='font-extrabold text-4xl text-gray-800'>4.9</span>
+                  <AverageStar rating={4} />
                   <p className='custom-text-xs-regular text-gray-500'>
                     Sentinel Carbernet Sauvignon 2016
                   </p>
