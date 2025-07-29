@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 
 import apiClient from '@/api/apiClient';
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import WineFilter from '@/components/common/winelist/WineFilter';
 import WineListCard from '@/components/common/winelist/WineListCard';
 import WineSlider from '@/components/common/winelist/WineSlider';
@@ -43,29 +47,30 @@ export const getWines = (): Promise<GetWineListResponse> => {
 };
 
 export default function Wines() {
-  // const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
+  const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // //테스트용 캐시 지우기
-  // queryClient.removeQueries({ queryKey: ['wineDetail'] });
+  //테스트용 캐시 지우기
+  queryClient.removeQueries({ queryKey: ['wineDetail'] });
 
-  // const prefetchWineInfo = async (wineid: number) => {
-  //   await queryClient.prefetchQuery({
-  //     queryKey: ['wineDetail', wineid],
-  //     queryFn: () => getWineInfoForClient(wineid),
-  //     staleTime: 1000 * 60 * 5,
-  //   });
-  // };
+  const prefetchWineInfo = async (wineid: number) => {
+    await queryClient.prefetchQuery({
+      queryKey: ['wineDetail', wineid],
+      queryFn: () => getWineInfoForClient(wineid),
+      staleTime: 1000 * 60 * 5,
+    });
+  };
 
-  // // // 데이터 프리패칭용
-  // useEffect(() => {
-  //   wines.forEach((wine) => {
-  //     prefetchWineInfo(wine.id);
-  //   });
-  // }, []);
+  // // 데이터 프리패칭용
+  useEffect(() => {
+    wines.forEach((wine) => {
+      prefetchWineInfo(wine.id);
+    });
+  }, []);
   return (
     <div>
+      <Link href='/wines/1377'>1377</Link>
       <WineSlider />
       <WineFilter />
       <div className='xl:hidden'>
