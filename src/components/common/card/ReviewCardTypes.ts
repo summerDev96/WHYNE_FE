@@ -6,21 +6,21 @@ interface ReviewCardProps {
 
 interface UserHeaderProps {
   userIcon: ReactNode;
-  reviewId: string;
+  reviewId: number;
   children: ReactNode;
 }
 
 interface TagAndRatingProps {
-  reviewId: string;
+  reviewId: number;
 }
 
 interface ReviewBodyProps {
-  reviewId: string;
+  reviewId: number;
   flavorSliderSlot: ReactNode;
 }
 
 interface ToggleButtonProps {
-  reviewId: string;
+  reviewId: number;
 }
 
 export type {
