@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  images: {
+    domains: ['sprint-fe-project.s3.ap-northeast-2.amazonaws.com'],
+  },
   webpack(config) {
     config.module.rules = config.module.rules.filter(
       (rule) => !(rule.test && rule.test.test && rule.test.test('.svg')),
