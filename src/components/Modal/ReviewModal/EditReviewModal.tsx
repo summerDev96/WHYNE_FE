@@ -56,7 +56,7 @@ const aromaOptions = [
   '가죽',
 ];
 
-const aromaMap: Record<string, string> = {
+export const aromaMap: Record<string, string> = {
   체리: 'CHERRY',
   베리: 'BERRY',
   오크: 'OAK',

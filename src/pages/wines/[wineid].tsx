@@ -39,7 +39,7 @@ export default function WineInfoById(props: WinePageProps) {
 
   if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
 
-  if (!data) return <></>; //테스트용
+  if (!data) throw new Error('데이터가 없습니다.');
 
   return (
     <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
