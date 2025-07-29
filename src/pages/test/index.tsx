@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   try {
     const userData = await getUser(context);
-    console.log('유저 데이터 테스트');
     console.log('유저 데이터:');
     console.log(userData);
     return {

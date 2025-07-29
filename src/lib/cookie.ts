@@ -1,12 +1,11 @@
 import { NextApiResponse } from 'next';
 
+import { checkToken } from '@/api/auth';
 import {
   GetClientCookieParams,
   GetCookieParams,
   GetServerCookieParams,
   GetServerCookieReturn,
-  SetCookieParams,
-  SetCookieType,
   SetServerCookieParams,
 } from '@/types/CookieTypes';
 
@@ -16,6 +15,8 @@ export const COOKIE_NAMES = {
   ACCESS_TOKEN: 'accessToken',
   REFRESH_TOKEN: 'refreshToken',
 } as const;
+
+type COOKIE_TYPE = 'accessToken' | 'refreshToken';
 
 const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
 
@@ -44,26 +45,19 @@ export function clearAuthCookies(res: NextApiResponse) {
   res.setHeader('Set-Cookie', cookies);
 }
 
-export function getCookie({ cookieHeader, name }: GetCookieParams) {
-  return isClient() ? getClientCookie({ name }) : getServerCookie({ cookieHeader, name });
+export async function getCookie({ cookieHeader, name }: GetCookieParams) {
+  return isClient() ? await getClientCookie({ name }) : getServerCookie({ cookieHeader, name });
 }
 
-export function setCookie({ response, name, value, maxAge }: SetCookieParams) {
-  if (isClient()) {
-    return setClientCookie({ name, value, maxAge });
-  }
-  if (response) {
-    return setServerCookie({ response, name, value, maxAge });
-  }
-  return undefined;
-}
+export async function getClientCookie({ name }: GetClientCookieParams) {
+  const data = await checkToken();
 
-export function getClientCookie({ name }: GetClientCookieParams) {
-  const cookieArr = document.cookie.split('; ');
-  for (const cookie of cookieArr) {
-    const [key, value] = cookie.split('=');
-    if (key === name) return decodeURIComponent(value);
-  }
+  const cookieMap: Record<COOKIE_TYPE, string | undefined> = {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
+
+  return cookieMap[name as COOKIE_TYPE];
 }
 
 export function getServerCookie({
@@ -88,10 +82,6 @@ export function parseCookie(cookieHeader: string) {
       return [key, decodeURIComponent(v.join('='))];
     }),
   );
-}
-
-export function setClientCookie({ name, value, maxAge }: SetCookieType) {
-  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=strict; HttpOnly${secure}`;
 }
 
 export function setServerCookie({ response, name, value, maxAge }: SetServerCookieParams) {

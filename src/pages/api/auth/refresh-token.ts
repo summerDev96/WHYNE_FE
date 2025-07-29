@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import apiClient from '@/api/apiClient';
-import { setAuthCookies } from '@/lib/cookie';
+import { clearAuthCookies, setAuthCookies } from '@/lib/cookie';
 import { AccessTokenResponse } from '@/types/AuthTypes';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -23,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const err = error as AxiosError;
     const message = error instanceof AxiosError ? error.message : '서버 오류가 발생했습니다.';
     const status = err.response?.status || 500;
+    clearAuthCookies(res);
 
     res.status(status).json({ message });
   }

@@ -10,14 +10,14 @@ import {
   SignupResponse,
 } from '@/types/AuthTypes';
 
+import { tokenClient } from './tokenClient';
+
 export const createUser = (data: SignupRequest): Promise<SignupResponse> => {
   return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signUp`, data);
 };
 
 export const loginUser = (data: LoginRequest): Promise<LoginResponse> => {
-  return apiClient.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signIn`, data, {
-    baseURL: '',
-  });
+  return apiClient.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signIn`, data);
 };
 
 export const updateAccessToken = (data: AccessTokenRequest): Promise<AccessTokenResponse> => {
@@ -25,7 +25,7 @@ export const updateAccessToken = (data: AccessTokenRequest): Promise<AccessToken
 };
 
 export const checkToken = (): Promise<AccessTokenResponse> => {
-  return apiClient.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check-token`);
+  return tokenClient.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check-token`, null);
 };
 
 export const signInKakao = (data: KakakoSignInRequest): Promise<KakakoSignInResponse> => {

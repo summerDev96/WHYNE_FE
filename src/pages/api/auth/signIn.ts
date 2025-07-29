@@ -6,7 +6,6 @@ import { setAuthCookies } from '@/lib/cookie';
 import { LoginResponse } from '@/types/AuthTypes';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('로그인 API 요청');
   try {
     const url = `/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn`;
     const data = (await apiClient.post(url, req.body)) as LoginResponse;

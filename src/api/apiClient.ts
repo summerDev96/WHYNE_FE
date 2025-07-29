@@ -32,7 +32,7 @@ export const createApiClient = (context?: ApiClientContext) => {
     async (error) => {
       const status = error.response?.status;
 
-      const refreshToken = getCookie({ name: 'refreshToken', cookieHeader });
+      const refreshToken = await getCookie({ name: 'refreshToken', cookieHeader });
 
       if (status !== 401 || !refreshToken) return handleCommonError(error);
 
@@ -45,8 +45,6 @@ export const createApiClient = (context?: ApiClientContext) => {
         });
         if (result) return result;
       } catch (refreshTokenError) {
-        // clearAuthCookiesWithCallback(() => Router.replace('/signin'));
-
         return handleCommonError(refreshTokenError as AxiosError);
       }
     },
@@ -60,10 +58,10 @@ export default apiClient;
 
 // 토큰 추가 메소드
 function createAddAccessToken({ cookieHeader }: CookieHeaderParams) {
-  return function addAccessToken(config: InternalAxiosRequestConfig) {
+  return async function addAccessToken(config: InternalAxiosRequestConfig) {
     if ((config as RetryRequestConfig)._retry) return config;
 
-    const accessToken = getCookie({ name: 'accessToken', cookieHeader });
+    const accessToken = await getCookie({ name: 'accessToken', cookieHeader });
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
