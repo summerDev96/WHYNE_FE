@@ -76,7 +76,7 @@ function UserDropdown({ userImage }: Props) {
   const queryClient = useQueryClient();
 
   function onSelect(value: string) {
-    if (value === 'myprofile') router.push('/myprofile');
+    if (value === 'myprofile') router.push('/my-profile');
     if (value === 'logout') handleLogout();
   }
 
