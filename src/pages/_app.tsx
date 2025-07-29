@@ -11,6 +11,7 @@ import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
 
 import type { AppProps } from 'next/app';
+import { useInitUser } from '@/hooks/useInitUser';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  useInitUser();
   const { pathname } = useRouter();
   const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao', '/_error'];
   const hideHeader = pagesWithoutGnb.includes(pathname);
