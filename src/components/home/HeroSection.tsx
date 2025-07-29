@@ -31,7 +31,6 @@ export const HeroSection = () => {
               >
                 <div className='flex flex-col ml-[8px] w-[100px]'>
                   <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                  {/* 모달쪽에 구현해둔 별점이 있음 */}
                   <AverageStar rating={4} />
                   <p className='custom-text-xs-regular text-gray-500'>
                     Sentinel Carbernet Sauvignon 2016
