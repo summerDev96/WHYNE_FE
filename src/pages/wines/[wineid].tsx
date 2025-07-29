@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import Reviews from '@/components/wineDetail/Reviews';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
 import { cn } from '@/lib/utils';
+import useWineStore from '@/stores/wineStore';
 import { GetWineInfoResponse } from '@/types/WineTypes';
 
 interface WinePageProps {
@@ -23,6 +24,7 @@ export default function WineInfoById(props: WinePageProps) {
   const { parsedWineId: id } = props;
   // 주소로 직접 들어왔을 때(SSR) //목록에서 링크로 들어왔을 때(CSR)
   const parsedWineId = id ? id : Number(router.query.wineid);
+  const setNowWine = useWineStore((state) => state.setNowWine);
 
   //서버든 목록(클라이언트든) 캐싱된 데이터 사용
   const { data, isLoading } = useQuery({
@@ -30,6 +32,10 @@ export default function WineInfoById(props: WinePageProps) {
     queryFn: () => getWineInfoForClient(parsedWineId),
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    if (data) setNowWine(data);
+  }, [data]);
 
   if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
 
