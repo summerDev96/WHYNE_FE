@@ -1,16 +1,48 @@
+import { NextApiResponse } from 'next';
+
 import {
-  ClearAuthCookiesParams,
   GetClientCookieParams,
   GetCookieParams,
   GetServerCookieParams,
   GetServerCookieReturn,
-  SetCookieCallbackParams,
   SetCookieParams,
   SetCookieType,
   SetServerCookieParams,
 } from '@/types/CookieTypes';
 
 import { isClient } from './utils';
+
+export const COOKIE_NAMES = {
+  ACCESS_TOKEN: 'accessToken',
+  REFRESH_TOKEN: 'refreshToken',
+} as const;
+
+const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+
+// 쿠키 설정
+export function setAuthCookies(res: NextApiResponse, accessToken: string, refreshToken?: string) {
+  const cookies = [
+    `${COOKIE_NAMES.ACCESS_TOKEN}=${accessToken}; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=strict; HttpOnly${secure}`,
+  ];
+
+  if (refreshToken) {
+    cookies.push(
+      `${COOKIE_NAMES.REFRESH_TOKEN}=${refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=strict; HttpOnly${secure}`,
+    );
+  }
+
+  res.setHeader('Set-Cookie', cookies);
+}
+
+// 쿠키 삭제
+export function clearAuthCookies(res: NextApiResponse) {
+  const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
+  const cookies = [
+    `${COOKIE_NAMES.ACCESS_TOKEN}=; Path=/; Max-Age=0; HttpOnly${secure}`,
+    `${COOKIE_NAMES.REFRESH_TOKEN}=; Path=/; Max-Age=0; HttpOnly${secure}`,
+  ];
+  res.setHeader('Set-Cookie', cookies);
+}
 
 export function getCookie({ cookieHeader, name }: GetCookieParams) {
   return isClient() ? getClientCookie({ name }) : getServerCookie({ cookieHeader, name });
@@ -49,12 +81,21 @@ export function getServerCookie({
   }
 }
 
+export function parseCookie(cookieHeader: string) {
+  return Object.fromEntries(
+    cookieHeader.split('; ').map((c) => {
+      const [key, ...v] = c.split('=');
+      return [key, decodeURIComponent(v.join('='))];
+    }),
+  );
+}
+
 export function setClientCookie({ name, value, maxAge }: SetCookieType) {
-  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=strict; HttpOnly${secure}`;
 }
 
 export function setServerCookie({ response, name, value, maxAge }: SetServerCookieParams) {
-  const cookie = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=Lax; Secure; HttpOnly`;
+  const cookie = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=strict; HttpOnly${secure}`;
 
   const prevCookies = response.getHeader('Set-Cookie');
 
@@ -64,25 +105,5 @@ export function setServerCookie({ response, name, value, maxAge }: SetServerCook
     response.setHeader('Set-Cookie', [...prevCookies, cookie]);
   } else if (typeof prevCookies === 'string') {
     response.setHeader('Set-Cookie', [prevCookies, cookie]);
-  }
-}
-
-export function setAuthCookiesWithCallback({
-  accessToken,
-  refreshToken,
-  callback,
-}: SetCookieCallbackParams) {
-  setCookie({ name: 'accessToken', value: accessToken, maxAge: 1800 }); // 만료 30분
-  setCookie({ name: 'refreshToken', value: refreshToken, maxAge: 604800 }); // 만료 7일
-  if (isClient()) {
-    callback();
-  }
-}
-
-export function clearAuthCookiesWithCallback(callback: ClearAuthCookiesParams) {
-  setCookie({ name: 'accessToken', value: '', maxAge: 0 });
-  setCookie({ name: 'refreshToken', value: '', maxAge: 0 });
-  if (isClient()) {
-    callback();
   }
 }

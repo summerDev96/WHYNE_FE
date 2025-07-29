@@ -16,7 +16,6 @@ import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
 import useErrorModal from '@/hooks/useErrorModal';
-import { setAuthCookiesWithCallback } from '@/lib/cookie';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
 
@@ -48,10 +47,8 @@ const SignIn = () => {
 
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: loginUser,
-    onSuccess: (data) => {
-      const { accessToken, refreshToken } = data;
-      /* 로그인 후 로컬스토리지 토큰 저장 */
-      setAuthCookiesWithCallback({ accessToken, refreshToken, callback: () => router.push('/') });
+    onSuccess: () => {
+      router.push('/');
     },
     onError: (error) => {
       if (error.response?.status === 400) {

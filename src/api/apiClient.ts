@@ -1,8 +1,8 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import Router from 'next/router';
 
 import { updateAccessToken } from '@/api/auth';
-import { clearAuthCookiesWithCallback, getCookie, setCookie } from '@/lib/cookie';
+import { getCookie, setServerCookie } from '@/lib/cookie';
+import { isClient } from '@/lib/utils';
 import {
   ApiClientContext,
   RefreshTokenRequest,
@@ -31,6 +31,7 @@ export const createApiClient = (context?: ApiClientContext) => {
     (res) => res.data,
     async (error) => {
       const status = error.response?.status;
+
       const refreshToken = getCookie({ name: 'refreshToken', cookieHeader });
 
       if (status !== 401 || !refreshToken) return handleCommonError(error);
@@ -44,7 +45,7 @@ export const createApiClient = (context?: ApiClientContext) => {
         });
         if (result) return result;
       } catch (refreshTokenError) {
-        clearAuthCookiesWithCallback(() => Router.replace('/signin'));
+        // clearAuthCookiesWithCallback(() => Router.replace('/signin'));
 
         return handleCommonError(refreshTokenError as AxiosError);
       }
@@ -89,8 +90,8 @@ function handleCommonError(error: AxiosError) {
 async function handleRequestRefreshToken({
   instance,
   error,
-  refreshToken,
   response,
+  refreshToken,
 }: RefreshTokenRequest): RefreshTokenResponse {
   const originalRequest = error.config as RetryRequestConfig;
 
@@ -99,7 +100,9 @@ async function handleRequestRefreshToken({
 
   const data = await updateAccessToken({ refreshToken });
 
-  setCookie({ response, name: 'accessToken', value: data.accessToken, maxAge: 1800 });
+  if (!isClient() && response) {
+    setServerCookie({ response, name: 'accessToken', value: data.accessToken, maxAge: 1800 });
+  }
 
   originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 

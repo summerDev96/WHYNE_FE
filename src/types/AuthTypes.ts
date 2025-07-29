@@ -43,6 +43,7 @@ export interface AccessTokenRequest {
 
 export interface AccessTokenResponse {
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface KakakoSignInRequest {
