@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 import { updateWine, uploadImage } from '@/api/editwine';
@@ -29,6 +30,8 @@ const EditWineModal = ({ wine }: { wine: WineData }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(wine.image);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -69,12 +72,24 @@ const EditWineModal = ({ wine }: { wine: WineData }) => {
     }
   };
 
+  const updateWineMutation = useMutation({
+    mutationFn: updateWine,
+    onSuccess: () => {
+      console.log('와인수정완료');
+      queryClient.invalidateQueries({ queryKey: ['wines'] });
+      setShowEditModal(false);
+    },
+    onError: (error) => {
+      console.log('와인수정실패', error);
+    },
+  });
+
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage?.[0];
       const imageUrl = file ? await uploadImage(file) : wine.image;
 
-      await updateWine({
+      updateWineMutation.mutate({
         wineId: wine.wineId,
         name: form.wineName,
         price: Number(form.winePrice),
@@ -83,8 +98,6 @@ const EditWineModal = ({ wine }: { wine: WineData }) => {
         image: imageUrl,
         avgRating: wine.avgRating,
       });
-
-      setShowEditModal(false);
     } catch (error) {
       console.log('와인수정실패', error);
     }
