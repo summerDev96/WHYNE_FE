@@ -12,7 +12,6 @@ const nextConfig = {
       },
     ],
   },
-
   webpack(config) {
     config.module.rules = config.module.rules.filter(
       (rule) => !(rule.test && rule.test.test && rule.test.test('.svg')),
