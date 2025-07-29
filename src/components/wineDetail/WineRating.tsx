@@ -40,7 +40,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
             </div>
           </div>
           <div className='flex gap-2 flex-col w-full order-2 '>
-            {ratings.map((rating, i) => (
+            {[...ratings].reverse().map((rating, i) => (
               <div key={`${5 - i}points`} className='flex items-center justify-between'>
                 <span className='block w-8 text-gray-500 mr-4'>{5 - i}점</span>
                 <Progress className='h-[6px]' value={rating} />
