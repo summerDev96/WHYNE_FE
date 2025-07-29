@@ -48,8 +48,6 @@ const SignIn = () => {
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      document.cookie = `accessToken=${data.accessToken}; Path=/; Max-Age=${60 * 2}; SameSite=Lax; `;
-      document.cookie = `refreshToken=${data.refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax;`;
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       router.push('/');
