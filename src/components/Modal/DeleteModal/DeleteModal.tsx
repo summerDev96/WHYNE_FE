@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
-import { deleteWine } from '@/api/delete';
-import { deleteReview } from '@/api/delete';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+
+import { deleteReview, deleteWine, DeleteResponse } from '@/api/delete';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
 
@@ -13,21 +15,55 @@ interface DeleteModalProps {
 
 const DeleteModal = ({ type, id, trigger }: DeleteModalProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const queryClient = useQueryClient();
 
-  const handleDelete = async () => {
-    try {
-      if (type === 'wine') {
-        await deleteWine(id);
-        console.log('와인 삭제 성공');
-      } else if (type === 'review') {
-        await deleteReview(id);
-        console.log('리뷰 삭제 성공');
-      }
-      setShowDeleteModal(false);
-    } catch (error) {
-      console.log('삭제실패 : ', error);
+  const deleteWineMutation = useMutation<DeleteResponse, AxiosError, number>({
+    mutationFn: (id) => deleteWine(id),
+  });
+  const deleteReviewMutation = useMutation<DeleteResponse, AxiosError, number>({
+    mutationFn: (id) => deleteReview(id),
+  });
+
+  const handleDelete = () => {
+    if (type === 'wine') {
+      deleteWineMutation.mutate(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['wines'] }); //삭제후 관련데이터 바로 갱신
+          console.log('와인 삭제 성공');
+          setShowDeleteModal(false);
+        },
+        onError: (error) => {
+          console.error('와인 삭제 실패', error);
+        },
+      });
+    } else if (type === 'review') {
+      deleteReviewMutation.mutate(id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['reviews'] });
+          console.log('리뷰 삭제 성공');
+          setShowDeleteModal(false);
+        },
+        onError: (error) => {
+          console.error('리뷰 삭제 실패', error);
+        },
+      });
     }
   };
+
+  // const handleDelete = async () => {
+  //   try {
+  //     if (type === 'wine') {
+  //       await deleteWine(id);
+  //       console.log('와인 삭제 성공');
+  //     } else if (type === 'review') {
+  //       await deleteReview(id);
+  //       console.log('리뷰 삭제 성공');
+  //     }
+  //     setShowDeleteModal(false);
+  //   } catch (error) {
+  //     console.log('삭제실패 : ', error);
+  //   }
+  // };
 
   return (
     <div>
