@@ -81,7 +81,9 @@ const SignIn = () => {
 
   return (
     <AuthLayout className='min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem]'>
-      <ErrorModal open={open} onOpenChange={setOpen} errorMessage={errorMessage} />
+      <ErrorModal open={open} onOpenChange={setOpen}>
+        {errorMessage}
+      </ErrorModal>
 
       <AuthLogo />
       {/* 폼 시작 */}

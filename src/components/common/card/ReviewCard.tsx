@@ -2,6 +2,7 @@ import ShowMoreBtn from '@/assets/icons/showMoreBtn.svg';
 import Star from '@/assets/icons/star.svg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { calculateRelativeTime } from '@/lib/calculateRelativeTime';
 import { cn } from '@/lib/utils';
 import useReviewCardStore from '@/stores/reviewCardStore';
 
@@ -38,7 +39,9 @@ ReviewCard.UserHeader = function UserHeader({ userIcon, reviewId, children }: Us
         </div>
         <div className='flex flex-col'>
           <span className='custom-text-lg-semibold text-gray-900'>{username}</span>
-          <span className='custom-text-md-regular  text-gray-500'>{timeAgo}</span>
+          <span className='custom-text-md-regular  text-gray-500'>
+            {calculateRelativeTime(timeAgo)}
+          </span>
         </div>
       </div>
 

@@ -28,7 +28,7 @@ function WineReviewCard({ review }: Props) {
         userIcon={<UserDefaultImg className='size-10 md:size-16' />}
         reviewId={id}
       >
-        <LikeButton isLike={isLiked} />
+        <LikeButton isLike={isLiked} reviewId={id} />
         <Kebab />
       </ReviewCard.UserHeader>
       <ReviewCard.TagAndRating reviewId={id}></ReviewCard.TagAndRating>
