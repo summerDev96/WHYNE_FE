@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import AverageStar from '@/components/wineDetail/AverageStar';
+
 import { ImageCard } from '../common/card/ImageCard';
 
 export const ContentSection = () => {
@@ -24,12 +26,12 @@ export const ContentSection = () => {
               <div className='w-[193px] flex-shrink-0'>
                 <ImageCard
                   className='bg-white h-[160px] rounded-lg border-none overflow-hidden shadow'
-                  imageSrc='/assets/lendingwine3.png'
+                  imageSrc='/assets/lendingwine4.png'
                   imageClassName='h-[165px] w-[44px] object-contain '
                 >
                   <div className='flex flex-col ml-[9px] w-[80px]'>
-                    <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                    <span>별점 나중에</span>
+                    <span className='font-extrabold text-4xl text-gray-800'>4.8</span>
+                    <AverageStar rating={4} />
                     <p className='text-[10px] text-gray-500'>Sentinel Carbernet Sauvignon 2016</p>
                   </div>
                 </ImageCard>
@@ -42,7 +44,7 @@ export const ContentSection = () => {
                 >
                   <div className='flex flex-col ml-[9px] w-[80px]'>
                     <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
-                    <span>별점 나중에</span>
+                    <AverageStar rating={4} />
                     <p className='text-[10px] text-gray-500'>Sentinel Carbernet Sauvignon 2016</p>
                   </div>
                 </ImageCard>

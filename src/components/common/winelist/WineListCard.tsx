@@ -1,76 +1,21 @@
 import Link from 'next/link';
 
 import NextIcon from '@/assets/icons/Next.svg';
-import StarIcon from '@/assets/icons/Star.svg';
+import StarIcon from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useFilterStore from '@/stores/filterStore';
 import useSearchStore from '@/stores/searchStore';
-
-interface Wine {
-  id: number;
-  name: string;
-  region: string;
-  image: string;
-  price: number;
-  rating: number;
-  type: 'Red' | 'White' | 'Sparkling';
-  review: string;
-}
-
-const mockWines: Wine[] = [
-  {
-    id: 1,
-    name: 'Sentinel Carbernet Sauvignon 2016',
-    region: 'Western Cape, South Africa',
-    image: '/images/image1.svg',
-    price: 64900,
-    rating: 4.5,
-    type: 'Red',
-    review:
-      'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
-  },
-  {
-    id: 2,
-    name: 'Palazzo della Torre 2017',
-    region: 'Western Cape, South Africa',
-    image: '/images/image3.svg',
-    price: 64900,
-    rating: 4.6,
-    type: 'White',
-    review:
-      'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
-  },
-  {
-    id: 3,
-    name: 'Sentinel Carbernet Sauvignon 2016',
-    region: 'Western Cape, South Africa',
-    image: '/images/image2.svg',
-    price: 59900,
-    rating: 3.6,
-    type: 'Red',
-    review:
-      'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
-  },
-  {
-    id: 4,
-    name: 'Palazzo della Torre 2017',
-    region: 'Western Cape, South Africa',
-    image: '/images/image4.svg',
-    price: 74000,
-    rating: 2.1,
-    type: 'Sparkling',
-    review:
-      'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
-  },
-];
+import useWineStore from '@/stores/wineAddStore';
 
 export default function WineListCard() {
   const type = useFilterStore((state) => state.type);
   const minPrice = useFilterStore((state) => state.minPrice);
   const maxPrice = useFilterStore((state) => state.maxPrice);
   const rating = useFilterStore((state) => state.rating);
+
+  const wines = useWineStore((state) => state.wines); // 와인 타입 정의, mock
 
   const { searchTerm } = useSearchStore();
 
@@ -83,7 +28,7 @@ export default function WineListCard() {
     '3.1': [3.0, 3.5],
   };
 
-  const filteredWines = mockWines.filter((wine) => {
+  const filteredWines = wines.filter((wine) => {
     /* 종류 필터 */
     if (type && wine.type !== type) return false;
     /* 가격 범위 필터 */
