@@ -26,8 +26,13 @@ interface WineData {
   avgRating: number;
 }
 
-const EditWineModal = ({ wine }: { wine: WineData }) => {
-  const [showEditModal, setShowEditModal] = useState(false);
+interface EditWineModalProps {
+  wine: WineData;
+  showEditModal: boolean;
+  setShowEditModal: (state: boolean) => void;
+}
+
+const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalProps) => {
   const [previewImage, setPreviewImage] = useState<string | null>(wine.image);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const queryClient = useQueryClient();
@@ -106,16 +111,18 @@ const EditWineModal = ({ wine }: { wine: WineData }) => {
   const closeModalReset = (isOpen: boolean) => {
     setShowEditModal(isOpen);
     if (!isOpen) {
-      reset();
+      reset({
+        wineName: wine.name,
+        winePrice: wine.price,
+        wineOrigin: wine.region,
+        wineType: wine.type,
+      });
       setPreviewImage(wine.image);
     }
   };
 
   return (
     <div>
-      <Button variant='purpleDark' size='xs' onClick={() => setShowEditModal(true)}>
-        와인수정하기
-      </Button>
       <BasicModal
         type='register'
         title='내가 등록한 와인'
