@@ -42,12 +42,10 @@ export default function WineInfoById(props: WinePageProps) {
         imageClassName={IMAGE_CLASS_NAME}
         className={cn(
           'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
-          'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
           'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
           'shadow-sm',
         )}
       >
-        <WineContent name={data.name} region={data.region} price={data.price} />
         <WineContent name={data.name} region={data.region} price={data.price} />
       </ImageCard>
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
@@ -55,14 +53,8 @@ export default function WineInfoById(props: WinePageProps) {
           <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
           <ul>
             <Reviews reviews={data.reviews} reviewCount={data.reviewCount} />
-            <Reviews reviews={data.reviews} reviewCount={data.reviewCount} />
           </ul>
         </div>
-        <WineRating
-          rating={data.avgRating}
-          reviewCount={data.reviewCount}
-          ratings={Object.values(data.avgRatings)}
-        ></WineRating>
         <WineRating
           rating={data.avgRating}
           reviewCount={data.reviewCount}
