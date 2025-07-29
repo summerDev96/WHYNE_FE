@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import Profile from '@/components/myprofile/Profile';
-import { ReviewList } from '@/components/myprofile/ReviewList';
-import { TabNav } from '@/components/myprofile/Tab';
-import { WineList } from '@/components/myprofile/WineList';
+import Profile from '@/components/my-profile/Profile';
+import { ReviewList } from '@/components/my-profile/ReviewList';
+import { TabNav } from '@/components/my-profile/Tab';
+import { WineList } from '@/components/my-profile/WineList';
 
 export default function MyProfile() {
   // 탭 상태: 'reviews' | 'wines'
