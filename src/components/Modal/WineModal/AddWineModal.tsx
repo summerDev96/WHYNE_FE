@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 import { uploadImage, postWine, PostWineRequest } from '@/api/addwine';
@@ -28,6 +29,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const [category, setCategory] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const trigerFileSelect = () => {
     fileInputRef.current?.click();
@@ -68,26 +70,34 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const onSubmit = async (form: WineForm) => {
-    try {
-      const file = form.wineImage[0];
-      const imageUrl = await uploadImage(file);
-      const requestData: PostWineRequest = {
-        name: form.wineName,
-        region: form.wineOrigin,
-        image: imageUrl,
-        price: Number(form.winePrice),
-        type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
-      };
-      await postWine(requestData);
+  const handlePostWine = async (form: WineForm) => {
+    const file = form.wineImage[0];
+    const imageUrl = await uploadImage(file);
+    const requestData: PostWineRequest = {
+      name: form.wineName,
+      region: form.wineOrigin,
+      image: imageUrl,
+      price: Number(form.winePrice),
+      type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
+    };
+    return postWine(requestData);
+  };
 
-      console.log('와인등록완료');
+  const postWineMutation = useMutation({
+    mutationFn: handlePostWine,
+    onSuccess: () => {
+      console.log('와인 등록 성공');
       resetForm();
       setShowRegisterModal(false);
-    } catch (error) {
-      console.error('와인등록실패', error);
-      alert('와인등록실패');
-    }
+      queryClient.invalidateQueries({ queryKey: ['wines'] });
+    },
+    onError: (error) => {
+      console.log('와인 등록 실패', error);
+    },
+  });
+
+  const onSubmit = async (form: WineForm) => {
+    postWineMutation.mutate(form);
   };
 
   const categoryOptions = [
