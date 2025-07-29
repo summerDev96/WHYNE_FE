@@ -1,5 +1,4 @@
 import ShowMoreBtn from '@/assets/icons/showMoreBtn.svg';
-import Star from '@/assets/icons/star.svg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { calculateRelativeTime } from '@/lib/calculateRelativeTime';
@@ -14,6 +13,8 @@ import {
   ReviewBodyProps,
   ToggleButtonProps,
 } from './ReviewCardTypes';
+
+import Star from '@/assets/icons/star.svg';
 
 /*
   여기 저 혼자만 사용하는 것 같아서 

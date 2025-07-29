@@ -1,10 +1,11 @@
 import Link from 'next/link';
 
 import NextIcon from '@/assets/icons/Next.svg';
-import StarIcon from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+import StarIcon from '@/assets/icons/star.svg';
 
 const mockWines = [
   {

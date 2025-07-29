@@ -2,9 +2,10 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import StarIcon from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { cn } from '@/lib/utils';
+
+import StarIcon from '@/assets/icons/star.svg';
 
 interface WineCardProps {
   id: number;
