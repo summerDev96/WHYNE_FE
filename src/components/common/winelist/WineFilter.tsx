@@ -25,7 +25,7 @@ export default function WineFilter() {
           </Button>
         </div>
 
-        <div className='flex-1 flex flex-col items-end gap-[24px] text-gray-500 [&_label]:top-[10px] md:[&_label]:top-[14px] xl:[&_label]:top-[14px]'>
+        <div className='flex-1 flex flex-col items-end gap-[18px] text-gray-500 [&_label]:top-[10px] md:[&_label]:top-[14px] xl:[&_label]:top-[14px]'>
           <Input
             id='wine-search'
             type='text'
@@ -44,7 +44,7 @@ export default function WineFilter() {
       </div>
 
       {/* Tablet: 필터 버튼 + 검색창 + 등록 버튼 */}
-      <div className='hidden md:flex xl:hidden flex-row items-center px-[20px] mt-[24px]'>
+      <div className='hidden md:flex xl:hidden flex-row items-center px-[20px] mt-[24px] md:mt-[50px] md:mb-[80px]'>
         <Button
           // onClick={() => setIsFilterOpen(true)}
           variant='white'
@@ -91,7 +91,7 @@ export default function WineFilter() {
           />
         </div>
 
-        <div className='w-fit'>
+        <div className='w-fit mt-[15px] mb-[20px]'>
           <Button
             // onClick={() => setIsFilterOpen(true)}
             variant='white'
