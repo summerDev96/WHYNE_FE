@@ -48,12 +48,9 @@ const KakaoLoginCallbackPage = () => {
 
   return (
     /* 에러 모달에서 확인 버튼 클릭 시 로그인 화면으로 리디렉트 처리 */
-    <ErrorModal
-      open={open}
-      onOpenChange={setOpen}
-      onConfirm={() => router.replace('/signin')}
-      errorMessage={errorMessage}
-    ></ErrorModal>
+    <ErrorModal open={open} onOpenChange={setOpen} onConfirm={() => router.replace('/signin')}>
+      {errorMessage}
+    </ErrorModal>
   );
 };
 

@@ -1,8 +1,8 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
-  const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
-  const defaultOGImage = `${BASE_URL}/og-image.png`;
+  const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
+  const defaultOGImage = `${VERCEL_URL}/og-image.png`;
   return (
     <Html lang='ko'>
       <Head>
@@ -13,7 +13,7 @@ export default function Document() {
         <meta property='og:description' content='와인 리뷰 사이트' />
         {/* todo: 배포 후 이미지, url 변경 필요 */}
         <meta property='og:image' content={defaultOGImage} />
-        <meta property='og:url' content={BASE_URL} />
+        <meta property='og:url' content={VERCEL_URL} />
         <meta property='og:type' content='website' />
       </Head>
       <body>
