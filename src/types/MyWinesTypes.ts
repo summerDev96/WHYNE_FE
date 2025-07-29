@@ -19,8 +19,8 @@ export type MyWine = {
       nickname: string;
       image: string;
     };
-    isLiked: Record<string, any>;
-  };
+    isLiked: Record<string, boolean>;
+  } | null;
 };
 
 export type MyWinesResponse = {

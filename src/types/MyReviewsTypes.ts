@@ -1,4 +1,4 @@
-export type MyReview = {
+export interface MyReview {
   id: number;
   rating: number;
   lightBold: number;
@@ -14,11 +14,20 @@ export type MyReview = {
     nickname: string;
     image: string;
   };
-  isLiked: Record<string, any>;
-};
+  isLiked?: Record<string, boolean>;
+  wine: {
+    id: number;
+    name: string;
+    region: string;
+    type: string;
+    image: string;
+    price: number;
+    avgRating: number;
+  };
+}
 
-export type MyReviewsResponse = {
+export interface MyReviewsResponse {
   totalCount: number;
   nextCursor: number | null;
   list: MyReview[];
-};
+}
