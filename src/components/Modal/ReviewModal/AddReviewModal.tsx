@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
@@ -84,6 +84,7 @@ const aromaMap: Record<string, string> = {
 
 const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -111,6 +112,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     mutationFn: postReview, //실제 서버에 리뷰를 보내는 역할
     onSuccess: (data) => {
       console.log('리뷰 등록 성공', data);
+      queryClient.invalidateQueries({ queryKey: ['reviews'] });
       reset();
       setShowRegisterModal(false);
     },
