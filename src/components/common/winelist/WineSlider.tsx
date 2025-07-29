@@ -8,7 +8,6 @@ import {
 
 import WineCard from './WineCard';
 
-// Mock 데이터 4개 x 5세트 = 20개
 const baseWines = [
   {
     id: 1,
@@ -36,7 +35,6 @@ const baseWines = [
   },
 ];
 
-// 총 20개로 확장 (4개 반복)
 const mockWines = Array.from({ length: 20 }).map((_, i) => {
   const wine = baseWines[i % baseWines.length];
   return {
@@ -47,14 +45,14 @@ const mockWines = Array.from({ length: 20 }).map((_, i) => {
 
 export default function WineSlider() {
   return (
-    <div className='px-[16px] mt-[85px] mb-[24px] w-full mx-auto md:px-[20px] md:mt-[20px] md:mb-[40px] xl:px-0 xl:mt-[10px] xl:mb-[40px]'>
-      <section className='w-full h-[241px] rounded-[12px] bg-gray-100 md:h-[299px] md:rounded-[16px] xl:h-[299px] xl:rounded-[16px]'>
-        <h2 className='py-[20px] pl-[20px] text-gray-800 custom-text-2lg-bold md:py-[30px] md:pl-[30px] md:custom-text-xl-bold xl:py-[30px] xl:pl-[30px] xl:leading-[40px]'>
+    <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[365px] mt-[20px] mb-[24px]'>
+      <section className='w-full min-h-[241px] rounded-[12px] bg-gray-100 py-[20px] md:min-h-[285px]'>
+        <h2 className='pl-[20px] text-gray-800 custom-text-2lg-bold md:custom-text-xl-bold'>
           이번 달 추천 와인
         </h2>
 
         {/* 캐러셀 영역 */}
-        <div className='relative mt-[20px] md:mt-[30px] xl:mt-[30px]'>
+        <div className='relative mt-[20px]'>
           <Carousel className='w-full'>
             <CarouselContent>
               {mockWines.map((wine) => (
