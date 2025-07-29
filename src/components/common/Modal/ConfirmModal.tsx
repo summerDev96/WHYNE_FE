@@ -1,41 +1,38 @@
 import React from 'react';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import Modal from './Modal';
 
 interface ConfirmModalProps {
-  children?: React.ReactNode;
-  buttons?: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  title?: string;
+  children?: React.ReactNode;
+  buttons?: React.ReactNode;
+  showCloseButton?: boolean;
 }
 
-const ConfirmModal = ({ children, buttons, open, onOpenChange }: ConfirmModalProps) => {
+const ConfirmModal = ({
+  open,
+  onOpenChange,
+  buttons,
+  showCloseButton = false,
+  children,
+}: ConfirmModalProps) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <form>
-        <DialogContent
-          className={`max-w-[353px] px-4 pb-6 flex flex-col gap-10 rounded-xl [&>button:last-child]:hidden`}
-        >
-          <DialogHeader>
-            {/* 컨텐츠 영역 */}
-            <DialogTitle className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'>
-              {children}
-            </DialogTitle>
-            <DialogDescription className='sr-only'>다이얼로그 내용</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className='w-full flex flex-row justify-between gap-2'>
-            {buttons}
-          </DialogFooter>
-        </DialogContent>
-      </form>
-    </Dialog>
+    <Modal
+      open={open}
+      onOpenChange={onOpenChange}
+      showCloseButton={showCloseButton}
+      className='max-w-[353px] px-4 pb-6 gap-10'
+    >
+      <Modal.Header>
+        <Modal.Title className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'>
+          {children}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body></Modal.Body>
+      <Modal.Footer>{buttons}</Modal.Footer>
+    </Modal>
   );
 };
 
