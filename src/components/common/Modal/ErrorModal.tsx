@@ -1,41 +1,57 @@
 import React from 'react';
 
-import ConfirmModal from '@/components/common/Modal/ConfirmModal';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+import Modal from './Modal';
 
 interface ErrorModalProps {
   open: boolean;
-  onOpenChange: (value: boolean) => void;
+  onOpenChange: (open: boolean) => void;
   onConfirm?: () => void;
-  errorMessage: string;
+  showCloseButton?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 }
 
-const ErrorModal = ({ open, onOpenChange, errorMessage, onConfirm }: ErrorModalProps) => {
+/* 기존에 errorMessage를 props로 받았는데,
+줄바꿈 처리가 불편할 것 같아 children으로 받도록 수정하였습니다 */
+
+const ErrorModal = ({
+  open,
+  onOpenChange,
+  onConfirm,
+  showCloseButton = false,
+  children,
+  className,
+}: ErrorModalProps) => {
   return (
-    <ConfirmModal
+    <Modal
       open={open}
       onOpenChange={onOpenChange}
-      /* 버튼커스텀 영역 */
-      buttons={
-        <>
-          <Button
-            size='xl'
-            width='xl'
-            variant='purpleDark'
-            className='flex-auto text-base font-bold'
-            onClick={() => {
-              onOpenChange(false);
-              onConfirm?.();
-            }}
-          >
-            확인
-          </Button>
-        </>
-      }
+      showCloseButton={showCloseButton}
+      className={cn('max-w-[353px] px-4 pb-6 gap-10', className)}
     >
-      {/* 모달 내용 영역 */}
-      {errorMessage}
-    </ConfirmModal>
+      <Modal.Header>
+        <Modal.Title className='mt-2 flex justify-center custom-text-2lg-bold md:custom-text-xl-bold'>
+          {children}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Footer>
+        <Button
+          size='xl'
+          width='xl'
+          variant='purpleDark'
+          className='flex-auto text-base font-bold focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none'
+          onClick={() => {
+            onOpenChange(false);
+            onConfirm?.();
+          }}
+        >
+          확인
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 

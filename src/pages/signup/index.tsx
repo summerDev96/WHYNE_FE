@@ -110,7 +110,9 @@ const Signup = () => {
 
   return (
     <AuthLayout className='min-h-[43rem] md:min-h-[48rem] lg:min-h-[50rem]'>
-      <ErrorModal open={open} onOpenChange={setOpen} errorMessage={errorMessage} />
+      <ErrorModal open={open} onOpenChange={setOpen}>
+        {errorMessage}
+      </ErrorModal>
 
       <AuthLogo />
       {/* 폼 시작 */}
