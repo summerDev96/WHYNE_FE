@@ -1,7 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 import { updateAccessToken } from '@/api/auth';
-import { getCookie, setServerCookie } from '@/lib/cookie';
+import { getCookie, setAuthCookies } from '@/lib/cookie';
 import { isClient } from '@/lib/utils';
 import {
   ApiClientContext,
@@ -41,7 +41,7 @@ export const createApiClient = (context?: ApiClientContext) => {
           instance,
           error,
           refreshToken,
-          response: context?.res,
+          res: context?.res,
         });
         if (result) return result;
       } catch (refreshTokenError) {
@@ -88,7 +88,7 @@ function handleCommonError(error: AxiosError) {
 async function handleRequestRefreshToken({
   instance,
   error,
-  response,
+  res,
   refreshToken,
 }: RefreshTokenRequest): RefreshTokenResponse {
   const originalRequest = error.config as RetryRequestConfig;
@@ -97,9 +97,10 @@ async function handleRequestRefreshToken({
   originalRequest._retry = true;
 
   const data = await updateAccessToken({ refreshToken });
+  const accessToken = data.accessToken;
 
-  if (!isClient() && response) {
-    setServerCookie({ response, name: 'accessToken', value: data.accessToken, maxAge: 1800 });
+  if (!isClient() && res) {
+    setAuthCookies(res, accessToken);
   }
 
   originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;

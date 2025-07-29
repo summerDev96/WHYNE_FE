@@ -1,4 +1,4 @@
-import { ServerResponse } from 'http';
+import { NextApiResponse } from 'next';
 
 export interface GetClientCookieParams {
   name: string;
@@ -26,7 +26,7 @@ export interface GetServerCookieParams {
 export type GetServerCookieReturn = string | undefined;
 
 export interface SetServerCookieParams {
-  response: ServerResponse;
+  response: NextApiResponse;
   name: string;
   value: string;
   maxAge: number;
@@ -45,5 +45,5 @@ export interface SetCookieParams {
   name: string;
   value: string;
   maxAge: number;
-  response?: ServerResponse;
+  response?: NextApiResponse;
 }

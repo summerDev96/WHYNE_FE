@@ -6,7 +6,6 @@ import {
   GetCookieParams,
   GetServerCookieParams,
   GetServerCookieReturn,
-  SetServerCookieParams,
 } from '@/types/CookieTypes';
 
 import { isClient } from './utils';
@@ -23,12 +22,12 @@ const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
 // 쿠키 설정
 export function setAuthCookies(res: NextApiResponse, accessToken: string, refreshToken?: string) {
   const cookies = [
-    `${COOKIE_NAMES.ACCESS_TOKEN}=${accessToken}; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=strict; HttpOnly${secure}`,
+    `${COOKIE_NAMES.ACCESS_TOKEN}=${accessToken}; Path=/; Max-Age=${60 * 30}; SameSite=strict; HttpOnly${secure}`,
   ];
 
   if (refreshToken) {
     cookies.push(
-      `${COOKIE_NAMES.REFRESH_TOKEN}=${refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=strict; HttpOnly${secure}`,
+      `${COOKIE_NAMES.REFRESH_TOKEN}=${refreshToken}; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=strict; HttpOnly${secure}`,
     );
   }
 
@@ -82,18 +81,4 @@ export function parseCookie(cookieHeader: string) {
       return [key, decodeURIComponent(v.join('='))];
     }),
   );
-}
-
-export function setServerCookie({ response, name, value, maxAge }: SetServerCookieParams) {
-  const cookie = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAge}; SameSite=strict; HttpOnly${secure}`;
-
-  const prevCookies = response.getHeader('Set-Cookie');
-
-  if (!prevCookies) {
-    response.setHeader('Set-Cookie', cookie);
-  } else if (Array.isArray(prevCookies)) {
-    response.setHeader('Set-Cookie', [...prevCookies, cookie]);
-  } else if (typeof prevCookies === 'string') {
-    response.setHeader('Set-Cookie', [prevCookies, cookie]);
-  }
 }
