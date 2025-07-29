@@ -51,18 +51,23 @@ const mockWines = [
 
 export default function WineListCard() {
   return (
-    <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] md:px-[20px] md:mt-[24px] xl:px-0 max-w-[1140px] mx-auto'>
+    <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] md:px-[20px] md:mt-[24px] xl:px-0 max-w-[1140px] mx-auto xl:max-w-[800px]'>
       {mockWines.map((wine) => (
         <Link href={`/wines/${wine.id}`} key={wine.id} className='no-underline'>
           {/* 카드 컨테이너 */}
-          <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative'>
+          <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative min-w-[320px]'>
             <ImageCard
               imageSrc={wine.image}
-              imageClassName='w-[60px] h-[208px] mt-[30px] block object-contain max-w-full max-h-full max-[342px]:w-full max-[342px]:h-auto'
               className='pt-[20px] pb-0 border-none md:pl-[30px]'
+              imageClassName={cn(
+                'block object-contain rounded-md',
+                'w-[60px] h-[208px] mt-[30px] min-w-[50px] min-h-[180px]',
+                'md:min-w-0 md:min-h-0',
+                'md:w-[70px] md:h-[210px] md:ml-[10px] md:mt-[30px]',
+                'xl:w-[60px] xl:h-[205px] xl:ml-[25px] xl:mt-[30x] xl:mr-[20px]',
+              )}
               rightSlot={null}
             >
-              {/* ImageCard children 영역 (모바일 요소 포함) */}
               <div className='flex flex-col w-full px-[16px] md:px-0'>
                 {/* name, region, price 버튼 */}
                 <div
@@ -83,16 +88,17 @@ export default function WineListCard() {
                   </div>
                   <Button
                     variant='purpleLight'
+                    fontSize={null}
+                    width={null}
+                    size={null}
                     className='
                     text-[14px] text-purpleDark font-bold leading-[24px] 
-                    px-[10px] py-[4px] rounded-[10px] h-auto
-
-                    w-full max-w-[86px] md:max-w-none
-
-                    md:text-[18px] md:leading-[26px] 
-                    md:px-[15px] md:py-[8px] 
+                    px-[10px] py-[2px] rounded-[10px] h-[30px]
+                    w-full max-w-[86px] md:max-w-[114px]
+                    md:text-[18px]
+                    md:px-[2px] md:py-[2px] 
                     md:rounded-[12px] 
-                    md:w-[110px] md:h-[42px] md:mt-[12px]'
+                    md:w-[114px] md:h-[42px] md:mt-[5px]'
                   >
                     ₩ {wine.price.toLocaleString()}
                   </Button>

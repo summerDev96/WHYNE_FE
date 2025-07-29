@@ -12,7 +12,6 @@ export default function WineFilter() {
       {/* PC: 필터 + 검색창 + 등록 버튼 */}
       <div className='hidden xl:flex  max-w-[1140px] mx-auto mt-[30px] gap-[24px]'>
         <div className='flex-shrink-0 w-[260px] h-auto flex flex-col gap-[50px] ml-[-28px]'>
-          {/* gap-[30px] 적용을 위해 flex container로 묶음 */}
           <div className='pt-[70px] '>
             <WineTypeFilter className='h-[450px]' />
           </div>
