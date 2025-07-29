@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
-import { getWineInfoForClient } from '@/api/wineid';
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import Reviews from '@/components/wineDetail/Reviews';
 import WineContent from '@/components/wineDetail/WineContent';

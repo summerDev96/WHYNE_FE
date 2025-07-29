@@ -1,20 +1,10 @@
 import { useState } from 'react';
 
-import apiClient from '@/api/apiClient';
+import { postLike, deleteLike } from '@/api/handleLikeRequest';
 import FullLikeIcon from '@/assets/icons/fullLike.svg';
 import LikeIcon from '@/assets/icons/like.svg';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-
-async function postLike(reviewId: number) {
-  console.log('좋아요!');
-  return apiClient.post(`${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}/like`);
-}
-
-async function deleteLike(reviewId: number) {
-  console.log('싫어요!');
-  return apiClient.delete(`${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}/like`);
-}
 
 interface Props {
   isLike?: boolean;
