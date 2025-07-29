@@ -38,7 +38,8 @@ const FilterModal = ({
               초기화
             </Button>
             <Button
-              type='submit'
+              type='button'
+              onClick={handleApplyFilter}
               variant='purpleDark'
               size='xl'
               className='w-[223px] md:w-[223px]'
