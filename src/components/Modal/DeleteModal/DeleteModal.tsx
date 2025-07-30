@@ -38,6 +38,7 @@ const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteMo
       deleteReviewMutation.mutate(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['reviews'] });
+          queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
           console.log('리뷰 삭제 성공');
           setShowDeleteModal(false);
         },

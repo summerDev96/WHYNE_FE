@@ -6,6 +6,7 @@ import useReviewCardStore from '@/stores/reviewCardStore';
 import useWineStore from '@/stores/wineStore';
 
 import MenuDropdown from '../common/dropdown/MenuDropdown';
+import DeleteModal from '../Modal/DeleteModal/DeleteModal';
 import EditReviewModal from '../Modal/ReviewModal/EditReviewModal';
 
 interface Props {
@@ -15,11 +16,12 @@ interface Props {
 function Kebab({ reviewId }: Props) {
   const nowWine = useWineStore((state) => state.nowWine);
   const reviewData = useReviewCardStore((state) => state.allReviews[reviewId]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [openEditModal, setOepnEditModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   function onSelect(value: string) {
-    if (value === 'update') setIsOpen(true);
-    if (value === 'delete') alert('정말 삭제하겠습니다 alert 호출');
+    if (value === 'update') setOepnEditModal(true);
+    if (value === 'delete') setOpenDeleteModal(true);
   }
 
   return (
@@ -43,8 +45,16 @@ function Kebab({ reviewId }: Props) {
         <EditReviewModal
           wineName={nowWine.name}
           reviewData={reviewData}
-          showEditModal={isOpen}
-          setShowEditModal={setIsOpen}
+          showEditModal={openEditModal}
+          setShowEditModal={setOepnEditModal}
+        />
+      )}
+      {openDeleteModal && (
+        <DeleteModal
+          type='review'
+          id={reviewData.id}
+          showDeleteModal={openDeleteModal}
+          setShowDeleteModal={setOpenDeleteModal}
         />
       )}
     </>

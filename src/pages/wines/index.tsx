@@ -47,7 +47,7 @@ export const getWines = (): Promise<GetWineListResponse> => {
 };
 
 export default function Wines() {
-  const wines = [{ id: 1374 }, { id: 1376 }, { id: 1377 }];
+  const wines = [{ id: 1377 }];
 
   const queryClient = useQueryClient();
 

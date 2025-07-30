@@ -1,11 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next/types';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { wineid } = req.query as { wineid: string };
-  try {
-    const accessToken = parseCookie(req.headers.cookie, 'accessToken');
 
+  const accessToken = parseCookie(req.headers.cookie, 'accessToken');
+
+  try {
     const backendResponse = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_TEAM}/wines/${wineid}`,
       {
@@ -14,9 +15,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       },
     );
+
     return res.status(backendResponse.status).json(backendResponse.data);
   } catch (err) {
-    console.log(err);
+    const axiosError = err as AxiosError;
+    if (axiosError.response) {
+      return res.status(axiosError.response.status).json(axiosError.response.data);
+    }
   }
 }
 

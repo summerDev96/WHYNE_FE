@@ -3,11 +3,12 @@ import React, { useEffect } from 'react';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import { getWineInfoForClient } from '@/api/getWineInfo';
 import { ImageCard } from '@/components/common/card/ImageCard';
-import Reviews from '@/components/wineDetail/Reviews';
+// import Reviews from '@/components/wineDetail/Reviews';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
 import { cn } from '@/lib/utils';
@@ -59,9 +60,8 @@ export default function WineInfoById(props: WinePageProps) {
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
-          <ul>
-            <Reviews reviews={data.reviews} reviewCount={data.reviewCount} />
-          </ul>
+
+          <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
         </div>
         <WineRating
           rating={data.avgRating}
@@ -73,6 +73,8 @@ export default function WineInfoById(props: WinePageProps) {
   );
 }
 
+const Reviews = dynamic(() => import('@/components/wineDetail/Reviews'), { ssr: false });
+
 const IMAGE_CLASS_NAME =
   'w-[58px] md:w-[84px] xl:w-[58px] h-[209px] md:h-[302px] xl:h-[209px] absolute bottom-0 left-[20px] md:left-[60px] xl:left-[100px]';
 
@@ -81,7 +83,6 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
   const wineid = params?.wineid;
   const parsedWineId = Number(wineid);
   const queryClient = new QueryClient();
-
   const cookies = context.req?.headers.cookie || '';
   //2. 추출한 토큰들을 토대로 서버에서 요청보내 캐싱해두기
   try {
@@ -96,7 +97,7 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
         });
         return res.data;
       },
-      staleTime: 1000 * 60 * 5,
+      staleTime: 0,
       retry: false,
     });
     console.log(`[getServerSideProps] 와인 상세 정보 프리패치 성공 (ID: ${parsedWineId})`);
