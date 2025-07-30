@@ -68,7 +68,7 @@ const Signup = () => {
       loginMutation.mutate({ email, password });
     },
     onError: (error) => {
-      if (error.response?.status === 400) {
+      if (error.response?.status === 500) {
         // 로그인 오류인 경우 공통 에러 메시지
         setError('root', { message: '닉네임이 중복되었습니다.' });
       } else {
