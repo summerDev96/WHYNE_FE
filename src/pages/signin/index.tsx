@@ -8,16 +8,19 @@ import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
+import { getUser } from '@/api/user';
 import KakaoIcon from '@/assets/icons/kakao.svg';
 import AuthLayout from '@/components/auth/AuthLayout';
 import AuthLogo from '@/components/auth/AuthLogo';
 import FormInput from '@/components/common/FormInput';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
-import useAuthRedirect from '@/hooks/useAuthRedirect';
 import useErrorModal from '@/hooks/useErrorModal';
+import useTokenCheckRedirect from '@/hooks/useTokenCheckRedirect';
+import { useUser } from '@/hooks/useUser';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
+import { GetUserResponse } from '@/types/UserTypes';
 
 import { loginUser } from '../../api/auth';
 
@@ -29,8 +32,9 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>;
 
 const SignIn = () => {
+  const { setUser } = useUser();
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
-  const { userData, isLoading } = useAuthRedirect();
+  const { isLoading } = useTokenCheckRedirect();
   const router = useRouter();
 
   const methods = useForm<LoginData>({
@@ -47,10 +51,8 @@ const SignIn = () => {
 
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: loginUser,
-    onSuccess: (data) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      router.push('/');
+    onSuccess: () => {
+      userMutation.mutate();
     },
     onError: (error) => {
       if (error.response?.status === 400) {
@@ -60,6 +62,18 @@ const SignIn = () => {
         // API 에러를 모달로 출력
         handleError(error.response?.data as Error);
       }
+    },
+  });
+
+  const userMutation = useMutation<GetUserResponse, AxiosError>({
+    mutationFn: getUser,
+    onSuccess: (data) => {
+      setUser(data);
+      router.push('/');
+    },
+    onError: (error) => {
+      // API 에러를 모달로 출력
+      handleError(error.response?.data as Error);
     },
   });
 
@@ -73,9 +87,9 @@ const SignIn = () => {
     window.location.href = kakaoAuthUrl;
   };
 
-  /* useAuthRedirect 훅에서 유저 데이터 요청 후 리디렉트 처리 */
+  /* useTokenCheckRedirect 훅에서 유저 데이터 요청 후 리디렉트 처리 */
   // 로딩중이거나 데이터 없으면 화면 안보이게 처리
-  if (isLoading || userData) return null;
+  if (isLoading) return null;
 
   return (
     <AuthLayout className='min-h-[40rem] md:min-h-[46rem] lg:min-h-[48rem]'>
