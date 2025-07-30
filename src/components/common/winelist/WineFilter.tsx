@@ -1,16 +1,21 @@
+import { useState } from 'react';
+
 import SearchButton from '@/assets/icons/SearchButton.svg';
 import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
 import Input from '@/components/common/Input';
 import WineListCard from '@/components/common/winelist/WineListCard';
+import FilterModal from '@/components/Modal/FilterModal/FilterModal';
 import { Button } from '@/components/ui/button';
+import useSearchStore from '@/stores/searchStore';
 
 export default function WineFilter() {
-  // const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { searchTerm, setSearchTerm } = useSearchStore();
 
   return (
     <div className='w-full max-w-[1140px] mx-auto'>
       {/* PC: 필터 + 검색창 + 등록 버튼 */}
-      <div className='hidden xl:flex  max-w-[1140px] mx-auto mt-[30px] gap-[24px]'>
+      <div className='hidden xl:flex max-w-[1140px] mx-auto mt-[30px] gap-[24px]'>
         <div className='flex-shrink-0 w-[260px] h-auto flex flex-col gap-[50px] ml-[-28px]'>
           <div className='pt-[70px] '>
             <WineTypeFilter className='h-[450px]' />
@@ -35,8 +40,9 @@ export default function WineFilter() {
               xl:w-[800px] h-[48px] px-[20px] py-[14px] pl-[55px]
               border border-gray-300 rounded-full
             '
+            value={searchTerm} // 검색어 연결
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {/* WineListCard PC에서만 노출 */}
           <div className='hidden xl:flex pt-[20px]'>
             <WineListCard />
           </div>
@@ -46,7 +52,7 @@ export default function WineFilter() {
       {/* Tablet: 필터 버튼 + 검색창 + 등록 버튼 */}
       <div className='hidden md:flex xl:hidden flex-row items-center px-[20px] mt-[24px] md:mt-[50px] md:mb-[80px]'>
         <Button
-          // onClick={() => setIsFilterOpen(true)}
+          onClick={() => setIsFilterOpen(true)}
           variant='white'
           size={null}
           width={null}
@@ -66,6 +72,8 @@ export default function WineFilter() {
               h-[48px] px-[20px] py-[14px] pl-[55px]
               border border-gray-300 rounded-full
             '
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
@@ -81,19 +89,21 @@ export default function WineFilter() {
 
       {/* Mobile: 검색창 + 필터 버튼 */}
       <div className='flex flex-col md:hidden gap-[8px] px-[16px] mt-[24px]'>
-        <div className='text-gray-500 [&_label]:top-[10px]'>
+        <div className='text-gray-500 [&_label]:top-[10px] min-w-[343px]'>
           <Input
             id='wine-search'
             type='text'
             placeholder='와인을 검색해 보세요'
             variant='search'
             className='w-full h-[38px] px-[15px] py-[14px] pl-[55px] border border-gray-300 rounded-full'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         <div className='w-fit mt-[15px] mb-[20px]'>
           <Button
-            // onClick={() => setIsFilterOpen(true)}
+            onClick={() => setIsFilterOpen(true)}
             variant='white'
             size='sm'
             width='xs'
@@ -103,6 +113,7 @@ export default function WineFilter() {
           </Button>
         </div>
       </div>
+      {isFilterOpen && <FilterModal open={isFilterOpen} onOpenChange={setIsFilterOpen} />}
 
       {/* Mobile: 하단 고정 등록 버튼 */}
       <div className='fixed bottom-[20px] left-0 right-0 z-10 px-[16px] md:hidden'>
