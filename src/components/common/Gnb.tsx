@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { getUser } from '@/api/user';
+import apiClient from '@/api/apiClient';
+import { useInitUser } from '@/hooks/useInitUser';
+import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
-import { GetUserResponse } from '@/types/UserTypes';
 
 import MenuDropdown from './dropdown/MenuDropdown';
 import Logo from './Logo';
@@ -41,21 +41,22 @@ export default Gnb;
 function AuthMenu() {
   const { pathname } = useRouter();
 
-  const hasAccessToken =
-    typeof window === 'undefined' ? false : !!localStorage.getItem('accessToken');
+  useInitUser();
+
+  const { user } = useUser();
 
   //아이디:abc@123.com 비번:12345678
-  const { data: user, isError } = useQuery<GetUserResponse>({
-    queryKey: ['currentUser'],
-    queryFn: getUser,
-    staleTime: 5 * 60 * 1000, // 5분 동안 캐시 유지
-    retry: false,
-    enabled: hasAccessToken, //로컬스토리지에 엑세스 토큰 있을 때만 요청 보내서 유효한 토큰인지 확인해봐
-  });
+  // const { data: user, isError } = useQuery<GetUserResponse>({
+  //   queryKey: ['currentUser'],
+  //   queryFn: getUser,
+  //   staleTime: 5 * 60 * 1000, // 5분 동안 캐시 유지
+  //   retry: false,
+  //   enabled: isLoggedIn, //로컬스토리지에 엑세스 토큰 있을 때만 요청 보내서 유효한 토큰인지 확인해봐
+  // });
 
-  useEffect(() => {
-    if (isError) alert('사용자 정보를 불러오지 못했습니다. 다시 로그인 해주세요.');
-  }, [isError]); //요청 자체가 실패했을 때만 //초기 마운트 시에는 false일테니 if문에서 거르기
+  // useEffect(() => {
+  //   if (isError) alert('사용자 정보를 불러오지 못했습니다. 다시 로그인 해주세요.');
+  // }, [isError]); //요청 자체가 실패했을 때만 //초기 마운트 시에는 false일테니 if문에서 거르기
 
   return user ? (
     <UserDropdown userImage={user.image} />
@@ -68,23 +69,22 @@ function AuthMenu() {
 }
 
 interface Props {
-  userImage: string;
+  userImage: string | null;
 }
 
 function UserDropdown({ userImage }: Props) {
   const router = useRouter();
-  const queryClient = useQueryClient();
 
   function onSelect(value: string) {
     if (value === 'myprofile') router.push('/my-profile');
     if (value === 'logout') handleLogout();
   }
 
-  function handleLogout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    queryClient.removeQueries({ queryKey: ['currentUser'] });
-    //-> removeQueries vs invalidateQueries :리무브는 아예 삭제 인밸리데이트는 stale상태로
+  const { clearUser } = useUser();
+
+  async function handleLogout() {
+    await apiClient.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`);
+    clearUser();
     router.push('/');
   }
 
