@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import z from 'zod';
 
+import { getUser } from '@/api/user';
 import KakaoIcon from '@/assets/icons/kakao.svg';
 import AuthLayout from '@/components/auth/AuthLayout';
 import AuthLogo from '@/components/auth/AuthLogo';
@@ -17,7 +18,9 @@ import { Button } from '@/components/ui/button';
 import useErrorModal from '@/hooks/useErrorModal';
 import useTokenCheckRedirect from '@/hooks/useTokenCheckRedirect';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
+import { useUserStore } from '@/stores/userStore';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
+import { GetUserResponse } from '@/types/UserTypes';
 
 import { loginUser } from '../../api/auth';
 
@@ -29,6 +32,7 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>;
 
 const SignIn = () => {
+  const { setUser } = useUserStore();
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
   const { isLoading } = useTokenCheckRedirect();
   const router = useRouter();
@@ -48,7 +52,7 @@ const SignIn = () => {
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
     mutationFn: loginUser,
     onSuccess: () => {
-      router.push('/');
+      userMutation.mutate();
     },
     onError: (error) => {
       if (error.response?.status === 400) {
@@ -58,6 +62,18 @@ const SignIn = () => {
         // API 에러를 모달로 출력
         handleError(error.response?.data as Error);
       }
+    },
+  });
+
+  const userMutation = useMutation<GetUserResponse, AxiosError>({
+    mutationFn: getUser,
+    onSuccess: (data) => {
+      setUser(data);
+      router.push('/');
+    },
+    onError: (error) => {
+      // API 에러를 모달로 출력
+      handleError(error.response?.data as Error);
     },
   });
 
