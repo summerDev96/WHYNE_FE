@@ -1,4 +1,3 @@
-// src/hooks/useWineListQuery.ts
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getWines } from '@/lib/getWines';
