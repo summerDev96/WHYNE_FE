@@ -1,15 +1,5 @@
 import apiClient from '@/api/apiClient';
-
-/**
- * 사용자 정보 응답 타입
- */
-export interface GetUserResponse {
-  id: number;
-  nickname: string;
-  image?: string;
-  email?: string;
-  // 필요 시 createdAt, updatedAt 등 확장 가능
-}
+import { GetUserResponse } from '@/types/UserTypes';
 
 /**
  * 사용자 프로필 업데이트 요청 타입
