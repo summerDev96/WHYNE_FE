@@ -9,7 +9,6 @@ import { getUser } from '@/api/user';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import useErrorModal from '@/hooks/useErrorModal';
 import { useUser } from '@/hooks/useUser';
-import { KakakoSignInRequest, KakakoSignInResponse } from '@/types/AuthTypes';
 
 /* 카카오 로그인 버튼 클릭 시 API 호출하여 로그인/회원가입 처리 */
 const KakaoLoginCallbackPage = () => {
@@ -20,19 +19,22 @@ const KakaoLoginCallbackPage = () => {
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
 
   /* 카카오 회원가입/로그인 요청 */
-  const handleKakaoAuth = async (): Promise<KakakoSignInResponse> => {
-    const params: KakakoSignInRequest = {
-      state: '',
-      redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI ?? '',
-      token: code as string,
-    };
-    return await signInKakao(params);
-  };
+  const params =
+    typeof code === 'string'
+      ? {
+          state: '',
+          redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI ?? '',
+          token: code,
+        }
+      : undefined;
 
   const { data, error } = useQuery({
     queryKey: ['handleKakaoAuth'],
-    queryFn: handleKakaoAuth,
-    enabled: typeof code === 'string',
+    queryFn: async () => {
+      if (!params) return;
+      return await signInKakao(params);
+    },
+    enabled: !!params,
     retry: false,
   });
 
