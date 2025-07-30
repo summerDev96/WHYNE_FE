@@ -41,8 +41,14 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
    */
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && onFileSelect) {
-      onFileSelect(file);
+    if (file) {
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        alert('지원하지 않는 이미지 형식입니다.');
+        return;
+      }
+
+      onFileSelect?.(file);
     }
   };
 
@@ -54,7 +60,7 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
         className='group relative overflow-hidden rounded-full w-16 h-16 xl:w-40 xl:h-40 cursor-pointer'
       >
         {/* 프로필 이미지 컨테이너 */}
-        <div className='w-full h-full rounded-full border border-gray-300'>
+        <div className='w-full h-full flex items-center justify-center  rounded-full border border-gray-300'>
           {/* blob: URL일 경우: <img> 태그 사용 */}
           {imageUrl && imageUrl.startsWith('blob:') ? (
             <img
@@ -71,6 +77,7 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
               height={64}
               className='w-full h-full object-cover rounded-full'
               unoptimized
+              priority
             />
           ) : (
             // 이미지가 없을 경우 기본 아이콘
@@ -87,7 +94,7 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
       {/* 실제 input[type="file"]: hidden 처리 */}
       <input
         type='file'
-        accept='image/*'
+        accept='.png, .jpg, .jpeg, .webp'
         onChange={handleFileChange}
         ref={fileInputRef}
         className='hidden'
