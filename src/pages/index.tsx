@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ContentSection } from '@/components/home/ContentSection';
 import { HeroSection } from '@/components/home/HeroSection';
 import DeleteModal from '@/components/Modal/DeleteModal/DeleteModal';
+import AddReviewModal from '@/components/Modal/ReviewModal/AddReviewModal';
 import AddWineModal from '@/components/Modal/WineModal/AddWineModal';
 import { Button } from '@/components/ui/button';
 
@@ -16,7 +17,7 @@ export default function Home() {
       <button onClick={() => setShowDeleteModal(true)}>삭제</button>
       <button onClick={() => setShowRegisterModal(true)}>와ㅓ인추가</button>
       <DeleteModal
-        id={1}
+        id={1399}
         type='review'
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
@@ -25,6 +26,7 @@ export default function Home() {
         showRegisterModal={showRegisterModal}
         setShowRegisterModal={setShowRegisterModal}
       />
+      <AddReviewModal wineId={1399} wineName='돔뇽리뇽' />
       <HeroSection />
       <main>
         <ContentSection />

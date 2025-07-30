@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { deleteReview, deleteWine, DeleteResponse } from '@/api/delete';
-import BasicBottomSheet from '@/components/common/BottomSheet/BottomSheet';
+import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
 import { useMediaQuery } from '@/hooks/useMediaQuery';

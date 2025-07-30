@@ -27,8 +27,8 @@ const BasicBottomSheet = ({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         {title && (
-          <DrawerHeader className='text-center'>
-            <DrawerTitle className='custom-text-lg-bold'>{title}</DrawerTitle>
+          <DrawerHeader className='text-left'>
+            <DrawerTitle className='custom-text-xl-bold'>{title}</DrawerTitle>
           </DrawerHeader>
         )}
 

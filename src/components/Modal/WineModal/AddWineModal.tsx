@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { uploadImage, postWine, PostWineRequest } from '@/api/addwine';
 import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
-import BasicBottomSheet from '@/components/common/BottomSheet/BottomSheet';
+import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import SelectDropdown from '../../common/dropdown/SelectDropdown';
