@@ -44,7 +44,7 @@ export default function WineInfoById(props: WinePageProps) {
   if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
 
   if (!data) {
-    throw new Error('데이터가 없습니다.');
+    throw new Error('존재하지 않는 와인입니다.');
   }
 
   return (

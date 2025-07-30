@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import apiClient from '@/api/apiClient';
-import { useInitUser } from '@/hooks/useInitUser';
 import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 
@@ -41,7 +40,6 @@ export default Gnb;
 function AuthMenu() {
   const { pathname } = useRouter();
   const { user } = useUser();
-  useInitUser();
 
   return user ? (
     <UserDropdown userImage={user.image} />
@@ -81,7 +79,7 @@ function UserDropdown({ userImage }: Props) {
       ]}
       onSelect={onSelect}
       trigger={
-        <div className='w-[20px] md:w-[45px] h-[20px] md:h-[45px] cursor-pointer'>
+        <div className='relative w-[20px] md:w-[45px] h-[20px] md:h-[45px] cursor-pointer'>
           {userImage ? <Image fill src={userImage} alt='유저의 프로필 사진' /> : <UserDefaultImg />}
         </div>
       }

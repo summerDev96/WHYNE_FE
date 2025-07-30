@@ -23,8 +23,10 @@ const queryClient = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   useInitUser();
+  const router = useRouter();
+
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao', '/_error'];
+  const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao'];
   const hideHeader = pagesWithoutGnb.includes(pathname);
   const isLanding = pathname === '/';
 
@@ -36,8 +38,8 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          <ErrorBoundary fallback={<div></div>}>
-            {!hideHeader && <Gnb />}
+          {!hideHeader && <Gnb />}
+          <ErrorBoundary fallback={<></>} onRedirect={() => router.replace('/')}>
             <div
               className={clsx({
                 'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
