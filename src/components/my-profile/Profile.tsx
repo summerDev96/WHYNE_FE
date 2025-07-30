@@ -1,68 +1,132 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
+import { uploadImage, updateProfile } from '@/api/user';
 import Input from '@/components/common/Input';
 import { Button } from '@/components/ui/button';
 import { useUser } from '@/hooks/useUser';
 
 import { ProfileImageInput } from './ProfileImageInput';
 
-interface ProfileProps {
-  nickname: string; // 현재 사용자 닉네임 (초기값으로 사용)
-  profileImageUrl: string; // 프로필 이미지 URL (이미지 표시용)
-}
-
 interface FormValues {
+  /** 닉네임 입력 필드 */
   nickname: string;
 }
 
-export default function Profile({ nickname }: ProfileProps) {
-  const { user } = useUser();
+/**
+ * 유저의 프로필 이미지와 닉네임을 수정할 수 있는 컴포넌트
+ *
+ * - 프로필 이미지 업로드 및 미리보기
+ * - 닉네임 변경
+ * - 전역 유저 상태 업데이트
+ */
+export default function Profile() {
+  const { user, setUser } = useUser();
 
-  // useForm 훅 초기화
+  /** 선택된 이미지 파일 객체 */
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  /** 이미지 미리보기용 URL (blob 또는 서버 이미지) */
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // react-hook-form 사용
   const {
-    register, // input 등록용 함수
-    handleSubmit, // 폼 제출 핸들러 래퍼
-    watch, // 특정 필드 값 관찰
-    reset, // 폼 상태 초기화
-    formState: { isSubmitting }, // 제출 중 상태
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { isSubmitting },
   } = useForm<FormValues>({
-    defaultValues: { nickname: user?.nickname ?? '' }, // 초기값으로 기존 닉네임 설정
-    mode: 'onChange', // 입력 시마다 유효성 검사 실행
+    defaultValues: { nickname: user?.nickname ?? '' },
+    mode: 'onChange',
   });
 
+  /**
+   * 유저 정보가 바뀌면 form 초기화
+   */
   useEffect(() => {
-    if (user?.nickname) {
+    if (user) {
       reset({ nickname: user.nickname });
     }
-  }, [user?.nickname, reset]);
+  }, [user, reset]);
 
-  // 현재 입력된 값을 관찰
+  /**
+   * 선택된 파일로부터 blob URL 생성 (미리보기용)
+   * → 컴포넌트 언마운트 시 revoke
+   */
+  useEffect(() => {
+    if (selectedFile) {
+      const objectUrl = URL.createObjectURL(selectedFile);
+      setPreviewUrl(objectUrl);
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [selectedFile]);
+
+  /** 현재 닉네임 입력값 */
   const current = watch('nickname');
-  // 기존 닉네임과 다르고 비어있지 않을 때만 true
-  const isChanged = current.trim().length > 0 && current !== nickname;
 
-  // 폼 제출 시 호출되는 함수
+  /** 닉네임 변경 여부 체크 */
+  const isNicknameChanged = current.trim().length > 0 && current !== user?.nickname;
+
+  /** 이미지 변경 여부 체크 */
+  const isImageChanged = selectedFile !== null;
+
+  /** 닉네임 또는 이미지가 변경되었는지 여부 */
+  const isChanged = isNicknameChanged || isImageChanged;
+
+  /**
+   * 프로필 수정 form 제출 핸들러
+   *
+   * @param data 닉네임 입력값
+   */
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      // 실제 API 연결 시 axios/fetch 호출로 교체
-      await new Promise((r) => setTimeout(r, 1000));
-      console.log(`닉네임 변경: ${nickname} → ${data.nickname}`);
+    if (!user) return;
 
-      // 제출 성공 후 폼 상태를 새 기본값으로 초기화
-      reset({ nickname: data.nickname });
+    try {
+      let imageUrl = user.image;
+
+      // 이미지 선택 시 업로드
+      if (selectedFile) {
+        imageUrl = await uploadImage(selectedFile);
+      }
+
+      // 프로필 PATCH 요청
+      const updatedUser = await updateProfile({
+        nickname: data.nickname,
+        image: imageUrl ?? undefined,
+      });
+
+      // 전역 유저 상태 업데이트
+      setUser({
+        id: user.id,
+        nickname: updatedUser.nickname,
+        image: updatedUser.image ?? null,
+        teamId: user.teamId,
+        createdAt: user.createdAt,
+        updatedAt: new Date().toISOString(),
+      });
+
+      // form 초기화 및 파일 제거
+      reset({ nickname: updatedUser.nickname });
+      setSelectedFile(null);
     } catch (e) {
-      // 에러 UI 없이 콘솔에만 출력
-      console.error('닉네임 변경 오류:', e);
+      console.error('프로필 수정 오류:', e);
     }
   };
 
   return (
     <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white xl:justify-between xl:py-7 xl:h-[530px] shadow-md'>
-      {/* 프로필 섹션: 이미지 & 현재 닉네임 */}
+      {/* 프로필 이미지 + 현재 닉네임 */}
       <div className='flex items-center gap-4 xl:flex-col xl:gap-8'>
-        <ProfileImageInput defaultImageUrl={user?.image} />
+        <ProfileImageInput
+          imageUrl={previewUrl ?? user?.image ?? null}
+          onFileSelect={(file) => setSelectedFile(file)}
+        />
         <div className='custom-text-xl-bold text-gray-800 md:custom-text-2xl-bold'>
           {user?.nickname}
         </div>
@@ -70,10 +134,9 @@ export default function Profile({ nickname }: ProfileProps) {
 
       {/* 닉네임 변경 폼 */}
       <form
-        onSubmit={handleSubmit(onSubmit)} // react-hook-form 제출 처리
+        onSubmit={handleSubmit(onSubmit)}
         className='flex flex-col items-end gap-1.5 md:flex-row xl:flex-col'
       >
-        {/* 입력 필드 그룹 */}
         <div className='flex flex-col w-full gap-[10px]'>
           <label
             htmlFor='nickname'
@@ -92,7 +155,6 @@ export default function Profile({ nickname }: ProfileProps) {
               maxLength: { value: 20, message: '최대 20자까지 가능합니다.' },
             })}
             onInvalid={(e: React.FormEvent<HTMLInputElement>) =>
-              // 브라우저 유효성 오류를 콘솔에만 출력
               console.error(
                 '닉네임 유효성 오류:',
                 (e.currentTarget as HTMLInputElement).validationMessage,
@@ -101,16 +163,16 @@ export default function Profile({ nickname }: ProfileProps) {
           />
         </div>
 
-        {/* 제출 버튼: 버튼이 좀 이상해서 api 연결 후 수정해보겠습니다다 */}
+        {/* 변경하기 버튼: 변경사항 없거나 제출 중이면 비활성화 */}
         <Button
           type='submit'
           variant='purpleDark'
           className='min-w-[89px] md:min-w-[116px] xl:min-w-[96px]'
           size='sm'
           fontSize='md'
-          disabled={!isChanged || isSubmitting} // 변경된 상태 && 제출 중 아님
+          disabled={!isChanged || isSubmitting}
         >
-          {isSubmitting ? '변경 중…' : '변경하기'} {/* 제출 중 텍스트 토글 */}
+          {isSubmitting ? '변경 중…' : '변경하기'}
         </Button>
       </form>
     </div>
