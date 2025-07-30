@@ -6,6 +6,7 @@ import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useFilterStore from '@/stores/filterStore';
+
 import useWineSearchKeywordStore from '@/stores/searchStore';
 import useWineStore from '@/stores/wineAddStore';
 
@@ -19,6 +20,7 @@ export default function WineListCard() {
 
   const { searchTerm } = useWineSearchKeywordStore();
 
+
   /* 별점 범위 필터 */
   const ratingRangeMap: Record<string, [number, number]> = {
     all: [0, 5],
@@ -28,7 +30,9 @@ export default function WineListCard() {
     '3.1': [3.0, 3.5],
   };
 
+
   const filteredWines = wines.filter((wine) => {
+
     /* 종류 필터 */
     if (type && wine.type !== type) return false;
     /* 가격 범위 필터 */
