@@ -1,12 +1,30 @@
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 import { ContentSection } from '@/components/home/ContentSection';
 import { HeroSection } from '@/components/home/HeroSection';
+import DeleteModal from '@/components/Modal/DeleteModal/DeleteModal';
+import AddWineModal from '@/components/Modal/WineModal/AddWineModal';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px]  min-w-[343px] mt-6 xl:mt-[80px]'>
+      <button onClick={() => setShowDeleteModal(true)}>삭제</button>
+      <button onClick={() => setShowRegisterModal(true)}>와ㅓ인추가</button>
+      <DeleteModal
+        id={1}
+        type='review'
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+      />
+      <AddWineModal
+        showRegisterModal={showRegisterModal}
+        setShowRegisterModal={setShowRegisterModal}
+      />
       <HeroSection />
       <main>
         <ContentSection />

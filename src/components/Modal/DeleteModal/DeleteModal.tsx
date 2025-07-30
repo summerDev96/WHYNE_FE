@@ -2,8 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { deleteReview, deleteWine, DeleteResponse } from '@/api/delete';
+import BasicBottomSheet from '@/components/common/BottomSheet/BottomSheet';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 interface DeleteModalProps {
   type: 'wine' | 'review';
@@ -14,6 +16,7 @@ interface DeleteModalProps {
 
 const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteModalProps) => {
   const queryClient = useQueryClient();
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   const deleteWineMutation = useMutation<DeleteResponse, AxiosError, number>({
     mutationFn: (id) => deleteWine(id),
@@ -48,44 +51,52 @@ const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteMo
     }
   };
 
-  return (
-    <div>
-      <BasicModal
-        type='register'
-        title=''
-        open={showDeleteModal}
-        onOpenChange={(isOpen: boolean) => setShowDeleteModal(isOpen)}
-        showCloseButton={false}
-        buttons={
-          <div className='flex w-full gap-2'>
-            <Button
-              onClick={() => setShowDeleteModal(false)}
-              type='button'
-              variant='onlyCancel'
-              size='xl'
-              width='full'
-              fontSize='lg'
-            >
-              취소
-            </Button>
-            <Button
-              onClick={handleDelete}
-              type='button'
-              variant='purpleDark'
-              size='xl'
-              width='full'
-              fontSize='lg'
-            >
-              삭제
-            </Button>
-          </div>
-        }
+  const buttons = (
+    <div className='flex w-full gap-2'>
+      <Button
+        onClick={() => setShowDeleteModal(false)}
+        type='button'
+        variant='onlyCancel'
+        size='xl'
+        width='full'
+        fontSize='lg'
       >
-        <span className='flex justify-center mb-8 custom-text-2lg-bold md:custom-text-xl-bold'>
-          정말로 삭제하시겠습니까?
-        </span>
-      </BasicModal>
+        취소
+      </Button>
+      <Button
+        onClick={handleDelete}
+        type='button'
+        variant='purpleDark'
+        size='xl'
+        width='full'
+        fontSize='lg'
+      >
+        삭제
+      </Button>
     </div>
+  );
+
+  return isDesktop ? (
+    <BasicModal
+      type='register'
+      title=''
+      open={showDeleteModal}
+      onOpenChange={(isOpen: boolean) => setShowDeleteModal(isOpen)}
+      showCloseButton={false}
+    >
+      <span className='flex justify-center mb-8 custom-text-2lg-bold md:custom-text-xl-bold'>
+        정말로 삭제하시겠습니까?
+      </span>
+      {buttons}
+    </BasicModal>
+  ) : (
+    <BasicBottomSheet
+      open={showDeleteModal}
+      onOpenChange={setShowDeleteModal}
+      title='정말로 삭제하시겠습니까?'
+    >
+      {buttons}
+    </BasicBottomSheet>
   );
 };
 export default DeleteModal;
