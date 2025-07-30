@@ -65,14 +65,17 @@ const FilterModal = ({
           {renderForm}
         </BasicModal>
       ) : (
-        <BasicBottomSheet
-          title='필터'
-          open={open}
-          onOpenChange={onOpenChange}
-          buttons={renderButton}
-        >
-          {renderForm}
-        </BasicBottomSheet>
+        <div>
+          <BasicBottomSheet
+            title='필터'
+            open={open}
+            onOpenChange={onOpenChange}
+            buttons={renderButton}
+            contentLayer='flex items-center w-auto'
+          >
+            {renderForm}
+          </BasicBottomSheet>
+        </div>
       )}
     </div>
   );

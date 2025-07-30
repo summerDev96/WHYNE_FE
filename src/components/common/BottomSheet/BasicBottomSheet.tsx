@@ -12,6 +12,7 @@ interface BasicBottomSheetProps {
   title?: string;
   children?: React.ReactNode;
   buttons?: React.ReactNode;
+  contentLayer?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -22,10 +23,11 @@ const BasicBottomSheet = ({
   title,
   children,
   buttons,
+  contentLayer,
 }: BasicBottomSheetProps) => {
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent>
+      <DrawerContent className={contentLayer}>
         {title && (
           <DrawerHeader className='text-left'>
             <DrawerTitle className='custom-text-xl-bold'>{title}</DrawerTitle>
