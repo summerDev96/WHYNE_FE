@@ -40,23 +40,8 @@ export default Gnb;
 
 function AuthMenu() {
   const { pathname } = useRouter();
-
-  useInitUser();
-
   const { user } = useUser();
-
-  //아이디:abc@123.com 비번:12345678
-  // const { data: user, isError } = useQuery<GetUserResponse>({
-  //   queryKey: ['currentUser'],
-  //   queryFn: getUser,
-  //   staleTime: 5 * 60 * 1000, // 5분 동안 캐시 유지
-  //   retry: false,
-  //   enabled: isLoggedIn, //로컬스토리지에 엑세스 토큰 있을 때만 요청 보내서 유효한 토큰인지 확인해봐
-  // });
-
-  // useEffect(() => {
-  //   if (isError) alert('사용자 정보를 불러오지 못했습니다. 다시 로그인 해주세요.');
-  // }, [isError]); //요청 자체가 실패했을 때만 //초기 마운트 시에는 false일테니 if문에서 거르기
+  useInitUser();
 
   return user ? (
     <UserDropdown userImage={user.image} />
