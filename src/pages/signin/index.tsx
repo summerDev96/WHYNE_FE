@@ -17,8 +17,8 @@ import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import useErrorModal from '@/hooks/useErrorModal';
 import useTokenCheckRedirect from '@/hooks/useTokenCheckRedirect';
+import { useUser } from '@/hooks/useUser';
 import { emailSchema, passwordSchema } from '@/lib/form/schemas';
-import { useUserStore } from '@/stores/userStore';
 import { LoginRequest, LoginResponse } from '@/types/AuthTypes';
 import { GetUserResponse } from '@/types/UserTypes';
 
@@ -32,7 +32,7 @@ const LoginSchema = z.object({
 type LoginData = z.infer<typeof LoginSchema>;
 
 const SignIn = () => {
-  const { setUser } = useUserStore();
+  const { setUser } = useUser();
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
   const { isLoading } = useTokenCheckRedirect();
   const router = useRouter();

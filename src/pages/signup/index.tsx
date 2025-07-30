@@ -17,13 +17,13 @@ import ErrorModal from '@/components/common/Modal/ErrorModal';
 import { Button } from '@/components/ui/button';
 import useErrorModal from '@/hooks/useErrorModal';
 import useTokenCheckRedirect from '@/hooks/useTokenCheckRedirect';
+import { useUser } from '@/hooks/useUser';
 import {
   emailSchema,
   nicknameSchema,
   passwordSchema,
   passwordConfirmationSchema,
 } from '@/lib/form/schemas';
-import { useUserStore } from '@/stores/userStore';
 import { LoginRequest, LoginResponse, SignupRequest, SignupResponse } from '@/types/AuthTypes';
 import { GetUserResponse } from '@/types/UserTypes';
 
@@ -42,7 +42,7 @@ const SignupSchema = z
 type SignupData = z.infer<typeof SignupSchema>;
 
 const Signup = () => {
-  const { setUser } = useUserStore();
+  const { setUser } = useUser();
   const { open, setOpen, handleError, errorMessage } = useErrorModal();
   const { isLoading } = useTokenCheckRedirect();
   const router = useRouter();
