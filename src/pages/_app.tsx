@@ -6,9 +6,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import Gnb from '@/components/common/Gnb';
+import { useInitUser } from '@/hooks/useInitUser';
 
 import type { AppProps } from 'next/app';
-import { useInitUser } from '@/hooks/useInitUser';
 
 const queryClient = new QueryClient();
 

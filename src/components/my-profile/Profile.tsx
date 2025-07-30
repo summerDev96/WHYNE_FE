@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
 import Input from '@/components/common/Input';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/hooks/useUser';
+
+import { ProfileImageInput } from './ProfileImageInput';
 
 interface ProfileProps {
   nickname: string; // 현재 사용자 닉네임 (초기값으로 사용)
@@ -11,10 +14,12 @@ interface ProfileProps {
 }
 
 interface FormValues {
-  nickname: string; // 폼에서 입력할 닉네임 값
+  nickname: string;
 }
 
-export default function Profile({ nickname, profileImageUrl }: ProfileProps) {
+export default function Profile({ nickname }: ProfileProps) {
+  const { user } = useUser();
+
   // useForm 훅 초기화
   const {
     register, // input 등록용 함수
@@ -23,9 +28,15 @@ export default function Profile({ nickname, profileImageUrl }: ProfileProps) {
     reset, // 폼 상태 초기화
     formState: { isSubmitting }, // 제출 중 상태
   } = useForm<FormValues>({
-    defaultValues: { nickname }, // 초기값으로 기존 닉네임 설정
+    defaultValues: { nickname: user?.nickname ?? '' }, // 초기값으로 기존 닉네임 설정
     mode: 'onChange', // 입력 시마다 유효성 검사 실행
   });
+
+  useEffect(() => {
+    if (user?.nickname) {
+      reset({ nickname: user.nickname });
+    }
+  }, [user?.nickname, reset]);
 
   // 현재 입력된 값을 관찰
   const current = watch('nickname');
@@ -51,11 +62,10 @@ export default function Profile({ nickname, profileImageUrl }: ProfileProps) {
     <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white xl:justify-between xl:py-7 xl:h-[530px] shadow-md'>
       {/* 프로필 섹션: 이미지 & 현재 닉네임 */}
       <div className='flex items-center gap-4 xl:flex-col xl:gap-8'>
-        <div className='w-16 h-16 rounded-full overflow-hidden xl:w-40 xl:h-40'>
-          {/* 추후 이미지 업로드 기능 추가 필요 */}
-          <img src={profileImageUrl} alt='프로필 이미지' className='w-full h-full object-cover' />
+        <ProfileImageInput defaultImageUrl={user?.image} />
+        <div className='custom-text-xl-bold text-gray-800 md:custom-text-2xl-bold'>
+          {user?.nickname}
         </div>
-        <div className='custom-text-xl-bold text-gray-800 md:custom-text-2xl-bold'>{nickname}</div>
       </div>
 
       {/* 닉네임 변경 폼 */}
@@ -76,7 +86,6 @@ export default function Profile({ nickname, profileImageUrl }: ProfileProps) {
             type='text'
             variant='name'
             placeholder='새 닉네임을 입력하세요'
-            defaultValue={nickname} // 초기값 설정
             {...register('nickname', {
               required: '닉네임을 입력해주세요.',
               minLength: { value: 2, message: '최소 2자 이상 입력하세요.' },

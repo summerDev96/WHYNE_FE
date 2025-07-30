@@ -5,7 +5,7 @@ import UserDefaultImg from '@/assets/icons/userDefaultImg.svg';
 
 interface ProfileImageInputProps {
   /** 유저가 이미 프로필 이미지를 갖고 있다면 초기 이미지 URL */
-  defaultImageUrl?: string;
+  defaultImageUrl?: string | null;
 }
 
 /**
@@ -41,8 +41,11 @@ export function ProfileImageInput({ defaultImageUrl }: ProfileImageInputProps) {
   return (
     <div className='flex flex-col items-center gap-2'>
       {/* 이미지 미리보기 영역 */}
-      <div className='group relative overflow-hidden rounded-full w-16 h-16 xl:w-40 xl:h-40 cursor-pointer'>
-        <div onClick={handleImageClick} className='rounded-full border border-gray-300'>
+      <div
+        onClick={handleImageClick}
+        className='group relative overflow-hidden rounded-full w-16 h-16 xl:w-40 xl:h-40 cursor-pointer'
+      >
+        <div className='rounded-full border border-gray-300'>
           {previewUrl ? (
             <img src={previewUrl} alt='프로필 미리보기' className='w-full h-full object-cover' />
           ) : (
