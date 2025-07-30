@@ -27,6 +27,7 @@ export default function WineListCard() {
   if (isLoading) return <p>불러오는 중...</p>;
   if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
 
+  /* 전체 와인 리스트 조합 */
   const wineList = data.pages.flatMap((page) => page.list);
 
   return (
@@ -137,6 +138,7 @@ export default function WineListCard() {
           </div>
         </Link>
       ))}
+      {/* 무한 스크롤 감지 */}
       <div ref={observerRef} className='h-[1px]' />
     </div>
   );

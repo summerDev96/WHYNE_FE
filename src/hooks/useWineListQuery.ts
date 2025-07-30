@@ -2,16 +2,17 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { getWines } from '@/lib/getWines';
 import useFilterStore from '@/stores/filterStore';
-import useSearchStore from '@/stores/searchStore';
+import useWineSearchKeywordStore from '@/stores/searchStore';
 
 const PAGE_LIMIT = 8;
 
 export function useWineListQuery() {
+  /* 각 필터 상태 */
   const type = useFilterStore((state) => state.type);
   const minPrice = useFilterStore((state) => state.minPrice);
   const maxPrice = useFilterStore((state) => state.maxPrice);
   const rating = useFilterStore((state) => state.rating);
-  const searchTerm = useSearchStore((state) => state.searchTerm);
+  const searchTerm = useWineSearchKeywordStore((state) => state.searchTerm);
 
   return useInfiniteQuery({
     queryKey: ['wines', { type, minPrice, maxPrice, rating, searchTerm }],

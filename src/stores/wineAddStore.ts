@@ -16,7 +16,7 @@ interface WineStoreState {
   addWine: (newWine: Wine) => void;
 }
 
-const useWineStore = create<WineStoreState>((set) => ({
+const useWineAddStore = create<WineStoreState>((set) => ({
   wines: [
     {
       id: 1,
@@ -36,7 +36,7 @@ const useWineStore = create<WineStoreState>((set) => ({
       image: '/images/image3.svg',
       price: 64900,
       rating: 4.6,
-      type: 'Red',
+      type: 'Sparkling',
       review:
         'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
     },
@@ -47,7 +47,7 @@ const useWineStore = create<WineStoreState>((set) => ({
       image: '/images/image2.svg',
       price: 59900,
       rating: 3.6,
-      type: 'Red',
+      type: 'White',
       review:
         'Cherry, cocoa, vanilla and clove - beautiful red fruit driven Amarone. Low acidity and medium tannins. Nice long velvety finish.',
     },
@@ -246,4 +246,4 @@ const useWineStore = create<WineStoreState>((set) => ({
     })),
 }));
 
-export default useWineStore;
+export default useWineAddStore;
