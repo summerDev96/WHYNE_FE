@@ -9,9 +9,9 @@ interface LoadingOverlayProps {
   className?: string;
 }
 
-const MIN_DELAY = 200;
-
 export function LoadingOverlay({ className }: LoadingOverlayProps) {
+  const MIN_DELAY = 200;
+
   const [showLoading, setShowLoading] = useState(false);
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
