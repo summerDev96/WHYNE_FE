@@ -6,7 +6,7 @@ import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import useFilterStore from '@/stores/filterStore';
-import useSearchStore from '@/stores/searchStore';
+import useWineSearchKeywordStore from '@/stores/searchStore';
 import useWineStore from '@/stores/wineAddStore';
 
 export default function WineListCard() {
@@ -17,7 +17,7 @@ export default function WineListCard() {
 
   const wines = useWineStore((state) => state.wines); // 와인 타입 정의, mock
 
-  const { searchTerm } = useSearchStore();
+  const { searchTerm } = useWineSearchKeywordStore();
 
   /* 별점 범위 필터 */
   const ratingRangeMap: Record<string, [number, number]> = {

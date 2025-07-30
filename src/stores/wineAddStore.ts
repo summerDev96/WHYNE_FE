@@ -16,7 +16,7 @@ interface WineStoreState {
   addWine: (newWine: Wine) => void;
 }
 
-const useWineStore = create<WineStoreState>((set) => ({
+const useWinAddStore = create<WineStoreState>((set) => ({
   wines: [
     {
       id: 1,
@@ -70,4 +70,4 @@ const useWineStore = create<WineStoreState>((set) => ({
     })),
 }));
 
-export default useWineStore;
+export default useWinAddStore;

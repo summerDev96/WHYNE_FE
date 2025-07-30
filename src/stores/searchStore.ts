@@ -5,9 +5,9 @@ type SearchState = {
   setSearchTerm: (term: string) => void;
 };
 
-const useSearchStore = create<SearchState>((set) => ({
+const useWineSearchKeywordStore = create<SearchState>((set) => ({
   searchTerm: '',
   setSearchTerm: (term) => set({ searchTerm: term }),
 }));
 
-export default useSearchStore;
+export default useWineSearchKeywordStore;

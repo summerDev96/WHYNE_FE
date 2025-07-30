@@ -7,13 +7,13 @@ import WineListCard from '@/components/common/winelist/WineListCard';
 import FilterModal from '@/components/Modal/FilterModal/FilterModal';
 import AddWineModal from '@/components/Modal/WineModal/AddWineModal';
 import { Button } from '@/components/ui/button';
-import useSearchStore from '@/stores/searchStore';
+import useWineSearchKeywordStore from '@/stores/searchStore';
 
 export default function WineFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  const { searchTerm, setSearchTerm } = useSearchStore();
+  const { searchTerm, setSearchTerm } = useWineSearchKeywordStore();
 
   return (
     <div className='w-full max-w-[1140px] mx-auto'>
