@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-// import ErrorBoundary from '@/components/common/ErrorBoundary';
+import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
 import { useInitUser } from '@/hooks/useInitUser';
 
@@ -36,19 +36,17 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
-          {/* <ErrorBoundary fallback={<div></div>}> */}
-          {/* <React.Suspense fallback={<div>로딩 중입니다...</div>}> */}
-          {!hideHeader && <Gnb />}
-          <div
-            className={clsx({
-              'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
-              'bg-gray-100': isLanding,
-            })}
-          >
-            <Component {...pageProps} />
-          </div>
-          {/* </React.Suspense> */}
-          {/* </ErrorBoundary> */}
+          <ErrorBoundary fallback={<div></div>}>
+            {!hideHeader && <Gnb />}
+            <div
+              className={clsx({
+                'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
+                'bg-gray-100': isLanding,
+              })}
+            >
+              <Component {...pageProps} />
+            </div>
+          </ErrorBoundary>
         </HydrationBoundary>
       </QueryClientProvider>
     </>

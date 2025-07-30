@@ -17,9 +17,11 @@ const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteMo
 
   const deleteWineMutation = useMutation<DeleteResponse, AxiosError, number>({
     mutationFn: (id) => deleteWine(id),
+    throwOnError: true,
   });
   const deleteReviewMutation = useMutation<DeleteResponse, AxiosError, number>({
     mutationFn: (id) => deleteReview(id),
+    throwOnError: true,
   });
 
   const handleDelete = () => {

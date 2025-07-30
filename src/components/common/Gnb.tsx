@@ -82,7 +82,7 @@ function UserDropdown({ userImage }: Props) {
       onSelect={onSelect}
       trigger={
         <div className='w-[20px] md:w-[45px] h-[20px] md:h-[45px] cursor-pointer'>
-          {userImage ? <Image src={userImage} alt='유저의 프로필 사진' /> : <UserDefaultImg />}
+          {userImage ? <Image fill src={userImage} alt='유저의 프로필 사진' /> : <UserDefaultImg />}
         </div>
       }
     ></MenuDropdown>

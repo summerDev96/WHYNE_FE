@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 
 import { getWineInfoForClient } from '@/api/getWineInfo';
 import { ImageCard } from '@/components/common/card/ImageCard';
-// import Reviews from '@/components/wineDetail/Reviews';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
 import { cn } from '@/lib/utils';
@@ -21,6 +20,8 @@ interface WinePageProps {
   dehydratedState: any;
   parsedWineId: number;
 }
+
+const Reviews = dynamic(() => import('@/components/wineDetail/Reviews'), { ssr: false });
 
 export default function WineInfoById(props: WinePageProps) {
   const router = useRouter();
@@ -42,7 +43,9 @@ export default function WineInfoById(props: WinePageProps) {
 
   if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
 
-  if (!data) throw new Error('데이터가 없습니다.');
+  if (!data) {
+    throw new Error('데이터가 없습니다.');
+  }
 
   return (
     <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
@@ -60,7 +63,6 @@ export default function WineInfoById(props: WinePageProps) {
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
-
           <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
         </div>
         <WineRating
@@ -73,8 +75,6 @@ export default function WineInfoById(props: WinePageProps) {
   );
 }
 
-const Reviews = dynamic(() => import('@/components/wineDetail/Reviews'), { ssr: false });
-
 const IMAGE_CLASS_NAME =
   'w-[58px] md:w-[84px] xl:w-[58px] h-[209px] md:h-[302px] xl:h-[209px] absolute bottom-0 left-[20px] md:left-[60px] xl:left-[100px]';
 
@@ -84,17 +84,20 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
   const parsedWineId = Number(wineid);
   const queryClient = new QueryClient();
   const cookies = context.req?.headers.cookie || '';
-  //2. 추출한 토큰들을 토대로 서버에서 요청보내 캐싱해두기
+
   try {
     await queryClient.prefetchQuery({
       queryKey: ['wineDetail', parsedWineId],
       queryFn: async () => {
         //추후 배포용 주소로 변경
-        const res = await axios.get(`http://localhost:3000/api/wines/${parsedWineId}`, {
-          headers: {
-            Cookie: cookies, // API Route에 쿠키 전달
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/wines/${parsedWineId}`,
+          {
+            headers: {
+              Cookie: cookies, // API Route에 쿠키 전달
+            },
           },
-        });
+        );
         return res.data;
       },
       staleTime: 0,

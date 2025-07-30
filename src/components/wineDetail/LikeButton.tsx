@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { QueryClient, useMutation } from '@tanstack/react-query';
+
 import { postLike, deleteLike } from '@/api/handleLikeRequest';
 import FullLikeIcon from '@/assets/icons/fullLike.svg';
 import LikeIcon from '@/assets/icons/like.svg';
@@ -11,23 +13,44 @@ interface Props {
   reviewId: number;
 }
 
+const queryClient = new QueryClient();
+
+export function usePostLikeMutation() {
+  return useMutation({
+    mutationFn: (reviewId: number) => postLike(reviewId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wineDetail'] }); // 필요한 캐시 무효화
+    },
+    throwOnError: true,
+  });
+}
+
+export function useDeleteLikeMutation() {
+  return useMutation({
+    mutationFn: (reviewId: number) => deleteLike(reviewId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
+    },
+    throwOnError: true,
+  });
+}
+
 function LikeButton({ isLike, reviewId }: Props) {
   const [isClicked, setIsClicked] = useState(isLike);
+  const postLikeMutation = usePostLikeMutation();
+  const deleteLikeMutation = useDeleteLikeMutation();
 
   async function handleToggle() {
     setIsClicked((prev) => !prev); //미리 업데이트
-    //좋아요 api 요청 보내기
-    // /{teamId}/reviews/{id}/like
 
     try {
-      isClicked === true ? await deleteLike(reviewId) : await postLike(reviewId);
+      isClicked
+        ? await deleteLikeMutation.mutateAsync(reviewId)
+        : await postLikeMutation.mutateAsync(reviewId);
     } catch (err) {
-      //모달 호출 후 집어 넣기
-
       setIsClicked((prev) => !prev); //실패하면 업데이트 했던 거 취소
     }
   }
-
   return (
     <Button
       onClick={handleToggle}

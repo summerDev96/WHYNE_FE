@@ -5,18 +5,11 @@ import { GetWineInfoResponse, WineReview } from '@/types/WineTypes';
 import NoReviews from './NoReviews';
 import WineReviewCard from './WineReviewCard';
 
-// import dynamic from 'next/dynamic';
-
 interface Props {
   reviews: WineReview[];
   reviewCount: number;
   wine: GetWineInfoResponse;
 }
-
-// const WineReviewCard = dynamic(() => import('@/components/wineDetail/WineReviewCard'), {
-//   ssr: false,
-// });
-// const NoReviews = dynamic(() => import('@/components/wineDetail/NoReviews'), { ssr: false });
 
 function Reviews({ reviews, reviewCount }: Props) {
   if (reviewCount <= 0) return <NoReviews className='w-full xl:w-[1140px] pt-[80px]' />;

@@ -93,6 +93,7 @@ const EditReviewModal = ({
 
   const updateReviewMutation = useMutation({
     mutationFn: updateReview,
+    throwOnError: true,
     onSuccess: () => {
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
