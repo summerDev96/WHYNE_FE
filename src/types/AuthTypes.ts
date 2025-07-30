@@ -1,7 +1,7 @@
-import { IncomingMessage } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 
 import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { GetServerSidePropsContext, NextApiResponse } from 'next';
+import { GetServerSidePropsContext } from 'next';
 
 export interface SignupRequest {
   email: string;
@@ -64,15 +64,15 @@ export interface RetryRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export interface ApiClientContext {
-  req: IncomingMessage;
-  res: NextApiResponse;
+  req?: IncomingMessage;
+  res?: ServerResponse;
 }
 
 export interface RefreshTokenRequest {
   instance: AxiosInstance;
   error: AxiosError;
   refreshToken: string;
-  res?: NextApiResponse;
+  res?: ServerResponse;
   context?: GetServerSidePropsContext;
 }
 

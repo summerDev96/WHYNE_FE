@@ -1,3 +1,5 @@
+import { ServerResponse } from 'http';
+
 import { NextApiResponse } from 'next';
 
 import { checkToken } from '@/api/auth';
@@ -20,7 +22,11 @@ type COOKIE_TYPE = 'accessToken' | 'refreshToken';
 const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
 
 // 쿠키 설정
-export function setAuthCookies(res: NextApiResponse, accessToken: string, refreshToken?: string) {
+export function setAuthCookies(
+  res: NextApiResponse | ServerResponse,
+  accessToken: string,
+  refreshToken?: string,
+) {
   const cookies = [
     `${COOKIE_NAMES.ACCESS_TOKEN}=${accessToken}; Path=/; Max-Age=${60 * 30}; SameSite=strict; HttpOnly${secure}`,
   ];
