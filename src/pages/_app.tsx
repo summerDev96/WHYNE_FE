@@ -29,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao'];
   const hideHeader = pagesWithoutGnb.includes(pathname);
   const isLanding = pathname === '/';
+  const is404 = pathname === '/404';
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <div
               className={clsx({
                 'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,
-                'bg-gray-100': isLanding,
+                'bg-gray-100': isLanding || is404,
               })}
             >
               <Component {...pageProps} />
