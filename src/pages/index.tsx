@@ -52,7 +52,7 @@ export default function Home() {
         showRegisterModal={showRegisterModal}
         setShowRegisterModal={setShowRegisterModal}
       />
-      <AddReviewModal wineId={1399} wineName='돔뇽리뇽' />
+      <AddReviewModal wineId={1402} wineName='돔뇽리뇽' />
       <FilterModal open={isFilterOpen} onOpenChange={setIsFilterOpen} />
       <EditWineModal
         wine={dummyWine}

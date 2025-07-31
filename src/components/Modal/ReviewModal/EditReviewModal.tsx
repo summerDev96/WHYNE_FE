@@ -233,41 +233,41 @@ const EditReviewModal = ({
 
       <div className='mb-[40px] space-y-[18px]'>
         <FlavorSlider
-          value={watch('sliderLightBold')}
+          value={watch('lightBold')}
           min={0}
           max={10}
           step={1}
-          onChange={(val) => setValue('sliderLightBold', val)}
+          onChange={(val) => setValue('lightBold', val)}
           labelLeft='가벼워요'
           labelRight='진해요'
           badgeLabel='바디감'
         />
         <FlavorSlider
-          value={watch('sliderSmoothTanic')}
+          value={watch('smoothTannic')}
           min={0}
           max={10}
           step={1}
-          onChange={(val) => setValue('sliderSmoothTanic', val)}
+          onChange={(val) => setValue('smoothTannic', val)}
           labelLeft='부드러워요'
           labelRight='떫어요'
           badgeLabel='타닌'
         />
         <FlavorSlider
-          value={watch('sliderdrySweet')}
+          value={watch('drySweet')}
           min={0}
           max={10}
           step={1}
-          onChange={(val) => setValue('sliderdrySweet', val)}
+          onChange={(val) => setValue('drySweet', val)}
           labelLeft='드라이해요'
           labelRight='달아요'
           badgeLabel='당도'
         />
         <FlavorSlider
-          value={watch('slidersoftAcidic')}
+          value={watch('softAcidic')}
           min={0}
           max={10}
           step={1}
-          onChange={(val) => setValue('slidersoftAcidic', val)}
+          onChange={(val) => setValue('softAcidic', val)}
           labelLeft='안 셔요'
           labelRight='많이 셔요'
           badgeLabel='산미'

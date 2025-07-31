@@ -295,7 +295,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
         <BasicBottomSheet
           open={showEditModal}
           onOpenChange={closeModalReset}
-          title='리뷰 수정'
+          title='와인 수정'
           buttons={renderButton}
         >
           {renderForm()}
