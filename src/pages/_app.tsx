@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import React from 'react';
 
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -48,6 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
               })}
             >
               <Component {...pageProps} />
+              <SpeedInsights />
             </div>
           </ErrorBoundary>
         </HydrationBoundary>
