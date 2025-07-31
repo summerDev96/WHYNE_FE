@@ -134,7 +134,7 @@ export default function Profile() {
   };
 
   return (
-    <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white xl:justify-between xl:py-7 xl:h-[530px] shadow-md'>
+    <div className='p-5 flex flex-col gap-5 rounded-xl border bg-white xl:max-w-[280px] xl:justify-between xl:py-7 xl:h-[530px] shadow-md'>
       {/* 프로필 이미지 + 현재 닉네임 */}
       <div className='flex items-center gap-4 xl:flex-col xl:gap-8'>
         <ProfileImageInput
