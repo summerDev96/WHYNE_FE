@@ -41,15 +41,6 @@ function AuthMenu() {
   const { pathname } = useRouter();
   const { user } = useUser();
 
-  /**
-   1)로그인 -> User스토어에 바로 저장이되나?(확인하고)
-   2)바로 저장이 되는데 안보인다? -> user다시 조회하는 동작 추가 필요
-   3)바로 저장이 되면 보인다? -> 그냥 넘어가기
-   4) 로딩스피너 적용되는 거 보고 오버레이(뒤에 비치니까) 만약 새로고침 시 유저상태 변하는 게 보인다? -> ssr고려하기? 하 
-   
-
-   */
-
   return user ? (
     <UserDropdown userImage={user.image} />
   ) : (
