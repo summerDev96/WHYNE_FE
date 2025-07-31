@@ -22,6 +22,7 @@ function FlavorSliderList({
         labelRight={'진해요'}
         badgeLabel={'바디감'}
         disabled
+        max={10}
       />
       <FlavorSlider
         value={smoothTannic}
@@ -30,6 +31,7 @@ function FlavorSliderList({
         labelRight={'떫어요'}
         badgeLabel={'타닌'}
         disabled
+        max={10}
       />
       <FlavorSlider
         value={drySweet}
@@ -38,6 +40,7 @@ function FlavorSliderList({
         labelRight={'달아요'}
         badgeLabel={'당도'}
         disabled
+        max={10}
       />
       <FlavorSlider
         value={softAcidic}
@@ -46,6 +49,7 @@ function FlavorSliderList({
         labelRight={'많이셔요'}
         badgeLabel={'산미'}
         disabled
+        max={10}
       />
     </div>
   );

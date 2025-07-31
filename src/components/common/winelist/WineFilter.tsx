@@ -33,7 +33,6 @@ export default function WineFilter() {
             와인 등록하기
           </Button>
         </div>
-
         <div className='flex-1 flex flex-col items-end gap-[18px] text-gray-500 [&_label]:top-[10px] md:[&_label]:top-[14px] xl:[&_label]:top-[14px]'>
           <Input
             id='wine-search'
@@ -52,7 +51,6 @@ export default function WineFilter() {
           </div>
         </div>
       </div>
-
       {/* Tablet: 필터 버튼 + 검색창 + 등록 버튼 */}
       <div className='hidden md:flex xl:hidden flex-row items-center px-[20px] mt-[24px] md:mt-[50px] md:mb-[80px]'>
         <Button
@@ -64,7 +62,6 @@ export default function WineFilter() {
         >
           <SearchButton className='w-[20px] h-[20px] text-gray-500' />
         </Button>
-
         <div className='flex-grow ml-[24px] text-gray-500 [&_label]:top-[14px]'>
           <Input
             id='wine-search'
@@ -80,7 +77,6 @@ export default function WineFilter() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
         <Button
           variant='purpleDark'
           size={null}
@@ -91,7 +87,6 @@ export default function WineFilter() {
           와인 등록하기
         </Button>
       </div>
-
       {/* Mobile: 검색창 + 필터 버튼 */}
       <div className='flex flex-col md:hidden gap-[8px] px-[16px] mt-[24px]'>
         <div className='text-gray-500 [&_label]:top-[10px] min-w-[343px]'>
@@ -105,7 +100,6 @@ export default function WineFilter() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
         <div className='w-fit mt-[15px] mb-[20px]'>
           <Button
             onClick={() => setIsFilterOpen(true)}
@@ -119,7 +113,6 @@ export default function WineFilter() {
         </div>
       </div>
       {isFilterOpen && <FilterModal open={isFilterOpen} onOpenChange={setIsFilterOpen} />}
-
       {/* Mobile: 하단 고정 등록 버튼 */}
       <div className='fixed bottom-[20px] left-0 right-0 z-10 px-[16px] md:hidden'>
         <Button
