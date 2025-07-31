@@ -10,9 +10,11 @@ import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useWineListQuery } from '@/hooks/useWineListQuery';
 import { cn } from '@/lib/utils';
 
+
 export default function WineListCard() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useWineListQuery();
+
 
   const observerRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,6 +28,7 @@ export default function WineListCard() {
 
   if (isLoading) return <p>불러오는 중...</p>;
   if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
+
 
   /* 전체 와인 리스트 조합 */
   const wineList = data.pages.flatMap((page) => page.list);
