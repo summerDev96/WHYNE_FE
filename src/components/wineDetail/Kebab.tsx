@@ -34,7 +34,10 @@ function Kebab({ reviewId }: Props) {
         break;
       }
       case 'delete': {
-        setOpenDeleteModal(true);
+        if (user?.id !== reviewData.user.id) setOpenAlertModal(true);
+        else {
+          setOpenDeleteModal(true);
+        }
         break;
       }
     }

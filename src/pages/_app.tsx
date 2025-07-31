@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <HydrationBoundary state={pageProps.dehydratedState}>
           {!hideHeader && <Gnb />}
-          <ErrorBoundary fallback={<></>} onRedirect={() => router.replace('/')}>
+          <ErrorBoundary fallback={<></>} router={router}>
             <div
               className={clsx({
                 'pt-[70px] md:pt-[100px] xl:pt-[110px]': !hideHeader,

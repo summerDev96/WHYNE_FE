@@ -35,6 +35,7 @@ export default function WineInfoById(props: WinePageProps) {
     queryKey: ['wineDetail', parsedWineId],
     queryFn: () => getWineInfoForClient(parsedWineId),
     staleTime: 1000 * 60 * 5,
+    throwOnError: true,
   });
 
   useEffect(() => {

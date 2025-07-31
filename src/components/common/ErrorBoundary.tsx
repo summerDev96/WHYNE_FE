@@ -1,6 +1,7 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 
 import { isAxiosError } from 'axios';
+import { NextRouter } from 'next/router';
 
 import ErrorModal from './Modal/ErrorModal';
 
@@ -8,7 +9,7 @@ interface ErrorBoundaryProps {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  onRedirect: () => void;
+  router: NextRouter;
 }
 
 interface ErrorBoundaryState {
@@ -45,6 +46,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           }
           break;
         }
+        case 401: {
+          const apiMessage = error.response?.data?.message;
+          if (apiMessage === 'Unauthorized') {
+            errorMessage = '로그인이 필요합니다.';
+          }
+          break;
+        }
         default: {
           errorMessage = `${error.response?.status || ''} - ${error.response?.data?.message || error.message}`;
           break;
@@ -69,7 +77,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   // 컴포넌트 렌더링 로직
   public render() {
     const { hasError, isOpen, errorMessageToDisplay } = this.state;
-    const { children, onRedirect } = this.props;
+    const { children, router } = this.props;
 
     if (hasError) {
       return (
@@ -78,14 +86,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           onOpenChange={() => {}}
           onConfirm={() => {
             this.setState({ isOpen: false, hasError: false });
-            onRedirect();
+            router.back();
           }}
         >
-          <div className='text-center custom-text-lg-bold'>
-            {errorMessageToDisplay}
-            <br />
-            {'메인화면으로 돌아갑니다.'}
-          </div>
+          <div className='text-center custom-text-lg-bold'>{errorMessageToDisplay}</div>
         </ErrorModal>
       );
     }
