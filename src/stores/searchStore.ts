@@ -6,8 +6,10 @@ type SearchState = {
 };
 
 const useWineSearchKeywordStore = create<SearchState>((set) => ({
+
   searchTerm: '',
   setSearchTerm: (term) => set({ searchTerm: term }),
 }));
 
 export default useWineSearchKeywordStore;
+
