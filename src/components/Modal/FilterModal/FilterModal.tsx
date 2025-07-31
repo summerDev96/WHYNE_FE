@@ -1,34 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import Filterbtn from '@/assets/icons/filterbtn.svg';
 import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
+import BasicModal from '@/components/common/Modal/BasicModal';
+import { Button } from '@/components/ui/button';
 import useFilterStore from '@/stores/filterStore';
 
-import BasicModal from '../../common/Modal/BasicModal';
-import { Button } from '../../ui/button';
-
-const FilterModal = () => {
-  const [showRegisterModal, setShowRegisterModal] = useState(false);
-
+const FilterModal = ({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+}) => {
   const reset = useFilterStore((state) => state.reset);
 
-  //모달창 끄면 리셋되게
-  const closeModalReset = (isOpen: boolean) => {
-    setShowRegisterModal(isOpen);
-    if (!isOpen) reset();
+  const handleApplyFilter = (e: React.FormEvent) => {
+    e.preventDefault();
+    onOpenChange(false); // 필터 적용 후 모달을 close
   };
-  ////
+
   return (
     <div>
-      <Filterbtn
-        className='w-[38px] md:w-[48px] h-[38px] md:h-[48px] border border-gray-300 text-gray-500 rounded-[8px] p-2 md:p-[11px] cursor-pointer'
-        onClick={() => setShowRegisterModal(true)}
-      />
       <BasicModal
         type='filter'
         title='필터'
-        open={showRegisterModal}
-        onOpenChange={closeModalReset}
+        open={open}
+        onOpenChange={onOpenChange}
         buttons={
           <div className='flex gap-2'>
             <Button
@@ -41,7 +38,8 @@ const FilterModal = () => {
               초기화
             </Button>
             <Button
-              type='submit'
+              type='button'
+              onClick={handleApplyFilter}
               variant='purpleDark'
               size='xl'
               className='w-[223px] md:w-[223px]'
@@ -52,7 +50,7 @@ const FilterModal = () => {
           </div>
         }
       >
-        <form>
+        <form onSubmit={handleApplyFilter}>
           <WineTypeFilter className='mt-[20px] mb-[25px] ' showBorder={true} hasMargin={false} />
         </form>
       </BasicModal>
