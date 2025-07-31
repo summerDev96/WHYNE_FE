@@ -1,3 +1,8 @@
+'use client';
+
+import { useRef } from 'react';
+
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 import AverageStar from '@/components/wineDetail/AverageStar';
@@ -5,12 +10,41 @@ import AverageStar from '@/components/wineDetail/AverageStar';
 import { ImageCard } from '../common/card/ImageCard';
 
 export const ContentSection = () => {
+  // 첫 번째 카드 애니메이션
+  const ref1 = useRef(null);
+  const { scrollYProgress: scroll1 } = useScroll({
+    target: ref1,
+    offset: ['start end', 'center start'],
+  });
+  const y1 = useTransform(scroll1, [0, 1], [80, 0]);
+
+  // 두 번째 카드 애니메이션
+  const ref2 = useRef(null);
+  const { scrollYProgress: scroll2 } = useScroll({
+    target: ref2,
+    offset: ['start end', 'center start'],
+  });
+  const y2 = useTransform(scroll2, [0, 1], [80, 0]);
+
+  // 세 번째 카드 애니메이션
+  const ref3 = useRef(null);
+  const { scrollYProgress: scroll3 } = useScroll({
+    target: ref3,
+    offset: ['start end', 'center start'],
+  });
+  const y3 = useTransform(scroll3, [0, 1], [80, 0]);
+
   return (
-    <div className='mx-auto max-w-[640px]  min-w-[343px] mt-12 md:mt-[80px] xl:mt-[160px]'>
-      <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl mx-auto max-w-[500px] md:max-w-[640px] shadow'>
-        <div className='relative  max-w-[500px] md:max-w-[640px] mx-auto'>
+    <div className='mx-auto max-w-[640px] min-w-[343px] mt-12 md:mt-[80px] xl:mt-[160px]'>
+      {/* 카드 1 */}
+      <motion.div
+        ref={ref1}
+        style={{ y: y1 }}
+        className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl mx-auto max-w-[500px] md:max-w-[640px] shadow'
+      >
+        <div className='relative max-w-[500px] md:max-w-[640px] mx-auto'>
           <div className='absolute top-[24px] md:top-[56px] left-[24px] md:left-[32px]'>
-            <span className='custom-text-2lg-bold md:text-[22px] md:leading-8 md:font-bold block  mb-[8px]'>
+            <span className='custom-text-2lg-bold md:text-[22px] md:leading-8 md:font-bold block mb-[8px]'>
               매달 새롭게 만나는 <br />
               와인 추천 콘탠츠
             </span>
@@ -18,16 +52,17 @@ export const ContentSection = () => {
               매달 다양한 인기 와인을 만나보세요
             </p>
           </div>
-          <div className='absolute w-[290px] md:w-[356px] h-[241px] md:h-[277px] right-0 bottom-[24px] md:bottom-0 bg-gray-100 rounded-2xl overflow-hidden  md:overflow-visible top-[160px] md:top-[42px]'>
+
+          <div className='absolute w-[290px] md:w-[356px] h-[241px] md:h-[277px] right-0 bottom-[24px] md:bottom-0 bg-gray-100 rounded-2xl overflow-hidden md:overflow-visible top-[160px] md:top-[42px]'>
             <span className='absolute text-[#7E7E7E] md:text-[#50545B] md:font-bold custom-text-lg-bold md:custom-text-2lg-bold left-5 top-5'>
               이번 달 추천 와인
             </span>
-            <div className='flex gap-2.5 ml-5 mt-[61px] '>
+            <div className='flex gap-2.5 ml-5 mt-[61px]'>
               <div className='w-[193px] flex-shrink-0'>
                 <ImageCard
                   className='bg-white h-[160px] rounded-lg border-none overflow-hidden shadow'
                   imageSrc='/assets/lendingwine4.png'
-                  imageClassName='h-[165px] w-[44px] object-contain '
+                  imageClassName='h-[165px] w-[44px] object-contain'
                 >
                   <div className='flex flex-col ml-[9px] w-[80px]'>
                     <span className='font-extrabold text-4xl text-gray-800'>4.8</span>
@@ -40,7 +75,7 @@ export const ContentSection = () => {
                 <ImageCard
                   className='bg-white h-[160px] rounded-lg border-none overflow-hidden shadow'
                   imageSrc='/assets/lendingwine3.png'
-                  imageClassName='h-[165px] w-[44px] object-contain '
+                  imageClassName='h-[165px] w-[44px] object-contain'
                 >
                   <div className='flex flex-col ml-[9px] w-[80px]'>
                     <span className='font-extrabold text-4xl text-gray-800'>4.3</span>
@@ -52,9 +87,15 @@ export const ContentSection = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl mx-auto max-w-[500px] overflow-hidden md:max-w-[640px] shadow'>
-        <div className='relative  max-w-[500px] md:max-w-[640px] mx-auto'>
+      </motion.div>
+
+      {/* 카드 2 */}
+      <motion.div
+        ref={ref2}
+        style={{ y: y2 }}
+        className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[48px] md:mb-[96px] rounded-2xl mx-auto max-w-[500px] overflow-hidden md:max-w-[640px] shadow'
+      >
+        <div className='relative max-w-[500px] md:max-w-[640px] mx-auto'>
           <div className='absolute top-[24px] md:top-[55px] left-[24px] md:left-[32px]'>
             <span className='custom-text-2lg-bold md:text-[22px] md:leading-8 md:font-bold block mb-2'>
               다양한 필터로 찾는
@@ -86,9 +127,15 @@ export const ContentSection = () => {
               'linear-gradient(to top, #EBEEF4 0%, transparent 10%, transparent 90%, #EBEEF4 100%)',
           }}
         />
-      </div>
-      <div className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[64px] md:mb-[80px] xl:mb-[104px] rounded-2xl mx-auto max-w-[500px] overflow-hidden md:max-w-[640px] shadow'>
-        <div className='relative  max-w-[500px] md:max-w-[640px] mx-auto'>
+      </motion.div>
+
+      {/* 카드 3 */}
+      <motion.div
+        ref={ref3}
+        style={{ y: y3 }}
+        className='relative bg-[#EBEEF4] h-[424px] md:h-[320px] mb-[64px] md:mb-[80px] xl:mb-[104px] rounded-2xl mx-auto max-w-[500px] overflow-hidden md:max-w-[640px] shadow'
+      >
+        <div className='relative max-w-[500px] md:max-w-[640px] mx-auto'>
           <div className='absolute top-[24px] md:top-[55px] left-[24px] md:left-[28px]'>
             <span className='custom-text-2lg-bold md:text-[22px] md:leading-8 md:font-bold block mb-2'>
               직관적인
@@ -116,7 +163,7 @@ export const ContentSection = () => {
               'linear-gradient(to top, #EBEEF4 0%, transparent 5%, transparent 95%, #EBEEF4 100%)',
           }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
