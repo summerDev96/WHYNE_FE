@@ -113,6 +113,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     onSuccess: (data) => {
       console.log('리뷰 등록 성공', data);
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       reset();
       setShowRegisterModal(false);
     },

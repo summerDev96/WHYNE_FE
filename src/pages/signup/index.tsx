@@ -68,7 +68,7 @@ const Signup = () => {
       loginMutation.mutate({ email, password });
     },
     onError: (error) => {
-      if (error.response?.status === 400) {
+      if (error.response?.status === 500) {
         // 로그인 오류인 경우 공통 에러 메시지
         setError('root', { message: '닉네임이 중복되었습니다.' });
       } else {
@@ -131,7 +131,7 @@ const Signup = () => {
       {/* 폼 시작 */}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleOnClickSignup)}>
-          <div className='flex flex-col items-center gap-4 md:gap-9'>
+          <div className='flex flex-col items-center gap-9 md:gap-9'>
             {/* 이메일 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='email'>이메일</label>
