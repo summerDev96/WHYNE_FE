@@ -15,7 +15,14 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   useInitUser();
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao', '/_error'];
+  const pagesWithoutGnb = [
+    '/signup',
+    '/signin',
+    '/oauth/kakao',
+    '/oauth/signup/kakao',
+    '/_error',
+    '/404',
+  ];
   const hideHeader = pagesWithoutGnb.includes(pathname);
   const isLanding = pathname === '/';
 
