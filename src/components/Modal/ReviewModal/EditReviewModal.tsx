@@ -300,9 +300,6 @@ const EditReviewModal = ({
 
   return (
     <div>
-      <Button variant='purpleDark' size='xs' width='sm' onClick={() => setShowEditModal(true)}>
-        리뷰 수정하기
-      </Button>
       {isDesktop ? (
         <BasicModal
           type='review'
