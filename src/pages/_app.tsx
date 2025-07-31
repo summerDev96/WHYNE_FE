@@ -6,12 +6,11 @@ import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/r
 import clsx from 'clsx';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { toast, Toaster } from 'sonner';
+import { Toaster } from 'sonner';
 
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
-import { Button } from '@/components/ui/button';
 import { useInitUser } from '@/hooks/useInitUser';
 
 import type { AppProps } from 'next/app';
@@ -62,15 +61,6 @@ export default function App({ Component, pageProps }: AppProps) {
               })}
             >
               <Component {...pageProps} />
-              <Button
-                onClick={() =>
-                  toast.success('', {
-                    description: '토스트 내용입니다.',
-                  })
-                }
-              >
-                Show Toast
-              </Button>
             </div>
           </ErrorBoundary>
         </HydrationBoundary>
