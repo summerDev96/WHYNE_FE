@@ -1,4 +1,7 @@
-import { InternalAxiosRequestConfig } from 'axios';
+import { IncomingMessage, ServerResponse } from 'http';
+
+import { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { GetServerSidePropsContext } from 'next';
 
 export interface SignupRequest {
   email: string;
@@ -40,6 +43,7 @@ export interface AccessTokenRequest {
 
 export interface AccessTokenResponse {
   accessToken: string;
+  refreshToken: string;
 }
 
 export interface KakakoSignInRequest {
@@ -58,3 +62,18 @@ export interface KakakoSignInResponse {
 export interface RetryRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
+
+export interface ApiClientContext {
+  req?: IncomingMessage;
+  res?: ServerResponse;
+}
+
+export interface RefreshTokenRequest {
+  instance: AxiosInstance;
+  error: AxiosError;
+  refreshToken: string;
+  res?: ServerResponse;
+  context?: GetServerSidePropsContext;
+}
+
+export type RefreshTokenResponse = Promise<AxiosResponse | null>;
