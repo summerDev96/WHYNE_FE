@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { toast } from 'sonner';
+
 import KebabIcon from '@/assets/icons/kebab.svg';
 import { Button } from '@/components/ui/button';
 import { useUser } from '@/hooks/useUser';
@@ -7,7 +9,6 @@ import useReviewCardStore from '@/stores/reviewCardStore';
 import useWineStore from '@/stores/wineStore';
 
 import MenuDropdown from '../common/dropdown/MenuDropdown';
-import ErrorModal from '../common/Modal/ErrorModal';
 import DeleteModal from '../Modal/DeleteModal/DeleteModal';
 import EditReviewModal from '../Modal/ReviewModal/EditReviewModal';
 
@@ -20,21 +21,26 @@ function Kebab({ reviewId }: Props) {
   const reviewData = useReviewCardStore((state) => state.allReviews[reviewId]);
   const [openEditModal, setOepnEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [openAlertModal, setOpenAlertModal] = useState(false);
 
   const { user } = useUser();
 
   function onSelect(value: string) {
     switch (value) {
       case 'update': {
-        if (user?.id !== reviewData.user.id) setOpenAlertModal(true);
+        if (user?.id !== reviewData.user.id)
+          toast.error('', {
+            description: '권한이 없습니다.',
+          });
         else {
           setOepnEditModal(true);
         }
         break;
       }
       case 'delete': {
-        if (user?.id !== reviewData.user.id) setOpenAlertModal(true);
+        if (user?.id !== reviewData.user.id)
+          toast.error('', {
+            description: '권한이 없습니다.',
+          });
         else {
           setOpenDeleteModal(true);
         }
@@ -75,15 +81,6 @@ function Kebab({ reviewId }: Props) {
           showDeleteModal={openDeleteModal}
           setShowDeleteModal={setOpenDeleteModal}
         />
-      )}
-      {openAlertModal && (
-        <ErrorModal
-          open={openAlertModal}
-          onOpenChange={() => {}}
-          onConfirm={() => setOpenAlertModal(false)}
-        >
-          <div className='custom-text-lg-bold'>권한이 없습니다.</div>
-        </ErrorModal>
       )}
     </>
   );
