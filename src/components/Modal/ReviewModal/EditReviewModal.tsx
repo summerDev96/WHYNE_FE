@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -17,21 +17,21 @@ import { Button } from '../../ui/button';
 
 interface ReviewForm {
   rating: number;
-  sliderLightBold: number;
-  sliderSmoothTanic: number;
-  sliderdrySweet: number;
-  slidersoftAcidic: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
   aroma: Array<string>;
   content: string;
 }
 
 interface ReviewData {
-  reviewId: number;
+  id: number;
   rating: number;
-  sliderLightBold: number;
-  sliderSmoothTanic: number;
-  sliderdrySweet: number;
-  slidersoftAcidic: number;
+  lightBold: number;
+  smoothTannic: number;
+  drySweet: number;
+  softAcidic: number;
   aroma: string[];
   content: string;
 }
@@ -58,7 +58,7 @@ const aromaOptions = [
   '가죽',
 ];
 
-const aromaMap: Record<string, string> = {
+export const aromaMap: Record<string, string> = {
   체리: 'CHERRY',
   베리: 'BERRY',
   오크: 'OAK',
@@ -83,19 +83,24 @@ const aromaMap: Record<string, string> = {
 const EditReviewModal = ({
   wineName,
   reviewData,
+  showEditModal,
+  setShowEditModal,
 }: {
   wineName: string;
   reviewData: ReviewData;
+  showEditModal: boolean;
+  setShowEditModal: (state: boolean) => void;
 }) => {
-  const [showEditModal, setShowEditModal] = useState(false);
   const queryClient = useQueryClient();
   const isDesktop = useMediaQuery('(min-width: 640px)');
 
   const updateReviewMutation = useMutation({
     mutationFn: updateReview,
+    throwOnError: true,
     onSuccess: () => {
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
+      queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       setShowEditModal(false);
     },
     onError: (error) => {
@@ -115,10 +120,10 @@ const EditReviewModal = ({
   } = useForm<ReviewForm>({
     defaultValues: {
       rating: reviewData.rating,
-      sliderLightBold: reviewData.sliderLightBold,
-      sliderSmoothTanic: reviewData.sliderSmoothTanic,
-      sliderdrySweet: reviewData.sliderdrySweet,
-      slidersoftAcidic: reviewData.slidersoftAcidic,
+      lightBold: reviewData.lightBold,
+      smoothTannic: reviewData.smoothTannic,
+      drySweet: reviewData.drySweet,
+      softAcidic: reviewData.softAcidic,
       content: reviewData.content,
       aroma: reviewData.aroma.map((eng) => {
         const kor = Object.keys(aromaMap).find((key) => aromaMap[key] === eng);
@@ -149,12 +154,12 @@ const EditReviewModal = ({
       return;
     }
     const fullData = {
-      reviewId: reviewData.reviewId,
+      id: reviewData.id,
       rating: data.rating,
-      lightBold: data.sliderLightBold,
-      smoothTannic: data.sliderSmoothTanic,
-      drySweet: data.sliderdrySweet,
-      softAcidic: data.slidersoftAcidic,
+      lightBold: data.lightBold,
+      smoothTannic: data.smoothTannic,
+      drySweet: data.drySweet,
+      softAcidic: data.softAcidic,
       aroma: data.aroma.map((a) => aromaMap[a]).filter(Boolean),
       content: data.content,
     };

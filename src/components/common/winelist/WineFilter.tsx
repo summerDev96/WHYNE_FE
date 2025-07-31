@@ -5,12 +5,15 @@ import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
 import Input from '@/components/common/Input';
 import WineListCard from '@/components/common/winelist/WineListCard';
 import FilterModal from '@/components/Modal/FilterModal/FilterModal';
+import AddWineModal from '@/components/Modal/WineModal/AddWineModal';
 import { Button } from '@/components/ui/button';
-import useSearchStore from '@/stores/searchStore';
+import useWineSearchKeywordStore from '@/stores/searchStore';
 
 export default function WineFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const { searchTerm, setSearchTerm } = useSearchStore();
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+
+  const { searchTerm, setSearchTerm } = useWineSearchKeywordStore();
 
   return (
     <div className='w-full max-w-[1140px] mx-auto'>
@@ -24,6 +27,7 @@ export default function WineFilter() {
             variant='purpleDark'
             size='md'
             width={null}
+            onClick={() => setShowRegisterModal(true)}
             className='ml-[30px] mb-[200px] w-[284px]'
           >
             와인 등록하기
@@ -81,6 +85,7 @@ export default function WineFilter() {
           variant='purpleDark'
           size={null}
           width={null}
+          onClick={() => setShowRegisterModal(true)}
           className='w-[220px] h-[48px] rounded-[16px] flex-shrink-0 ml-[16px]'
         >
           와인 등록하기
@@ -121,11 +126,16 @@ export default function WineFilter() {
           variant='purpleDark'
           size='sm'
           width='full'
+          onClick={() => setShowRegisterModal(true)}
           className='w-full h-[48px] rounded-[12px] text-sm'
         >
           와인 등록하기
         </Button>
       </div>
+      <AddWineModal
+        showRegisterModal={showRegisterModal}
+        setShowRegisterModal={setShowRegisterModal}
+      />
     </div>
   );
 }

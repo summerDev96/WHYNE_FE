@@ -1,30 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
-// import { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { GetServerSideProps } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { getWineInfoForClient } from '@/api/wineid';
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import { ImageCard } from '@/components/common/card/ImageCard';
-import Reviews from '@/components/wineDetail/Reviews';
 import WineContent from '@/components/wineDetail/WineContent';
 import WineRating from '@/components/wineDetail/WineRating';
 import { cn } from '@/lib/utils';
+import useWineStore from '@/stores/wineStore';
+import { GetWineInfoResponse } from '@/types/WineTypes';
 
-export default function WineInfoById() {
+interface WinePageProps {
+  wineData?: GetWineInfoResponse; // getWineInfo가 반환하는 WineInfo 타입을 사용
+  error?: string;
+  dehydratedState: any;
+  parsedWineId: number;
+}
+
+const Reviews = dynamic(() => import('@/components/wineDetail/Reviews'), { ssr: false });
+
+export default function WineInfoById(props: WinePageProps) {
   const router = useRouter();
-  const parsedWineId = Number(router.query.wineid);
+  const { parsedWineId: id } = props;
+  // 주소로 직접 들어왔을 때(SSR) //목록에서 링크로 들어왔을 때(CSR)
+  const parsedWineId = id ? id : Number(router.query.wineid);
+  const setNowWine = useWineStore((state) => state.setNowWine);
 
   //서버든 목록(클라이언트든) 캐싱된 데이터 사용
   const { data, isLoading } = useQuery({
     queryKey: ['wineDetail', parsedWineId],
     queryFn: () => getWineInfoForClient(parsedWineId),
     staleTime: 1000 * 60 * 5,
+    throwOnError: true,
   });
+
+  useEffect(() => {
+    if (data) setNowWine(data);
+  }, [data]);
 
   if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
 
-  if (!data) return <></>; //테스트용
+  if (!data) {
+    throw new Error('존재하지 않는 와인입니다.');
+  }
 
   return (
     <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
@@ -42,9 +64,7 @@ export default function WineInfoById() {
       <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
         <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
           <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
-          <ul>
-            <Reviews reviews={data.reviews} reviewCount={data.reviewCount} />
-          </ul>
+          <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
         </div>
         <WineRating
           rating={data.avgRating}
@@ -58,3 +78,42 @@ export default function WineInfoById() {
 
 const IMAGE_CLASS_NAME =
   'w-[58px] md:w-[84px] xl:w-[58px] h-[209px] md:h-[302px] xl:h-[209px] absolute bottom-0 left-[20px] md:left-[60px] xl:left-[100px]';
+
+export const getServerSideProps: GetServerSideProps<WinePageProps> = async (context) => {
+  const { params } = context;
+  const wineid = params?.wineid;
+  const parsedWineId = Number(wineid);
+  const queryClient = new QueryClient();
+  const cookies = context.req?.headers.cookie || '';
+
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: ['wineDetail', parsedWineId],
+      queryFn: async () => {
+        //추후 배포용 주소로 변경
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/wines/${parsedWineId}`,
+          {
+            headers: {
+              Cookie: cookies, // API Route에 쿠키 전달
+            },
+          },
+        );
+        return res.data;
+      },
+      staleTime: 0,
+      retry: false,
+    });
+    console.log(`[getServerSideProps] 와인 상세 정보 프리패치 성공 (ID: ${parsedWineId})`);
+  } catch (error: any) {
+    console.error(`[SSR] 와인 상세 정보 로딩 중 최종 에러:`, error.message || error);
+  }
+
+  // prefetch한 queryClient의 캐시를 직렬화, 클라이언트에 전달.
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      parsedWineId,
+    },
+  };
+};
