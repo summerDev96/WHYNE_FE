@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -8,6 +8,9 @@ import { ImageCard } from '@/components/common/card/ImageCard';
 import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+
+import DeleteModal from '../Modal/DeleteModal/DeleteModal';
+import EditWineModal from '../Modal/WineModal/EditWineModal';
 
 import type { MyWine, MyWinesResponse } from '@/types/MyWinesTypes';
 
@@ -24,11 +27,13 @@ interface WineListProps {
  */
 export function WineList({ setTotalCount }: WineListProps) {
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const [editWine, setEditWine] = useState<MyWine | null>(null);
+  const [deleteWineId, setDeleteWineId] = useState<number | null>(null);
 
   //useInfiniteQuery 훅으로 와인 데이터를 무한 스크롤 형태로 조회
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['myWines'],
+      queryKey: ['wines'],
       queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
       initialPageParam: 0,
       getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
@@ -74,7 +79,13 @@ export function WineList({ setTotalCount }: WineListProps) {
                 { label: '수정하기', value: 'edit' },
                 { label: '삭제하기', value: 'delete' },
               ]}
-              onSelect={(value) => console.log(`${value} clicked for wine id: ${wine.id}`)}
+              onSelect={(value) => {
+                if (value === 'edit') {
+                  setEditWine(wine);
+                } else if (value === 'delete') {
+                  setDeleteWineId(wine.id);
+                }
+              }}
             />
           }
         >
@@ -93,6 +104,34 @@ export function WineList({ setTotalCount }: WineListProps) {
           </div>
         </ImageCard>
       ))}
+      {editWine && (
+        <EditWineModal
+          wine={{
+            wineId: editWine.id, // MyWine → EditWineModal 타입 변환
+            name: editWine.name,
+            price: editWine.price,
+            region: editWine.region,
+            image: editWine.image,
+            type: editWine.type as 'RED' | 'WHITE' | 'SPARKLING',
+            avgRating: editWine.avgRating,
+          }}
+          showEditModal={true}
+          setShowEditModal={(isOpen) => {
+            if (!isOpen) setEditWine(null);
+          }}
+        />
+      )}
+
+      {deleteWineId !== null && (
+        <DeleteModal
+          type='wine'
+          id={deleteWineId}
+          showDeleteModal={true}
+          setShowDeleteModal={(isOpen) => {
+            if (!isOpen) setDeleteWineId(null);
+          }}
+        />
+      )}
       {/* 옵저버 감지 요소 */}
       <div ref={observerRef} className='w-1 h-1' />
     </div>
