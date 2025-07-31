@@ -1,7 +1,7 @@
 import apiClient from '@/api/apiClient';
 
 interface UpdateReviewRequest {
-  reviewId: number;
+  id: number;
   rating: number;
   lightBold: number;
   smoothTannic: number;
@@ -17,11 +17,11 @@ interface UpdateReviewResponse {
 }
 
 export const updateReview = async ({
-  reviewId,
+  id,
   ...body
 }: UpdateReviewRequest): Promise<UpdateReviewResponse> => {
   const response = await apiClient.patch<UpdateReviewResponse>(
-    `/${process.env.NEXT_PUBLIC_TEAM}/reviews/${reviewId}`,
+    `/${process.env.NEXT_PUBLIC_TEAM}/reviews/${id}`,
     body,
   );
   return response.data;

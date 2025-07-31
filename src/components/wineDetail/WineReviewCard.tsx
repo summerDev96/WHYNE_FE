@@ -29,7 +29,7 @@ function WineReviewCard({ review }: Props) {
         reviewId={id}
       >
         <LikeButton isLike={isLiked} reviewId={id} />
-        <Kebab />
+        <Kebab reviewId={id} />
       </ReviewCard.UserHeader>
       <ReviewCard.TagAndRating reviewId={id}></ReviewCard.TagAndRating>
       <ReviewCard.ReviewBody

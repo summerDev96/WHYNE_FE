@@ -3,6 +3,7 @@ import Star from '@/assets/icons/star.svg';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { calculateRelativeTime } from '@/lib/calculateRelativeTime';
+import { getAromaToKr } from '@/lib/getAromaToKr';
 import { cn } from '@/lib/utils';
 import useReviewCardStore from '@/stores/reviewCardStore';
 
@@ -54,6 +55,7 @@ ReviewCard.UserHeader = function UserHeader({ userIcon, reviewId, children }: Us
 ReviewCard.TagAndRating = function TagAndRating({ reviewId }: TagAndRatingProps) {
   const tags = useReviewCardStore((state) => state.allReviews[reviewId]?.aroma ?? []);
   const rating = useReviewCardStore((state) => state.allReviews[reviewId]?.rating);
+
   return (
     <div className='mt-3 flex justify-between items-center'>
       <div className='flex flex-wrap gap-2'>
@@ -63,7 +65,7 @@ ReviewCard.TagAndRating = function TagAndRating({ reviewId }: TagAndRatingProps)
             className='mt-4 rounded-full bg-white border-gray-300 px-[10px] py-[6px] md:px-[15px] md:py-2 custom-text-lg-regular text-gray-700'
             variant='flavor'
           >
-            {tag}
+            {getAromaToKr(tag)}
           </Badge>
         ))}
       </div>

@@ -40,13 +40,13 @@ export default function FlavorSlider({
   return (
     <div className='w-full flex items-center gap-4'>
       {badgeLabel && (
-        <Badge variant='taste' className='ml-1' id={ariaLabelledby}>
+        <Badge variant='taste' className='px-0 md:px-0 xl:px-0 w-[54px]' id={ariaLabelledby}>
           {badgeLabel}
         </Badge>
       )}
       <div className='flex items-center justify-between gap-2 flex-1'>
         {/* 왼쪽 라벨 */}
-        <span className='whitespace-nowrap text-gray-800 custom-text-md-medium  md:custom-text-lg-medium'>
+        <span className='w-[70px] text-left whitespace-nowrap text-gray-800 custom-text-md-medium  md:custom-text-lg-medium'>
           {labelLeft}
         </span>
         {/* 슬라이더 */}
@@ -62,7 +62,7 @@ export default function FlavorSlider({
         />
 
         {/* 오른쪽 라벨 */}
-        <span className='whitespace-nowrap text-gray-800 custom-text-md-medium  md:custom-text-lg-medium'>
+        <span className='w-[56px] text-right whitespace-nowrap text-gray-800 custom-text-md-medium  md:custom-text-lg-medium'>
           {labelRight}
         </span>
       </div>

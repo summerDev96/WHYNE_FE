@@ -29,5 +29,5 @@ export const checkToken = (): Promise<AccessTokenResponse> => {
 };
 
 export const signInKakao = (data: KakakoSignInRequest): Promise<KakakoSignInResponse> => {
-  return apiClient.post(`/${process.env.NEXT_PUBLIC_TEAM}/auth/signIn/KAKAO`, data);
+  return apiClient.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signIn/KAKAO`, data);
 };

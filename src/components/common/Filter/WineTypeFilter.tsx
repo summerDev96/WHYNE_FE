@@ -34,7 +34,9 @@ const WineTypeFilter = ({
               key={`${option}-${index}`}
               variant='chooseWineType'
               className={type === option ? 'bg-purpleDark text-white' : 'bg-white'}
-              onClick={() => setType(option)}
+              onClick={() => {
+                if (type !== option) setType(option);
+              }}
             >
               {option}
             </Badge>
