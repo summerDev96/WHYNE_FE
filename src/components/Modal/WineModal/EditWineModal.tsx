@@ -86,6 +86,13 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
     onSuccess: () => {
       console.log('와인수정완료');
       queryClient.invalidateQueries({ queryKey: ['wines'] });
+      reset({
+        wineName: wine.name,
+        winePrice: wine.price,
+        wineOrigin: wine.region,
+        wineType: wine.type,
+      });
+      setPreviewImage(wine.image);
       setShowEditModal(false);
     },
     onError: (error) => {

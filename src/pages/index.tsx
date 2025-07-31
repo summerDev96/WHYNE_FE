@@ -28,7 +28,7 @@ export default function Home() {
   }
 
   const dummyWine: WineData = {
-    wineId: 101,
+    wineId: 1402,
     name: 'Cloudy Bay Sauvignon Blanc 2022',
     price: 35,
     region: 'Marlborough, New Zealand',
