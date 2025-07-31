@@ -102,22 +102,14 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
       retry: false,
     });
     console.log(`[getServerSideProps] 와인 상세 정보 프리패치 성공 (ID: ${parsedWineId})`);
-
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-        parsedWineId,
-      },
-    };
   } catch (error: any) {
     console.error(`[SSR] 와인 상세 정보 로딩 중 최종 에러:`, error.message || error);
-
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-        parsedWineId,
-        error: error.message,
-      },
-    };
   }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      parsedWineId,
+    },
+  };
 };
