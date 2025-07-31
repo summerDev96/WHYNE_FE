@@ -213,14 +213,14 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
         })}
         placeholder='후기를 작성해 주세요'
         className={cn(
-          'relative h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
+          'h-[100px] md:h-[120px] w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none font-sans resize-none',
           errors.content && 'border-red-500',
         )}
         rows={5}
       />
       {errors.content && (
-        <div role='alert' className='absolute text-red-500 mt-[4px]'>
-          <p>{errors.content.message}</p>
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500 mt-1'>{errors.content.message}</p>
         </div>
       )}
       <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>

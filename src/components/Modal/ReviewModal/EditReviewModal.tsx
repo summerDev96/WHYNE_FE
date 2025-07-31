@@ -190,7 +190,7 @@ const EditReviewModal = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       encType='multipart/form-data'
-      className='my-[32px] md:my-[40px]'
+      className='my-[32px] md:my-[40px] px-2'
     >
       <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
         <Image
@@ -222,8 +222,8 @@ const EditReviewModal = ({
         rows={5}
       />
       {errors.content && (
-        <div role='alert' className='text-red-500 mt-1'>
-          {errors.content.message}
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500 mt-1'>{errors.content.message}</p>
         </div>
       )}
 
@@ -300,9 +300,6 @@ const EditReviewModal = ({
 
   return (
     <div>
-      <Button variant='purpleDark' size='xs' width='sm' onClick={() => setShowEditModal(true)}>
-        리뷰 수정하기
-      </Button>
       {isDesktop ? (
         <BasicModal
           type='review'
