@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
+import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import { useInitUser } from '@/hooks/useInitUser';
 
 import type { AppProps } from 'next/app';
@@ -26,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   const { pathname } = useRouter();
-  const pagesWithoutGnb = ['/signup', '/signin', '/oauth/kakao', '/oauth/signup/kakao'];
+  const pagesWithoutGnb = ['/signup', '/signin', '/oauth/signup/kakao'];
   const hideHeader = pagesWithoutGnb.includes(pathname);
   const isLanding = pathname === '/';
   const is404 = pathname === '/404';
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
       <QueryClientProvider client={queryClient}>
+        <LoadingOverlay />
         <HydrationBoundary state={pageProps.dehydratedState}>
           {!hideHeader && <Gnb />}
           <ErrorBoundary fallback={<></>} router={router}>
