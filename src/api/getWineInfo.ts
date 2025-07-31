@@ -1,4 +1,3 @@
-// import { createSeverApiInstance, RetryRequestConfig } from './apiServer';
 import { GetWineInfoResponse } from '@/types/WineTypes';
 
 import apiClient from './apiClient';

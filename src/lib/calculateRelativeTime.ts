@@ -24,7 +24,14 @@ export function calculateRelativeTime(time: string) {
   const targetDate = new Date(time).getTime();
   const nowDate = new Date().getTime();
 
-  const difference = nowDate - targetDate;
+  let difference = nowDate - targetDate;
+
+  if (difference < 0) {
+    return '지금';
+  }
+  if (difference < timeObj.second) {
+    return '지금';
+  }
 
   const timeArr = Object.values(timeObj);
   const timeKeys = Object.keys(timeObj) as (keyof typeof timeObj)[];
