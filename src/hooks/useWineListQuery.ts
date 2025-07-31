@@ -7,7 +7,6 @@ import useWineSearchKeywordStore from '@/stores/searchStore';
 const PAGE_LIMIT = 8;
 
 export function useWineListQuery() {
-  /* 각 필터 상태 */
   const type = useFilterStore((state) => state.type);
   const minPrice = useFilterStore((state) => state.minPrice);
   const maxPrice = useFilterStore((state) => state.maxPrice);

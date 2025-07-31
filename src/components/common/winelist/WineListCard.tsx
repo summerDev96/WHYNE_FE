@@ -1,41 +1,60 @@
-import { useRef } from 'react';
-
 import Link from 'next/link';
 
 import NextIcon from '@/assets/icons/Next.svg';
 import StarIcon from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
 import { Button } from '@/components/ui/button';
-import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
-import { useWineListQuery } from '@/hooks/useWineListQuery';
 import { cn } from '@/lib/utils';
-
+import useFilterStore from '@/stores/filterStore';
+import useWineSearchKeywordStore from '@/stores/searchStore';
+import useWineStore from '@/stores/wineAddStore';
 
 export default function WineListCard() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
-    useWineListQuery();
+  const type = useFilterStore((state) => state.type);
+  const minPrice = useFilterStore((state) => state.minPrice);
+  const maxPrice = useFilterStore((state) => state.maxPrice);
+  const rating = useFilterStore((state) => state.rating);
 
+  const wines = useWineStore((state) => state.wines); // 와인 타입 정의, mock
 
-  const observerRef = useRef<HTMLDivElement | null>(null);
+  const { searchTerm } = useWineSearchKeywordStore();
 
-  useInfiniteScroll({
-    targetRef: observerRef,
-    hasNextPage,
-    fetchNextPage,
-    isFetching: isFetchingNextPage,
-    threshold: 0.3,
+  /* 별점 범위 필터 */
+  const ratingRangeMap: Record<string, [number, number]> = {
+    all: [0, 5],
+    '4.6': [4.5, 5],
+    '4.1': [4.0, 4.5],
+    '3.6': [3.5, 4.0],
+    '3.1': [3.0, 3.5],
+  };
+
+  const filteredWines = wines.filter((wine) => {
+    /* 종류 필터 */
+    if (type && wine.type !== type) return false;
+    /* 가격 범위 필터 */
+    if (wine.price < minPrice || wine.price > maxPrice) return false;
+    /* 평점 필터 */
+    if (rating !== 'all') {
+      const [min, max] = ratingRangeMap[rating] || [0, 5];
+      if (wine.rating < min || wine.rating > max) return false;
+    }
+    /* 검색어 필터 (이름 or 지역) */
+    if (searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      if (
+        !wine.name.toLowerCase().includes(lowerCaseSearchTerm) &&
+        !wine.region.toLowerCase().includes(lowerCaseSearchTerm)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   });
-
-  if (isLoading) return <p>불러오는 중...</p>;
-  if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
-
-
-  /* 전체 와인 리스트 조합 */
-  const wineList = data.pages.flatMap((page) => page.list);
 
   return (
     <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] md:px-[20px] md:mt-[24px] xl:px-0 max-w-[1140px] mx-auto xl:max-w-[800px]'>
-      {wineList.map((wine) => (
+      {filteredWines.map((wine) => (
         <Link href={`/wines/${wine.id}`} key={wine.id} className='no-underline'>
           <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative min-w-[320px]'>
             <ImageCard
@@ -141,8 +160,6 @@ export default function WineListCard() {
           </div>
         </Link>
       ))}
-      {/* 무한 스크롤 감지 */}
-      <div ref={observerRef} className='h-[1px]' />
     </div>
   );
 }
