@@ -103,8 +103,13 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage?.[0];
-      const imageUrl = file ? await uploadImage(file) : wine.image;
+      let imageUrl = file ? await uploadImage(file) : wine.image;
 
+      if (file) {
+        const uploaded = await uploadImage(file);
+        imageUrl = uploaded + `?t=${Date.now()}`; // 캐시 방지
+        setPreviewImage(imageUrl); // 이미지 갱신
+      }
       updateWineMutation.mutate({
         wineId: wine.wineId,
         name: form.wineName,

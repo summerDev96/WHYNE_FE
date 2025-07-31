@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -6,6 +6,8 @@ import { getMyReviews } from '@/api/myReviews';
 import DotIcon from '@/assets/icons/dot.svg';
 import { MyCard } from '@/components/common/card/MyCard';
 import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
+import DeleteModal from '@/components/Modal/DeleteModal/DeleteModal';
+import EditReviewModal from '@/components/Modal/ReviewModal/EditReviewModal';
 import { Badge } from '@/components/ui/badge';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { MyReview } from '@/types/MyReviewsTypes';
@@ -23,12 +25,14 @@ interface ReviewListProps {
  *
  */
 export function ReviewList({ setTotalCount }: ReviewListProps) {
+  const [editReview, setEditReview] = useState<MyReview | null>(null);
+  const [deleteReviewId, setDeleteReviewId] = useState<number | null>(null);
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery 훅으로 리뷰 데이터를 무한 스크롤 형태로 조회
   const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['myReviews'],
+      queryKey: ['reviews'],
       queryFn: ({ pageParam = 0 }) => getMyReviews({ cursor: pageParam, limit: PAGE_LIMIT }),
       initialPageParam: 0,
       getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
@@ -82,11 +86,39 @@ export function ReviewList({ setTotalCount }: ReviewListProps) {
                 { label: '수정하기', value: 'edit' },
                 { label: '삭제하기', value: 'delete' },
               ]}
-              onSelect={(value) => console.log(`${value} clicked: review id=${review.id}`)}
+              onSelect={(value) => {
+                if (value === 'edit') {
+                  setEditReview(review);
+                } else if (value === 'delete') {
+                  setDeleteReviewId(review.id);
+                }
+              }}
             />
           }
         />
       ))}
+      {editReview && (
+        <EditReviewModal
+          wineName={editReview.wine.name}
+          reviewData={editReview}
+          showEditModal={!!editReview}
+          setShowEditModal={(open) => {
+            if (!open) setEditReview(null);
+          }}
+        />
+      )}
+
+      {deleteReviewId !== null && (
+        <DeleteModal
+          type='review'
+          id={deleteReviewId}
+          showDeleteModal={true}
+          setShowDeleteModal={(open) => {
+            if (!open) setDeleteReviewId(null);
+          }}
+        />
+      )}
+
       {/* 옵저버 감지 요소 */}
       <div ref={observerRef} className='w-1 h-1' />
     </div>
