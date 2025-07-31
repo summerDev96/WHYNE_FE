@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useForm, type SubmitHandler } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { uploadImage, updateProfile } from '@/api/user';
 import Input from '@/components/common/Input';
@@ -79,6 +80,13 @@ export default function Profile() {
   /** 닉네임 또는 이미지가 변경되었는지 여부 */
   const isChanged = isNicknameChanged || isImageChanged;
 
+  /** 에러 메세지 toast */
+  const onInvalid = (errors: Record<string, any>) => {
+    const message = errors.nickname?.message;
+    if (message) {
+      toast.warning('', { description: message });
+    }
+  };
   /**
    * 프로필 수정 form 제출 핸들러
    *
@@ -114,8 +122,14 @@ export default function Profile() {
       // form 초기화 및 파일 제거
       reset({ nickname: updatedUser.nickname });
       setSelectedFile(null);
+
+      toast.success('', {
+        description: '프로필이 성공적으로 수정되었습니다.',
+      });
     } catch (e) {
-      console.error('프로필 수정 오류:', e);
+      toast.error('', {
+        description: '프로필 수정 중 오류가 발생했습니다.',
+      });
     }
   };
 
@@ -134,7 +148,7 @@ export default function Profile() {
 
       {/* 닉네임 변경 폼 */}
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
         className='flex flex-col items-end gap-1.5 md:flex-row xl:flex-col'
       >
         <div className='flex flex-col w-full gap-[10px]'>
@@ -153,13 +167,10 @@ export default function Profile() {
               required: '닉네임을 입력해주세요.',
               minLength: { value: 2, message: '최소 2자 이상 입력하세요.' },
               maxLength: { value: 20, message: '최대 20자까지 가능합니다.' },
+              validate: {
+                noSpaces: (value) => !/\s/.test(value) || '닉네임에 공백을 포함할 수 없습니다.',
+              },
             })}
-            onInvalid={(e: React.FormEvent<HTMLInputElement>) =>
-              console.error(
-                '닉네임 유효성 오류:',
-                (e.currentTarget as HTMLInputElement).validationMessage,
-              )
-            }
           />
         </div>
 
