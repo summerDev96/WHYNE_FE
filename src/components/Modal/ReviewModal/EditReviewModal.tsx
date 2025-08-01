@@ -223,6 +223,10 @@ const EditReviewModal = ({
         id='content'
         {...register('content', {
           required: '리뷰 내용을 입력해 주세요.',
+          maxLength: {
+            value: 500,
+            message: '최대 500자까지 입력 가능합니다.',
+          },
           onChange: () => clearErrors('content'),
         })}
         placeholder='후기를 작성해 주세요'

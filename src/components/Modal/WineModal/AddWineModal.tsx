@@ -9,6 +9,8 @@ import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { getTrimmedHandlers } from '@/lib/inputCheck';
+import { getCommaNumberHandlers } from '@/lib/inputNumberCheck';
 import { renameFileIfNeeded } from '@/lib/renameFile';
 
 import SelectDropdown from '../../common/dropdown/SelectDropdown';
@@ -18,7 +20,7 @@ import { Button } from '../../ui/button';
 
 interface WineForm {
   wineName: string;
-  winePrice: number;
+  winePrice: string;
   wineOrigin: string;
   wineImage: FileList;
   wineType: string;
@@ -67,7 +69,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const resetForm = () => {
     reset({
       wineName: '',
-      winePrice: NaN,
+      winePrice: '',
       wineOrigin: '',
       wineImage: {} as FileList,
       wineType: '',
@@ -77,17 +79,8 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const handlePostWine = async (form: WineForm) => {
-    const file = form.wineImage[0];
-    const imageUrl = await uploadImage(file);
-    const requestData: PostWineRequest = {
-      name: form.wineName,
-      region: form.wineOrigin,
-      image: imageUrl,
-      price: Number(form.winePrice),
-      type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
-    };
-    return postWine(requestData);
+  const handlePostWine = async (data: PostWineRequest) => {
+    return postWine(data);
   };
 
   const postWineMutation = useMutation({
@@ -105,13 +98,22 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     },
   });
 
+  //WineForm의 price를 string으로 해서 쉼표 가능 후 >>서버에 저장할때는 쉼표 제거 후 숫자로 변환을 위해서
   const onSubmit = async (form: WineForm) => {
-    let file = form.wineImage[0];
-    file = renameFileIfNeeded(file); //이미지파일 이름 정규화
-    postWineMutation.mutate({
-      ...form,
-      wineImage: [file] as unknown as FileList,
-    });
+    const file = renameFileIfNeeded(form.wineImage[0]); //이미지파일 이름 정규화
+
+    const imageUrl = await uploadImage(file); //이미지 업로드해서 URL얻고
+
+    const numberPrice = Number(form.winePrice.replace(/,/g, '')); //가격 쉼표 제거 후 숫자로 변환
+
+    const requestData: PostWineRequest = {
+      name: form.wineName,
+      region: form.wineOrigin,
+      image: imageUrl,
+      price: numberPrice,
+      type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
+    };
+    postWineMutation.mutate(requestData);
   };
 
   const categoryOptions = [
@@ -142,7 +144,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       <Input
         {...register('wineName', {
           required: '와인 이름을 입력해 주세요.',
-          onChange: () => clearErrors('wineName'),
+          ...getTrimmedHandlers<WineForm>('wineName', setValue, clearErrors), //정규식 검사 함수
         })}
         errorMessage={errors.wineName?.message}
         id='wineName'
@@ -156,11 +158,16 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       <Input
         {...register('winePrice', {
           required: '가격을 입력해 주세요.',
-          onChange: () => clearErrors('winePrice'),
+          pattern: {
+            value: /^[1-9][0-9]{0,9}(,[0-9]{3})*$/, // 총 10자리, 1~9로 시작
+            message: '숫자만 입력 가능하며, 0으로 시작할 수 없습니다.',
+          },
+          ...getCommaNumberHandlers<WineForm>('winePrice', setValue, clearErrors), //정규식 검사 함수
         })}
         errorMessage={errors.winePrice?.message}
         id='winePrice'
-        type='number'
+        type='text'
+        inputMode='numeric' //모바일시 숫자패드
         variant='name'
         placeholder='가격 입력'
         className='[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none custom-text-md-regular md:custom-text-lg-regular'
@@ -170,7 +177,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       <Input
         {...register('wineOrigin', {
           required: '원산지를 입력해 주세요.',
-          onChange: () => clearErrors('wineOrigin'),
+          ...getTrimmedHandlers<WineForm>('wineOrigin', setValue, clearErrors), //정규식 검사 함수
         })}
         errorMessage={errors.wineOrigin?.message}
         id='wineOrigin'
