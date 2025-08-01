@@ -29,7 +29,7 @@ export default function MyProfile() {
   const [winesCount, setWinesCount] = useState(0);
 
   return (
-    <div className='min-h-screen'>
+    <div>
       <main className='max-w-6xl mx-auto p-4 gap-6 flex flex-col xl:flex-row'>
         {/* 프로필 섹션 */}
         <Profile />
