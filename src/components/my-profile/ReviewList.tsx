@@ -60,7 +60,7 @@ export function ReviewList({ setTotalCount }: ReviewListProps) {
   const reviews: MyReview[] = data?.pages?.flatMap((page) => page.list ?? []) ?? [];
 
   if (!data || data.pages[0].list.length === 0) {
-    return <MyPageEmpty type='reviews' className='mt-20' />;
+    return <MyPageEmpty type='reviews' />;
   }
 
   return (

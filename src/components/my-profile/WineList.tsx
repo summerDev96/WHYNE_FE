@@ -60,7 +60,7 @@ export function WineList({ setTotalCount }: WineListProps) {
   const wines: MyWine[] = data?.pages?.flatMap((page) => page?.list ?? []) ?? [];
 
   if (!data || data.pages[0].list.length === 0) {
-    return <MyPageEmpty type='wines' className='mt-20' />;
+    return <MyPageEmpty type='wines' />;
   }
 
   return (
