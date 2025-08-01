@@ -9,6 +9,7 @@ import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { renameFileIfNeeded } from '@/lib/renameFile';
 
 import SelectDropdown from '../../common/dropdown/SelectDropdown';
 import Input from '../../common/Input';
@@ -42,7 +43,8 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      const renamedFile = renameFileIfNeeded(file); //이미지파일 이름 정규화
+      const imageUrl = URL.createObjectURL(renamedFile);
       setPreviewImage(imageUrl);
     } else {
       setPreviewImage(null);
@@ -103,7 +105,12 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   });
 
   const onSubmit = async (form: WineForm) => {
-    postWineMutation.mutate(form);
+    let file = form.wineImage[0];
+    file = renameFileIfNeeded(file); //이미지파일 이름 정규화
+    postWineMutation.mutate({
+      ...form,
+      wineImage: [file] as unknown as FileList,
+    });
   };
 
   const categoryOptions = [

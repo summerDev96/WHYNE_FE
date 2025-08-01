@@ -11,6 +11,7 @@ import Input from '@/components/common/Input';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { renameFileIfNeeded } from '@/lib/renameFile';
 
 interface WineForm {
   wineName: string;
@@ -78,7 +79,8 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setPreviewImage(URL.createObjectURL(file));
+      const renamedFile = renameFileIfNeeded(file);
+      setPreviewImage(URL.createObjectURL(renamedFile));
     }
   };
 
@@ -106,10 +108,11 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage?.[0];
-      let imageUrl = file ? await uploadImage(file) : wine.image;
+      let imageUrl = wine.image;
 
       if (file) {
-        const uploaded = await uploadImage(file);
+        const renamedFile = renameFileIfNeeded(file); //이미지파일 이름 정규화
+        const uploaded = await uploadImage(renamedFile);
         imageUrl = uploaded + `?t=${Date.now()}`; // 캐시 방지
         setPreviewImage(imageUrl); // 이미지 갱신
       }
