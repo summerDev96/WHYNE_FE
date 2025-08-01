@@ -6,7 +6,9 @@ import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 
 import { postReview } from '@/api/addreview';
+import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import StarRating from '@/components/Modal/ReviewModal/StarRating';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { cn } from '@/lib/utils';
 
 import BasicModal from '../../common/Modal/BasicModal';
@@ -85,6 +87,7 @@ const aromaMap: Record<string, string> = {
 const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const queryClient = useQueryClient();
+  const isDesktop = useMediaQuery('(min-width: 640px)');
 
   const {
     register,
@@ -168,149 +171,162 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
   };
   ////
 
+  const renderButton = (
+    <Button
+      onClick={handleSubmit(onSubmit)}
+      type='button'
+      variant='purpleDark'
+      size='xl'
+      width='full'
+      fontSize='lg'
+    >
+      리뷰 남기기
+    </Button>
+  );
+
+  const renderForm = () => (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      encType='multipart/form-data'
+      className='my-[32px] md:my-[40px] px-2'
+    >
+      <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
+        <Image
+          src='/assets/reviewicon.png'
+          alt='리뷰 아이콘'
+          width={68}
+          height={68}
+          className='bg-gray-100 rounded-lg p-[7px] text-primary object-contain'
+        />
+        <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
+          <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>{wineName}</span>
+          <span className='mb-0 w-[120px] md:w-[160px] h-[24px] md:h-[32px] flex items-center'>
+            <StarRating value={watch('rating')} onChange={(rating) => setValue('rating', rating)} />
+          </span>
+        </div>
+      </div>
+      <textarea
+        id='content'
+        {...register('content', {
+          required: '리뷰 내용을 입력해 주세요.',
+          onChange: () => clearErrors('content'),
+        })}
+        placeholder='후기를 작성해 주세요'
+        className={cn(
+          'relative h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
+          errors.content && 'border-red-500',
+        )}
+        rows={5}
+      />
+      {errors.content && (
+        <div role='alert' className='absolute text-red-500 mt-[4px]'>
+          <p>{errors.content.message}</p>
+        </div>
+      )}
+      <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
+        와인의 맛은 어땠나요?
+      </p>
+      <div className='mb-[40px]'>
+        <div className='mb-[16px] md:mb-[18px]'>
+          <FlavorSlider
+            value={watch('sliderLightBold')}
+            min={0}
+            max={10}
+            step={1}
+            onChange={(value) => setValue('sliderLightBold', value)}
+            labelLeft='가벼워요'
+            labelRight='진해요'
+            badgeLabel='바디감'
+          />
+        </div>
+        <div className='mb-[16px] md:mb-[18px]'>
+          <FlavorSlider
+            value={watch('sliderSmoothTanic')}
+            min={0}
+            max={10}
+            step={1}
+            onChange={(value) => setValue('sliderSmoothTanic', value)}
+            labelLeft='부드러워요'
+            labelRight='떫어요'
+            badgeLabel='타닌'
+          />
+        </div>
+        <div className='mb-[16px] md:mb-[18px]'>
+          <FlavorSlider
+            value={watch('sliderdrySweet')}
+            min={0}
+            max={10}
+            step={1}
+            onChange={(value) => setValue('sliderdrySweet', value)}
+            labelLeft='드라이해요'
+            labelRight='달아요'
+            badgeLabel='당도'
+          />
+        </div>
+        {/* 사이즈?? 조정이 필요할듯 */}
+        <div className='mb-[16px] md:mb-[18px]'>
+          <FlavorSlider
+            value={watch('slidersoftAcidic')}
+            min={0}
+            max={10}
+            step={1}
+            onChange={(value) => setValue('slidersoftAcidic', value)}
+            labelLeft='안셔요'
+            labelRight='많이셔요'
+            badgeLabel='산미'
+          />
+        </div>
+      </div>
+      <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
+      {errors.aroma && (
+        <div role='alert' className='absolute text-red-500'>
+          {errors.aroma.message}
+        </div>
+      )}
+      <div className='relative flex flex-wrap gap-[10px] mt-6'>
+        {aromaOptions.map((item) => (
+          <Badge
+            key={item}
+            variant='chooseFlavor'
+            onClick={() => toggleAroma(item)}
+            className={cn(
+              'cursor-pointer px-2.5 md:px-[18px] py-1.5 md:py-2.5 hover:bg-primary-100 hover:text-primary hover:border-primary-100',
+              isSelected(item) && 'bg-primary text-white',
+            )}
+          >
+            {item}
+          </Badge>
+        ))}
+      </div>
+    </form>
+  );
+
   return (
     <div>
       <Button variant='purpleDark' size='xs' width='sm' onClick={() => setShowRegisterModal(true)}>
         리뷰 남기기
       </Button>
-      <BasicModal
-        type='review'
-        title='리뷰 등록'
-        open={showRegisterModal}
-        onOpenChange={closeModalReset}
-        buttons={
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            type='button'
-            variant='purpleDark'
-            size='xl'
-            width='full'
-            fontSize='lg'
-          >
-            리뷰 남기기
-          </Button>
-        }
-      >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          encType='multipart/form-data'
-          className='my-[32px] md:my-[40px] px-4'
+      {isDesktop ? (
+        <BasicModal
+          type='review'
+          title='리뷰 등록'
+          open={showRegisterModal}
+          onOpenChange={closeModalReset}
+          buttons={renderButton}
+          showCloseButton={true}
         >
-          <div className='w-[274px] md:w-[384px] h-[84px] md:h-[68px] mb-6 flex items-center'>
-            <Image
-              src='/assets/reviewicon.png'
-              alt='리뷰 아이콘'
-              width={68}
-              height={68}
-              className='bg-gray-100 rounded-lg p-[7px] text-primary object-contain'
-            />
-            <div className='flex flex-col justify-between w-[191px] md:w-[300px] h-[84px] md:h-[66px] ml-4'>
-              <span className='mt-0 custom-text-lg-bold md:custom-text-2lg-semibold'>
-                {wineName}
-              </span>
-              <span className='mb-0 w-[120px] md:w-[160px] h-[24px] md:h-[32px] flex items-center'>
-                <StarRating
-                  value={watch('rating')}
-                  onChange={(rating) => setValue('rating', rating)}
-                />
-              </span>
-            </div>
-          </div>
-          <textarea
-            id='content'
-            {...register('content', {
-              required: '리뷰 내용을 입력해 주세요.',
-              onChange: () => clearErrors('content'),
-            })}
-            placeholder='후기를 작성해 주세요'
-            className={cn(
-              'relative h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
-              errors.content && 'border-red-500',
-            )}
-            rows={5}
-          />
-          {errors.content && (
-            <div role='alert' className='absolute text-red-500 mt-[4px]'>
-              <p>{errors.content.message}</p>
-            </div>
-          )}
-          <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
-            와인의 맛은 어땠나요?
-          </p>
-          <div className='mb-[40px]'>
-            <div className='mb-[16px] md:mb-[18px]'>
-              <FlavorSlider
-                value={watch('sliderLightBold')}
-                min={0}
-                max={10}
-                step={1}
-                onChange={(value) => setValue('sliderLightBold', value)}
-                labelLeft='가벼워요'
-                labelRight='진해요'
-                badgeLabel='바디감'
-              />
-            </div>
-            <div className='mb-[16px] md:mb-[18px]'>
-              <FlavorSlider
-                value={watch('sliderSmoothTanic')}
-                min={0}
-                max={10}
-                step={1}
-                onChange={(value) => setValue('sliderSmoothTanic', value)}
-                labelLeft='부드러워요'
-                labelRight='떫어요'
-                badgeLabel='타닌'
-              />
-            </div>
-            <div className='mb-[16px] md:mb-[18px]'>
-              <FlavorSlider
-                value={watch('sliderdrySweet')}
-                min={0}
-                max={10}
-                step={1}
-                onChange={(value) => setValue('sliderdrySweet', value)}
-                labelLeft='드라이해요'
-                labelRight='달아요'
-                badgeLabel='당도'
-              />
-            </div>
-            {/* 사이즈?? 조정이 필요할듯 */}
-            <div className='mb-[16px] md:mb-[18px]'>
-              <FlavorSlider
-                value={watch('slidersoftAcidic')}
-                min={0}
-                max={10}
-                step={1}
-                onChange={(value) => setValue('slidersoftAcidic', value)}
-                labelLeft='안셔요'
-                labelRight='많이셔요'
-                badgeLabel='산미'
-              />
-            </div>
-          </div>
-          <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
-          {errors.aroma && (
-            <div role='alert' className='absolute text-red-500'>
-              {errors.aroma.message}
-            </div>
-          )}
-          <div className='relative flex flex-wrap gap-[10px] mt-6'>
-            {aromaOptions.map((item) => (
-              <Badge
-                key={item}
-                variant='chooseFlavor'
-                onClick={() => toggleAroma(item)}
-                className={cn(
-                  'cursor-pointer px-2.5 md:px-[18px] py-1.5 md:py-2.5 hover:bg-primary-100 hover:text-primary hover:border-primary-100',
-                  isSelected(item) && 'bg-primary text-white',
-                )}
-              >
-                {item}
-              </Badge>
-            ))}
-          </div>
-        </form>
-      </BasicModal>
+          {renderForm()}
+        </BasicModal>
+      ) : (
+        <BasicBottomSheet
+          open={showRegisterModal}
+          onOpenChange={closeModalReset}
+          title='리뷰 등록'
+          buttons={renderButton}
+        >
+          {renderForm()}
+        </BasicBottomSheet>
+      )}
     </div>
   );
 };

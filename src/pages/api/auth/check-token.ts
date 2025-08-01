@@ -4,7 +4,6 @@ import { parseCookie } from '@/lib/cookie';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const cookieHeader = req.headers.cookie;
-  console.log('test');
   if (cookieHeader) {
     const cookies = parseCookie(cookieHeader);
 

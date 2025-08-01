@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { toast } from 'sonner';
+
 import { postLike, deleteLike } from '@/api/handleLikeRequest';
 import FullLikeIcon from '@/assets/icons/fullLike.svg';
 import LikeIcon from '@/assets/icons/like.svg';
@@ -8,8 +10,6 @@ import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import useReviewCardStore from '@/stores/reviewCardStore';
 
-import ErrorModal from '../common/Modal/ErrorModal';
-
 interface Props {
   isLike?: boolean;
   reviewId: number;
@@ -17,7 +17,6 @@ interface Props {
 
 function LikeButton({ isLike, reviewId }: Props) {
   const [isClicked, setIsClicked] = useState(isLike);
-  const [openAlertModal, setOpenAlertModal] = useState(false);
 
   const { user } = useUser();
   const id = useReviewCardStore((state) => state.allReviews[reviewId]?.user.id);
@@ -31,7 +30,9 @@ function LikeButton({ isLike, reviewId }: Props) {
         setIsClicked((prev) => !prev); //실패하면 업데이트 했던 거 취소
       }
     } else {
-      setOpenAlertModal(true);
+      toast.error('', {
+        description: '본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.',
+      });
     } //미리 업데이트
   }
   return (
@@ -46,17 +47,6 @@ function LikeButton({ isLike, reviewId }: Props) {
       >
         {isClicked ? <FullLikeIcon /> : <LikeIcon />}
       </Button>
-      {openAlertModal && (
-        <ErrorModal
-          open={openAlertModal}
-          onOpenChange={() => {}}
-          onConfirm={() => setOpenAlertModal(false)}
-        >
-          <div className='custom-text-lg-bold'>
-            본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.{' '}
-          </div>
-        </ErrorModal>
-      )}
     </>
   );
 }

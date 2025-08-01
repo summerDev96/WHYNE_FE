@@ -1,4 +1,4 @@
-import useWinAddStore, { Wine } from '@/stores/wineAddStore';
+import useWineAddStore, { Wine } from '@/stores/wineAddStore';
 
 interface GetWinesParams {
   cursor: number;
@@ -18,6 +18,7 @@ interface GetWinesResponse {
   totalCount: number;
 }
 
+/* 평점 필터링 */
 const ratingRangeMap: Record<string, [number, number]> = {
   all: [0, 5],
   '4.6': [4.5, 5],
@@ -26,9 +27,9 @@ const ratingRangeMap: Record<string, [number, number]> = {
   '3.1': [3.0, 3.5],
 };
 
+/* 필터링 + 페이징 */
 export function getWines({ cursor, limit, filters }: GetWinesParams): GetWinesResponse {
-  // zustand에서 mock 데이터 직접 가져옴
-  const allWines = useWinAddStore.getState().wines;
+  const allWines = useWineAddStore.getState().wines;
 
   const { type, minPrice = 0, maxPrice = Infinity, rating = 'all', searchTerm = '' } = filters;
 

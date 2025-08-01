@@ -15,7 +15,7 @@ interface Props {
 function WineRating({ rating, reviewCount, ratings }: Props) {
   const nowWine = useWineStore((state) => state.nowWine);
 
-  if (!nowWine) return <>에러</>;
+  if (!nowWine) return;
   const { id, name } = nowWine;
 
   return (

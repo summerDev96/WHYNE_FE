@@ -1,7 +1,11 @@
 import z from 'zod';
 export const emailSchema = z
   .string()
+  .trim()
   .min(1, '이메일은 필수 입력입니다.')
+  .refine((val) => !/\s/.test(val), {
+    message: '이메일에는 공백이 포함될 수 없습니다.',
+  })
   .refine(
     (val) => {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -14,13 +18,21 @@ export const emailSchema = z
 
 export const nicknameSchema = z
   .string()
+  .trim()
   .min(1, '닉네임은 필수 입력입니다.')
-  .max(20, '닉네임은 최대 20자까지 가능합니다.');
+  .max(20, '닉네임은 최대 20자까지 가능합니다.')
+  .refine((val) => !/\s/.test(val), {
+    message: '닉네임에는 공백이 포함될 수 없습니다.',
+  });
 
 export const passwordSchema = z
   .string()
+  .trim()
   .min(1, '비밀번호는 필수 입력입니다.')
   .min(8, '비밀번호는 최소 8자 이상입니다.')
+  .refine((val) => !/\s/.test(val), {
+    message: '비밀번호는 공백이 포함될 수 없습니다.',
+  })
   .refine(
     (val) => {
       // 이메일 정규식 직접 검사
@@ -34,5 +46,9 @@ export const passwordSchema = z
 
 export const passwordConfirmationSchema = z
   .string()
+  .trim()
   .min(1, '비밀번호 확인을 입력해주세요')
-  .min(8, '비밀번호 확인을 8자 이상 입력해주세요');
+  .min(8, '비밀번호 확인을 8자 이상 입력해주세요')
+  .refine((val) => !/\s/.test(val), {
+    message: '비밀번호 확인은 공백이 포함될 수 없습니다.',
+  });
