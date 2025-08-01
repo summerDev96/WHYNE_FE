@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { postReview } from '@/api/addreview';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
@@ -114,6 +115,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     //mutation function
     mutationFn: postReview, //실제 서버에 리뷰를 보내는 역할
     onSuccess: (data) => {
+      toast.success('리뷰가 성공적으로 등록되었습니다.');
       console.log('리뷰 등록 성공', data);
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
@@ -121,6 +123,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       setShowRegisterModal(false);
     },
     onError: (error) => {
+      toast.error('리뷰 등록이 실패하였습니다.');
       console.log('리뷰 등록 실패', error);
     },
   });
@@ -279,8 +282,8 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       </div>
       <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
       {errors.aroma && (
-        <div role='alert' className='absolute text-red-500'>
-          {errors.aroma.message}
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500'>{errors.aroma.message}</p>
         </div>
       )}
       <div className='relative flex flex-wrap gap-[10px] mt-6'>

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { uploadImage, postWine, PostWineRequest } from '@/api/addwine';
 import CameraIcon from '@/assets/camera.svg';
@@ -89,12 +90,14 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const postWineMutation = useMutation({
     mutationFn: handlePostWine,
     onSuccess: () => {
+      toast.success('와인이 성공적으로 등록되었습니다.');
       console.log('와인 등록 성공');
       resetForm();
       setShowRegisterModal(false);
       queryClient.invalidateQueries({ queryKey: ['wines'] });
     },
     onError: (error) => {
+      toast.error('와인 등록이 실패하였습니다.');
       console.log('와인 등록 실패', error);
     },
   });

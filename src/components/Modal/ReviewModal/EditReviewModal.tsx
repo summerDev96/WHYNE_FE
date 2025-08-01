@@ -3,6 +3,7 @@ import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { updateReview } from '@/api/editreview';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
@@ -98,12 +99,14 @@ const EditReviewModal = ({
     mutationFn: updateReview,
     throwOnError: true,
     onSuccess: () => {
+      toast.success('리뷰가 성공적으로 수정되었습니다.');
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       setShowEditModal(false);
     },
     onError: (error) => {
+      toast.error('리뷰 수정이 실패하였습니다.');
       console.log('리뷰 수정 실패', error);
     },
   });
@@ -276,8 +279,8 @@ const EditReviewModal = ({
 
       <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
       {errors.aroma && (
-        <div role='alert' className='text-red-500 mt-1'>
-          {errors.aroma.message}
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500'>{errors.aroma.message}</p>
         </div>
       )}
       <div className='relative flex flex-wrap gap-[10px] mt-6'>
