@@ -4,6 +4,7 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { getWineInfoForClient } from '@/api/getWineInfo';
@@ -47,30 +48,46 @@ export default function WineInfoById(props: WinePageProps) {
   }
 
   return (
-    <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
-      <ImageCard
-        imageSrc={data.image}
-        imageClassName={IMAGE_CLASS_NAME}
-        className={cn(
-          'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
-          'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
-          'shadow-sm',
-        )}
-      >
-        <WineContent name={data.name} region={data.region} price={data.price} />
-      </ImageCard>
-      <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
-        <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
-          <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
-          <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
+    <>
+      <Head>
+        <title>{`${data.name} 상세정보`}</title>
+        <meta
+          name='description'
+          content={`지역:${data.region} 평균 가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+        />
+        <meta property='og:title' content={`${data.name} 상세정보`} />
+        <meta
+          property='og:description'
+          content={`지역:${data.region} 평균 가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+        />
+        <meta property='og:url' content={process.env.NEXT_PUBLIC_VERCEL_URL} />
+      </Head>
+
+      <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
+        <ImageCard
+          imageSrc={data.image}
+          imageClassName={IMAGE_CLASS_NAME}
+          className={cn(
+            'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
+            'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
+            'shadow-sm',
+          )}
+        >
+          <WineContent name={data.name} region={data.region} price={data.price} />
+        </ImageCard>
+        <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
+          <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
+            <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
+            <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
+          </div>
+          <WineRating
+            rating={data.avgRating}
+            reviewCount={data.reviewCount}
+            ratings={Object.values(data.avgRatings)}
+          ></WineRating>
         </div>
-        <WineRating
-          rating={data.avgRating}
-          reviewCount={data.reviewCount}
-          ratings={Object.values(data.avgRatings)}
-        ></WineRating>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 
