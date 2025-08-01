@@ -17,7 +17,7 @@ import { GetWineInfoResponse } from '@/types/WineTypes';
 interface WinePageProps {
   wineData?: GetWineInfoResponse; // getWineInfo가 반환하는 WineInfo 타입을 사용
   error?: string;
-  dehydratedState: any;
+  dehydratedState?: any;
   parsedWineId: number;
 }
 
@@ -31,7 +31,7 @@ export default function WineInfoById(props: WinePageProps) {
   const setNowWine = useWineStore((state) => state.setNowWine);
 
   //서버든 목록(클라이언트든) 캐싱된 데이터 사용
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['wineDetail', parsedWineId],
     queryFn: () => getWineInfoForClient(parsedWineId),
     staleTime: 1000 * 60 * 5,
@@ -42,10 +42,8 @@ export default function WineInfoById(props: WinePageProps) {
     if (data) setNowWine(data);
   }, [data]);
 
-  if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
-
   if (!data) {
-    throw new Error('존재하지 않는 와인입니다.');
+    return;
   }
 
   return (
@@ -90,7 +88,6 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
     await queryClient.prefetchQuery({
       queryKey: ['wineDetail', parsedWineId],
       queryFn: async () => {
-        //추후 배포용 주소로 변경
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/wines/${parsedWineId}`,
           {
@@ -109,7 +106,6 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
     console.error(`[SSR] 와인 상세 정보 로딩 중 최종 에러:`, error.message || error);
   }
 
-  // prefetch한 queryClient의 캐시를 직렬화, 클라이언트에 전달.
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
