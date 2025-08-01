@@ -1,4 +1,4 @@
-import { motion, useViewportScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 import AverageStar from '@/components/wineDetail/AverageStar';
@@ -6,7 +6,7 @@ import AverageStar from '@/components/wineDetail/AverageStar';
 import { ImageCard } from '../common/card/ImageCard';
 
 export const ContentSection = () => {
-  const { scrollYProgress } = useViewportScroll();
+  const { scrollYProgress } = useScroll();
 
   // 섹션별 스크롤 범위를 정해서 애니메이션 매핑할 수 있음
   // 아래는 예시로 첫번째 박스 텍스트 y축 이동값 정의

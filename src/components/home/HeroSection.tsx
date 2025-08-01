@@ -57,7 +57,7 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-10 left-[calc(50%-340px)] z-20 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -40, //y축 튀어오름
+                  y: -25, //y축 튀어오름
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
@@ -84,7 +84,7 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-10 left-[calc(50%+100px)] z-20 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -40, //y축 튀어오름
+                  y: -25, //y축 튀어오름
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
@@ -111,7 +111,7 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -80, //y축 튀어오름
+                  y: -25, //y축 튀어오름
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
@@ -138,7 +138,7 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-[80px] left-[calc(50%+240px)] z-10 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -80, //y축 튀어오름
+                  y: -25, //y축 튀어오름
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
