@@ -69,7 +69,7 @@ const aromaMap: Record<string, string> = {
   오크: 'OAK',
   바닐라: 'VANILLA',
   후추: 'PEPPER',
-  제빵: 'BAKERY',
+  제빵: 'BAKING',
   풀: 'GRASS',
   사과: 'APPLE',
   복숭아: 'PEACH',
