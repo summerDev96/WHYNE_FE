@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { MyReview } from '@/types/MyReviewsTypes';
 
+import MyPageEmpty from './Empty';
+
 const PAGE_LIMIT = 10;
 
 interface ReviewListProps {
@@ -30,13 +32,12 @@ export function ReviewList({ setTotalCount }: ReviewListProps) {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // useInfiniteQuery 훅으로 리뷰 데이터를 무한 스크롤 형태로 조회
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ['reviews'],
-      queryFn: ({ pageParam = 0 }) => getMyReviews({ cursor: pageParam, limit: PAGE_LIMIT }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
-    });
+  const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['reviews'],
+    queryFn: ({ pageParam = 0 }) => getMyReviews({ cursor: pageParam, limit: PAGE_LIMIT }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? null,
+  });
   // xhx
   useEffect(() => {
     if (data?.pages?.[0]?.totalCount != null) {
@@ -53,12 +54,14 @@ export function ReviewList({ setTotalCount }: ReviewListProps) {
   });
 
   // 로딩 및 에러 상태 처리 (임시)
-  if (isLoading) return <p>불러오는 중…</p>;
   if (isError) return <p>불러오기 실패</p>;
-  if (!data) return <p>리뷰 데이터가 없습니다.</p>;
 
-  // 리뮤 목록 평탄화
+  // 리뷰 목록 평탄화
   const reviews: MyReview[] = data?.pages?.flatMap((page) => page.list ?? []) ?? [];
+
+  if (!data || data.pages[0].list.length === 0) {
+    return <MyPageEmpty type='reviews' />;
+  }
 
   return (
     <div className='space-y-4 mt-4'>
