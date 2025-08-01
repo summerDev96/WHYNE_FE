@@ -32,8 +32,8 @@ export const HeroSection = () => {
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
-                    type: 'tween', // 자연스럽게 튀어오름
-                    bounce: 1, // 자연스럽게 튀어오름
+                    type: 'keyframes', // 자연스럽게 튀어오름
+                    bounce: 0.1, // 자연스럽게 튀어오름
                     duration: 0.8,
                   },
                 }}
@@ -61,8 +61,8 @@ export const HeroSection = () => {
                   scale: 1,
                   rotate: 0, //기울기
                   transition: {
-                    type: 'spring', // 자연스럽게 튀어오름
-                    bounce: 0.3, // 자연스럽게 튀어오름
+                    type: 'keyframes', // 자연스럽게 튀어오름
+                    bounce: 0.1, // 자연스럽게 튀어오름
                     duration: 0.5,
                   },
                 }}
@@ -85,11 +85,11 @@ export const HeroSection = () => {
               <motion.div
                 whileHover={{
                   y: -40, //y축 튀어오름
-                  scale: 1.1,
+                  scale: 1,
                   rotate: 0, //기울기
                   transition: {
-                    type: 'spring', // 자연스럽게 튀어오름
-                    bounce: 0.3, // 자연스럽게 튀어오름
+                    type: 'keyframes', // 자연스럽게 튀어오름
+                    bounce: 0.1, // 자연스럽게 튀어오름
                     duration: 0.5,
                   },
                 }}
@@ -111,12 +111,12 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -40, //y축 튀어오름
-                  scale: 1.1,
+                  y: -80, //y축 튀어오름
+                  scale: 1,
                   rotate: 0, //기울기
                   transition: {
-                    type: 'spring', // 자연스럽게 튀어오름
-                    bounce: 0.3, // 자연스럽게 튀어오름
+                    type: 'keyframes', // 자연스럽게 튀어오름
+                    bounce: 0.1, // 자연스럽게 튀어오름
                     duration: 0.5,
                   },
                 }}
@@ -138,12 +138,12 @@ export const HeroSection = () => {
             <HeroSectionLayout className='top-[80px] left-[calc(50%+240px)] z-10 hover:z-30'>
               <motion.div
                 whileHover={{
-                  y: -40, //y축 튀어오름
-                  scale: 1.1,
+                  y: -80, //y축 튀어오름
+                  scale: 1,
                   rotate: 0, //기울기
                   transition: {
-                    type: 'spring', // 자연스럽게 튀어오름
-                    bounce: 0.3, // 자연스럽게 튀어오름
+                    type: 'keyframes', // 자연스럽게 튀어오름
+                    bounce: 0.1, // 자연스럽게 튀어오름
                     duration: 0.5,
                   },
                 }}
