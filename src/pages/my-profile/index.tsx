@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
+import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import Profile from '@/components/my-profile/Profile';
 import { ReviewList } from '@/components/my-profile/ReviewList';
@@ -20,33 +21,28 @@ import { useUser } from '@/hooks/useUser';
  */
 export default function MyProfile() {
   const router = useRouter();
-  const { isLoggedIn } = useUser();
+  const { isLoggedIn, isUserLoading } = useUser();
   const [showModal, setShowModal] = useState(false);
 
+  const [tab, setTab] = useState<'reviews' | 'wines'>('reviews');
+  const [reviewsCount, setReviewsCount] = useState(0);
+  const [winesCount, setWinesCount] = useState(0);
+
   useEffect(() => {
-    if (!isLoggedIn) {
-      setShowModal(true); // 비로그인 시 모달 표시
+    if (!isUserLoading && !isLoggedIn) {
+      setShowModal(true);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isUserLoading]);
 
   const handleRedirect = () => {
     router.push('/signin'); // 로그인 페이지로 이동
   };
-  /**
-   * 현재 선택된 탭 상태
-   * - 'reviews': 내가 쓴 리뷰
-   * - 'wines': 내가 등록한 와인
-   */
-  const [tab, setTab] = useState<'reviews' | 'wines'>('reviews');
-
-  /** 리뷰 총 개수 (리뷰 탭에서 ReviewList가 설정함) */
-  const [reviewsCount, setReviewsCount] = useState(0);
-
-  /** 와인 총 개수 (와인 탭에서 WineList가 설정함) */
-  const [winesCount, setWinesCount] = useState(0);
 
   return (
     <div>
+      {/* 로딩 중일 때 전체 오버레이 */}
+      {isUserLoading && <LoadingOverlay />}
+
       <ErrorModal
         open={showModal}
         onOpenChange={() => {}}
