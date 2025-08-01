@@ -53,12 +53,12 @@ export default function WineInfoById(props: WinePageProps) {
         <title>{`${data.name} 상세정보`}</title>
         <meta
           name='description'
-          content={`지역:${data.region} 평균 가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+          content={`지역:${data.region} 평균가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
         />
         <meta property='og:title' content={`${data.name} 상세정보`} />
         <meta
           property='og:description'
-          content={`지역:${data.region} 평균 가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+          content={`지역:${data.region} 평균가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
         />
         <meta property='og:url' content={process.env.NEXT_PUBLIC_VERCEL_URL} />
       </Head>
