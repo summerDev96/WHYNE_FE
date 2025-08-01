@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   Carousel,
@@ -7,28 +7,19 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from '@/components/ui/carousel';
-import { getRecommendedWines, RecommendedWine } from '@/lib/winelist';
+import { getRecommendedWines } from '@/lib/wineApi';
+import { RecommendedWineResponse } from '@/types/wineListType';
 
 import WineCard from './WineCard';
 
-export default function WineSlider() {
-  const [wines, setWines] = useState<RecommendedWine[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
+const TEAM_ID = process.env.NEXT_PUBLIC_TEAM;
+const RECOMMENDED_WINES_LIMIT = 4;
 
-  useEffect(() => {
-    const fetchWines = async () => {
-      try {
-        const data = await getRecommendedWines();
-        setWines(data);
-        setIsLoading(false);
-      } catch (e) {
-        setHasError(true);
-        setIsLoading(false);
-      }
-    };
-    fetchWines();
-  }, []);
+export default function WineSlider() {
+  const { data, isLoading, isError } = useQuery<RecommendedWineResponse>({
+    queryKey: ['recommendedWines'],
+    queryFn: () => getRecommendedWines({ teamId: TEAM_ID!, limit: RECOMMENDED_WINES_LIMIT }),
+  });
 
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[365px] mt-[20px] mb-[24px]'>
@@ -38,27 +29,36 @@ export default function WineSlider() {
         </h2>
 
         <div className='relative mt-[20px]'>
-          {isLoading ? (
+          {isLoading && !data ? (
             <p className='text-center'>불러오는 중...</p>
-          ) : hasError ? (
+          ) : isError || !data ? (
             <p className='text-center text-red-500'>추천 와인을 불러올 수 없습니다.</p>
           ) : (
-            <Carousel className='w-full'>
-              <CarouselContent>
-                {wines.map((wine) => (
-                  <CarouselItem key={wine.id} className='basis-auto flex items-start '>
-                    <WineCard
-                      id={wine.id}
-                      image={wine.image}
-                      name={wine.name}
-                      rating={wine.avgRating}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+            (() => {
+              const filteredWines = data.filter((wine) => !wine.image.includes('example.com'));
+              if (filteredWines.length === 0) {
+                return <p className='text-center'>추천 와인 목록이 없습니다.</p>;
+              }
+
+              return (
+                <Carousel className='w-full'>
+                  <CarouselContent>
+                    {filteredWines.map((wine) => (
+                      <CarouselItem key={wine.id} className='basis-auto flex items-start '>
+                        <WineCard
+                          id={wine.id}
+                          image={wine.image}
+                          name={wine.name}
+                          rating={wine.avgRating}
+                        />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              );
+            })()
           )}
         </div>
       </section>
