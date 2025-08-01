@@ -143,6 +143,19 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
     }
   };
 
+  const watchedName = watch('wineName');
+  const watchedPrice = watch('winePrice');
+  const watchedOrigin = watch('wineOrigin');
+  const watchedType = watch('wineType');
+  const watchedImage = watch('wineImage');
+
+  const isFormValid =
+    watchedName?.trim() &&
+    watchedPrice &&
+    watchedOrigin?.trim() &&
+    watchedType?.trim() &&
+    watchedImage?.length > 0;
+
   const renderButton = (
     <Button
       onClick={handleSubmit(onSubmit)}
@@ -151,6 +164,8 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       수정 완료
     </Button>

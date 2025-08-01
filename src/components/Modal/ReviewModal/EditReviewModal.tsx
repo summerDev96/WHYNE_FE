@@ -176,6 +176,12 @@ const EditReviewModal = ({
     }
   };
 
+  const content = watch('content');
+  const aromaList = watch('aroma');
+  const rating = watch('rating');
+
+  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0;
+
   const renderButton = (
     <Button
       onClick={handleSubmit(onSubmit)}
@@ -184,6 +190,8 @@ const EditReviewModal = ({
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       수정 완료
     </Button>

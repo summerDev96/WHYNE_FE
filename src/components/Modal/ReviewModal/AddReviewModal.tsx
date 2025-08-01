@@ -174,6 +174,12 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
   };
   ////
 
+  const content = watch('content');
+  const aromaList = watch('aroma');
+  const rating = watch('rating');
+
+  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0;
+
   const renderButton = (
     <Button
       onClick={handleSubmit(onSubmit)}
@@ -182,6 +188,8 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       리뷰 남기기
     </Button>

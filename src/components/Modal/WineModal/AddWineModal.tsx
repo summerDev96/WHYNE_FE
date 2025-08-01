@@ -59,6 +59,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     trigger,
     setValue,
     reset,
+    watch,
   } = useForm<WineForm>({
     mode: 'onBlur',
   });
@@ -256,6 +257,19 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     </form>
   );
 
+  const watchedName = watch('wineName');
+  const watchedPrice = watch('winePrice');
+  const watchedOrigin = watch('wineOrigin');
+  const watchedType = watch('wineType');
+  const watchedImage = watch('wineImage');
+
+  const isFormValid =
+    watchedName?.trim() &&
+    watchedPrice &&
+    watchedOrigin?.trim() &&
+    watchedType?.trim() &&
+    watchedImage?.length > 0;
+
   const renderButton = (
     <div className='flex gap-2 w-full'>
       <Button
@@ -278,7 +292,12 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         size='xl'
         fontSize='lg'
         width='full'
-        className='w-full md:w-[294px] lg:w-[294px]'
+        className={
+          !isFormValid
+            ? 'cursor-not-allowed w-full md:w-[294px] lg:w-[294px]'
+            : 'w-full md:w-[294px] lg:w-[294px]'
+        }
+        disabled={!isFormValid}
       >
         와인 등록하기
       </Button>
