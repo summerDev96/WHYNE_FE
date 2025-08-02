@@ -10,7 +10,7 @@ interface Props {
 
 function WineContent({ name, region, price }: Props) {
   return (
-    <div className='absolute left-[98px] md:left-[204px] xl:left-[244px] w-[200px] md:w-[300px]'>
+    <div className='absolute left-[98px] md:left-[204px] xl:left-[244px] w-[200px] md:w-[400px]'>
       <h2 className='text-[20px] md:text-[30px] font-[600] leading-[1] mt-[17px] md:mt-[36px]'>
         {name}
       </h2>
