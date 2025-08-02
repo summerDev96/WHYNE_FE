@@ -69,7 +69,7 @@ const aromaMap: Record<string, string> = {
   오크: 'OAK',
   바닐라: 'VANILLA',
   후추: 'PEPPER',
-  제빵: 'BAKERY',
+  제빵: 'BAKING',
   풀: 'GRASS',
   사과: 'APPLE',
   복숭아: 'PEACH',
@@ -115,7 +115,9 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     //mutation function
     mutationFn: postReview, //실제 서버에 리뷰를 보내는 역할
     onSuccess: (data) => {
-      toast.success('리뷰가 성공적으로 등록되었습니다.');
+      toast.success('', {
+        description: '리뷰가 성공적으로 등록되었습니다.',
+      });
       console.log('리뷰 등록 성공', data);
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
@@ -123,7 +125,9 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       setShowRegisterModal(false);
     },
     onError: (error) => {
-      toast.error('리뷰 등록이 실패하였습니다.');
+      toast.error('', {
+        description: '리뷰 등록이 실패하였습니다.',
+      });
       console.log('리뷰 등록 실패', error);
     },
   });
@@ -174,6 +178,12 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
   };
   ////
 
+  const content = watch('content');
+  const aromaList = watch('aroma');
+  const rating = watch('rating');
+
+  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0;
+
   const renderButton = (
     <Button
       onClick={handleSubmit(onSubmit)}
@@ -182,6 +192,8 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       리뷰 남기기
     </Button>
@@ -212,6 +224,10 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
         id='content'
         {...register('content', {
           required: '리뷰 내용을 입력해 주세요.',
+          maxLength: {
+            value: 500,
+            message: '최대 500자까지 입력 가능합니다.',
+          },
           onChange: () => clearErrors('content'),
         })}
         placeholder='후기를 작성해 주세요'

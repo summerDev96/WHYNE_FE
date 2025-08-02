@@ -33,7 +33,7 @@ export function ReviewCard({ children }: ReviewCardProps) {
 ReviewCard.UserHeader = function UserHeader({ userIcon, reviewId, children }: UserHeaderProps) {
   const username = useReviewCardStore((state) => state.allReviews[reviewId]?.user.nickname);
   const userImg = useReviewCardStore((state) => state.allReviews[reviewId]?.user.image);
-  const timeAgo = useReviewCardStore((state) => state.allReviews[reviewId]?.updatedAt);
+  const timeAgo = useReviewCardStore((state) => state.allReviews[reviewId]?.createdAt);
 
   return (
     <div className='flex justify-between items-start'>

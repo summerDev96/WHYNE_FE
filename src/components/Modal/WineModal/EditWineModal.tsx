@@ -11,11 +11,13 @@ import Input from '@/components/common/Input';
 import BasicModal from '@/components/common/Modal/BasicModal';
 import { Button } from '@/components/ui/button';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { getTrimmedHandlers } from '@/lib/inputCheck';
+import { getCommaNumberHandlers } from '@/lib/inputNumberCheck';
 import { renameFileIfNeeded } from '@/lib/renameFile';
 
 interface WineForm {
   wineName: string;
-  winePrice: number;
+  winePrice: string;
   wineOrigin: string;
   wineImage: FileList;
   wineType: string;
@@ -37,6 +39,8 @@ interface EditWineModalProps {
 }
 
 const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalProps) => {
+  const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
   const [previewImage, setPreviewImage] = useState<string | null>(wine.image);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const queryClient = useQueryClient();
@@ -49,13 +53,14 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
     clearErrors,
     reset,
     setValue,
+    setError,
     trigger,
     watch,
   } = useForm<WineForm>({
     mode: 'onBlur',
     defaultValues: {
       wineName: wine.name,
-      winePrice: wine.price,
+      winePrice: wine.price.toLocaleString(), //쉼표 포함해서 문자열로 원래는 wine.price(number)였음
       wineOrigin: wine.region,
       wineType: wine.type,
     },
@@ -79,6 +84,15 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setPreviewImage(null);
+        setError('wineImage', {
+          type: 'manual',
+          message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+        });
+        return;
+      }
+
       const renamedFile = renameFileIfNeeded(file);
       setPreviewImage(URL.createObjectURL(renamedFile));
     }
@@ -87,12 +101,14 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const updateWineMutation = useMutation({
     mutationFn: updateWine,
     onSuccess: () => {
-      toast.success('와인이 성공적으로 수정되었습니다.');
+      toast.success('', {
+        description: '와인이 성공적으로 수정되었습니다.',
+      });
       console.log('와인수정완료');
       queryClient.invalidateQueries({ queryKey: ['wines'] });
       reset({
         wineName: wine.name,
-        winePrice: wine.price,
+        winePrice: wine.price.toLocaleString(),
         wineOrigin: wine.region,
         wineType: wine.type,
       });
@@ -100,7 +116,9 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       setShowEditModal(false);
     },
     onError: (error) => {
-      toast.error('와인 수정이 실패하였습니다.');
+      toast.error('', {
+        description: '와인 수정이 실패하였습니다.',
+      });
       console.log('와인수정실패', error);
     },
   });
@@ -108,6 +126,16 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage?.[0];
+
+      //파일이 있을 때 확장자 검사
+      if (file && !ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setError('wineImage', {
+          type: 'manual',
+          message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+        });
+        return; // 제출 막기
+      }
+
       let imageUrl = wine.image;
 
       if (file) {
@@ -116,10 +144,13 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
         imageUrl = uploaded + `?t=${Date.now()}`; // 캐시 방지
         setPreviewImage(imageUrl); // 이미지 갱신
       }
+
+      const numberPrice = Number(form.winePrice.replace(/,/g, '')); //쉼표 제거 후 숫자로
+
       updateWineMutation.mutate({
         wineId: wine.wineId,
         name: form.wineName,
-        price: Number(form.winePrice),
+        price: numberPrice,
         region: form.wineOrigin,
         type: form.wineType.toUpperCase() as 'RED' | 'WHITE' | 'SPARKLING',
         image: imageUrl,
@@ -135,13 +166,26 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
     if (!isOpen) {
       reset({
         wineName: wine.name,
-        winePrice: wine.price,
+        winePrice: wine.price.toLocaleString(),
         wineOrigin: wine.region,
         wineType: wine.type,
       });
       setPreviewImage(wine.image);
     }
   };
+
+  const watchedName = watch('wineName');
+  const watchedPrice = watch('winePrice');
+  const watchedOrigin = watch('wineOrigin');
+  const watchedType = watch('wineType');
+  const watchedImage = watch('wineImage');
+
+  const isFormValid =
+    watchedName?.trim() &&
+    watchedPrice &&
+    watchedOrigin?.trim() &&
+    watchedType?.trim() &&
+    watchedImage?.length > 0;
 
   const renderButton = (
     <Button
@@ -151,6 +195,8 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       수정 완료
     </Button>
@@ -169,7 +215,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
         placeholder='와인 이름 입력'
         {...register('wineName', {
           required: '와인 이름을 입력해주세요.',
-          onChange: () => clearErrors('wineName'),
+          ...getTrimmedHandlers<WineForm>('wineName', setValue, clearErrors), //정규식 검사 함수
         })}
         errorMessage={errors.wineName?.message}
       />
@@ -181,12 +227,17 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       <Input
         className='w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none custom-text-md-regular md:custom-text-lg-regular'
         id='winePrice'
-        type='number'
+        type='text'
         placeholder='가격 입력'
         {...register('winePrice', {
-          required: '가격을 입력해주세요.',
-          onChange: () => clearErrors('winePrice'),
+          required: '가격을 입력해 주세요.',
+          pattern: {
+            value: /^[1-9][0-9]{0,9}(,[0-9]{3})*$/, // 총 10자리, 1~9로 시작
+            message: '숫자만 입력 가능하며, 0으로 시작할 수 없습니다.',
+          },
+          ...getCommaNumberHandlers<WineForm>('winePrice', setValue, clearErrors), //정규식 검사 함수
         })}
+        inputMode='numeric'
         errorMessage={errors.winePrice?.message}
       />
 
@@ -201,7 +252,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
         placeholder='원산지 입력'
         {...register('wineOrigin', {
           required: '원산지를 입력해주세요.',
-          onChange: () => clearErrors('wineOrigin'),
+          ...getTrimmedHandlers<WineForm>('wineOrigin', setValue, clearErrors), //정규식 검사 함수
         })}
         errorMessage={errors.wineOrigin?.message}
       />
@@ -254,7 +305,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       <Input
         id='wineImage'
         type='file'
-        accept='image/*'
+        accept='.png, .jpg, .jpeg, .webp'
         className='custom-text-md-regular md:custom-text-lg-regular hidden'
         {...register('wineImage', {
           onChange: (e) => {
