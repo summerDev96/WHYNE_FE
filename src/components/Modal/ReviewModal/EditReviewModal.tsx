@@ -65,7 +65,7 @@ export const aromaMap: Record<string, string> = {
   오크: 'OAK',
   바닐라: 'VANILLA',
   후추: 'PEPPER',
-  제빵: 'BAKERY',
+  제빵: 'BAKING',
   풀: 'GRASS',
   사과: 'APPLE',
   복숭아: 'PEACH',
@@ -99,14 +99,18 @@ const EditReviewModal = ({
     mutationFn: updateReview,
     throwOnError: true,
     onSuccess: () => {
-      toast.success('리뷰가 성공적으로 수정되었습니다.');
+      toast.success('', {
+        description: '리뷰가 성공적으로 수정되었습니다.',
+      });
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       setShowEditModal(false);
     },
     onError: (error) => {
-      toast.error('리뷰 수정이 실패하였습니다.');
+      toast.error('', {
+        description: '리뷰 수정이 실패하였습니다.',
+      });
       console.log('리뷰 수정 실패', error);
     },
   });
@@ -176,6 +180,12 @@ const EditReviewModal = ({
     }
   };
 
+  const content = watch('content');
+  const aromaList = watch('aroma');
+  const rating = watch('rating');
+
+  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0;
+
   const renderButton = (
     <Button
       onClick={handleSubmit(onSubmit)}
@@ -184,6 +194,8 @@ const EditReviewModal = ({
       size='xl'
       width='full'
       fontSize='lg'
+      disabled={!isFormValid}
+      className={!isFormValid ? 'cursor-not-allowed' : ''}
     >
       수정 완료
     </Button>
@@ -215,6 +227,10 @@ const EditReviewModal = ({
         id='content'
         {...register('content', {
           required: '리뷰 내용을 입력해 주세요.',
+          maxLength: {
+            value: 500,
+            message: '최대 500자까지 입력 가능합니다.',
+          },
           onChange: () => clearErrors('content'),
         })}
         placeholder='후기를 작성해 주세요'
