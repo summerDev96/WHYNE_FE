@@ -33,12 +33,16 @@ const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteMo
       deleteWineMutation.mutate(id, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['wines'] }); //삭제후 관련데이터 바로 갱신
-          toast.success('와인이 성공적으로 삭제되었습니다.');
+          toast.success('', {
+            description: '와인이 성공적으로 삭제되었습니다.',
+          });
           console.log('와인 삭제 성공');
           setShowDeleteModal(false);
         },
         onError: (error) => {
-          toast.error('와인 삭제가 실패하였습니다.');
+          toast.error('', {
+            description: '와인 삭제가 실패하였습니다.',
+          });
           console.error('와인 삭제 실패', error);
         },
       });
@@ -47,12 +51,16 @@ const DeleteModal = ({ type, id, showDeleteModal, setShowDeleteModal }: DeleteMo
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['reviews'] });
           queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
-          toast.success('리뷰가 성공적으로 삭제되었습니다.');
+          toast.success('', {
+            description: '리뷰가 성공적으로 삭제되었습니다.',
+          });
           console.log('리뷰 삭제 성공');
           setShowDeleteModal(false);
         },
         onError: (error) => {
-          toast.error('리뷰 삭제가 실패하였습니다.');
+          toast.error('', {
+            description: '리뷰 삭제가 실패하였습니다.',
+          });
           console.error('리뷰 삭제 실패', error);
         },
       });
