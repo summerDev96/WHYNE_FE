@@ -13,7 +13,7 @@ import { RecommendedWineResponse } from '@/types/wineListType';
 import WineCard from './WineCard';
 
 const TEAM_ID = process.env.NEXT_PUBLIC_TEAM;
-const RECOMMENDED_WINES_LIMIT = 4;
+const RECOMMENDED_WINES_LIMIT = 30;
 
 export default function WineSlider() {
   const { data, isLoading, isError } = useQuery<RecommendedWineResponse>({
@@ -41,7 +41,12 @@ export default function WineSlider() {
               }
 
               return (
-                <Carousel className='w-full'>
+                <Carousel
+                  opts={{
+                    align: 'start',
+                    slidesToScroll: 2,
+                  }}
+                >
                   <CarouselContent>
                     {filteredWines.map((wine) => (
                       <CarouselItem key={wine.id} className='basis-auto flex items-start '>
