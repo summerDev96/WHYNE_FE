@@ -1,5 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import {
   Carousel,
   CarouselContent,
@@ -20,6 +23,22 @@ export default function WineSlider() {
     queryKey: ['recommendedWines'],
     queryFn: () => getRecommendedWines({ teamId: TEAM_ID!, limit: RECOMMENDED_WINES_LIMIT }),
   });
+
+  const queryClient = useQueryClient();
+
+  const prefetchWineInfo = async (wineid: number) => {
+    await queryClient.prefetchQuery({
+      queryKey: ['wineDetail', wineid],
+      queryFn: () => getWineInfoForClient(wineid),
+      staleTime: 1000 * 60 * 5,
+    });
+  };
+
+  useEffect(() => {
+    data?.forEach((wine) => {
+      prefetchWineInfo(wine.id);
+    });
+  }, [data]);
 
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[365px] mt-[20px] mb-[24px]'>
