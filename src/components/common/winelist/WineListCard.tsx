@@ -74,7 +74,7 @@ export default function WineListCard() {
               rightSlot={null}
             >
               <div className='flex flex-col w-full px-[16px] md:px-0'>
-                <div className='flex flex-col w-full ml-0 mt-[20px] gap-[8px] md:w-[300px] md:ml-[36px] md:gap-[10px]'>
+                <div className='flex flex-col w-full ml-0 mt-[20px] gap-[8px] md:w-[360px] md:ml-[36px] md:gap-[10px]'>
                   <div className='custom-text-xl-semibold text-gray-800 leading-[32px] h-auto max-w-[220px] mt-[5px] md:text-[30px] md:max-w-[400px] md:min-h-[10px]'>
                     {wine.name}
                   </div>
