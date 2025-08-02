@@ -118,9 +118,11 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
       staleTime: 0,
       retry: false,
     });
-    console.log(`[getServerSideProps] 와인 상세 정보 프리패치 성공 (ID: ${parsedWineId})`);
   } catch (error: any) {
     console.error(`[SSR] 와인 상세 정보 로딩 중 최종 에러:`, error.message || error);
+    return {
+      notFound: true,
+    };
   }
 
   return {
