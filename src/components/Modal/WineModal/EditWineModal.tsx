@@ -39,6 +39,8 @@ interface EditWineModalProps {
 }
 
 const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalProps) => {
+  const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
   const [previewImage, setPreviewImage] = useState<string | null>(wine.image);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const queryClient = useQueryClient();
@@ -51,6 +53,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
     clearErrors,
     reset,
     setValue,
+    setError,
     trigger,
     watch,
   } = useForm<WineForm>({
@@ -81,6 +84,15 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setPreviewImage(null);
+        setError('wineImage', {
+          type: 'manual',
+          message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+        });
+        return;
+      }
+
       const renamedFile = renameFileIfNeeded(file);
       setPreviewImage(URL.createObjectURL(renamedFile));
     }
@@ -110,6 +122,16 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const onSubmit = async (form: WineForm) => {
     try {
       const file = form.wineImage?.[0];
+
+      //파일이 있을 때 확장자 검사
+      if (file && !ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setError('wineImage', {
+          type: 'manual',
+          message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+        });
+        return; // 제출 막기
+      }
+
       let imageUrl = wine.image;
 
       if (file) {
@@ -279,7 +301,7 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       <Input
         id='wineImage'
         type='file'
-        accept='image/*'
+        accept='.png, .jpg, .jpeg, .webp'
         className='custom-text-md-regular md:custom-text-lg-regular hidden'
         {...register('wineImage', {
           onChange: (e) => {

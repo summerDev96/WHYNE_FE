@@ -29,6 +29,8 @@ interface AddWineModalProps {
   setShowRegisterModal: (state: boolean) => void;
 }
 const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalProps) => {
+  const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
   const [category, setCategory] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -40,6 +42,14 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setPreviewImage(null);
+        setError('wineImage', {
+          type: 'manual',
+          message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+        });
+        return;
+      }
       const renamedFile = renameFileIfNeeded(file); //이미지파일 이름 정규화
       const imageUrl = URL.createObjectURL(renamedFile);
       setPreviewImage(imageUrl);
@@ -54,6 +64,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     clearErrors,
     trigger,
     setValue,
+    setError,
     reset,
     watch,
   } = useForm<WineForm>({
@@ -92,7 +103,26 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
 
   //WineForm의 price를 string으로 해서 쉼표 가능 후 >>서버에 저장할때는 쉼표 제거 후 숫자로 변환을 위해서
   const onSubmit = async (form: WineForm) => {
-    const file = renameFileIfNeeded(form.wineImage[0]); //이미지파일 이름 정규화
+    ////이미지 확장자 검사 및 잘못된 확장자 업로드 방지////
+    const file = form.wineImage?.[0];
+
+    // 1. 이미지 없을 때 막기 (선택사항: 이미 react-hook-form required로 막고 있음)
+    if (!file) {
+      setError('wineImage', {
+        type: 'manual',
+        message: '이미지를 업로드해 주세요.',
+      });
+      return;
+    }
+    // 2. 확장자 제한
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setError('wineImage', {
+        type: 'manual',
+        message: '지원하지 않는 이미지 형식입니다. (png, jpg, webp)',
+      });
+      return;
+    }
+    //// ////
 
     const imageUrl = await uploadImage(file); //이미지 업로드해서 URL얻고
 
@@ -215,7 +245,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         })}
         id='wineImage'
         type='file'
-        accept='image/*'
+        accept='.png, .jpg, .jpeg, .webp'
         className='hidden'
         ref={(e) => {
           register('wineImage').ref(e);
