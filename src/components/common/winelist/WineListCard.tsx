@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { useWineListQuery } from '@/hooks/useWineListQuery';
 import { cn } from '@/lib/utils';
+import { GetWinesResponse } from '@/types/wineListType';
 
 export default function WineListCard() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
@@ -27,8 +28,10 @@ export default function WineListCard() {
   if (isLoading) return <p>불러오는 중...</p>;
   if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
 
-  /* 전체 와인 리스트 조합 */
-  const wineList = data.pages.flatMap((page) => page.list);
+  const wineList = data.pages.flatMap(
+    (page) =>
+      (page as GetWinesResponse)?.list?.filter((wine) => !wine.image.includes('example.com')) ?? [],
+  );
 
   return (
     <div className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] md:px-[20px] md:mt-[24px] xl:px-0 max-w-[1140px] mx-auto xl:max-w-[800px]'>
@@ -68,7 +71,7 @@ export default function WineListCard() {
 
                 <div className='flex flex-row items-start mt-[23px] w-full ml-0 gap-[6px] md:hidden'>
                   <div className='text-[28px] font-extrabold text-gray-800 w-auto h-auto'>
-                    {wine.rating.toFixed(1)}
+                    {wine.avgRating?.toFixed(1)}
                   </div>
                   <div className='flex flex-col gap-[5px] ml-[15px] w-[100px] h-auto mt-[-6px]'>
                     <div className='flex gap-[4px] flex-nowrap'>
@@ -76,14 +79,14 @@ export default function WineListCard() {
                         <StarIcon
                           key={i}
                           className={cn(
-                            wine.rating >= i + 1 ? 'fill-purpleDark' : 'fill-gray-300',
+                            wine.avgRating >= i + 1 ? 'fill-purpleDark' : 'fill-gray-300',
                             'w-3 h-3',
                           )}
                         />
                       ))}
                     </div>
                     <div className='custom-text-xs-regular text-gray-500 break-words'>
-                      47개의 후기
+                      {wine.reviewCount}개의 후기
                     </div>
                   </div>
                 </div>
@@ -98,7 +101,7 @@ export default function WineListCard() {
 
             <div className='hidden md:flex flex-col items-start absolute top-[40px] right-[-10px] z-10'>
               <div className='text-[48px] font-extrabold text-gray-800 leading-[48px] md:mt-[9px]'>
-                {wine.rating.toFixed(1)}
+                {wine.avgRating?.toFixed(1)}
               </div>
               <div className='flex flex-col gap-[5px] w-[160px] mt-[15px] items-start'>
                 <div className='flex gap-[4px] flex-nowrap'>
@@ -106,14 +109,14 @@ export default function WineListCard() {
                     <StarIcon
                       key={i}
                       className={cn(
-                        wine.rating >= i + 1 ? 'fill-purpleDark' : 'fill-gray-300',
+                        wine.avgRating >= i + 1 ? 'fill-purpleDark' : 'fill-gray-300',
                         'w-[16px] h-[16px]',
                       )}
                     />
                   ))}
                 </div>
                 <div className='custom-text-sm-regular text-gray-500 break-words w-[100px] text-left mt-[7px]'>
-                  47개의 후기
+                  {wine.reviewCount}개의 후기
                 </div>
               </div>
             </div>
@@ -132,13 +135,12 @@ export default function WineListCard() {
                 최신 후기
               </div>
               <div className='text-[14px] text-gray-500 leading-[24px] break-words'>
-                {wine.review}
+                {wine.recentReview ? wine.recentReview.content : '아직 후기가 없습니다.'}
               </div>
             </div>
           </div>
         </Link>
       ))}
-      {/* 무한 스크롤 감지 */}
       <div ref={observerRef} className='h-[1px]' />
     </div>
   );

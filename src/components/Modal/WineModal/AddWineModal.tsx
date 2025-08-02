@@ -17,7 +17,6 @@ import SelectDropdown from '../../common/dropdown/SelectDropdown';
 import Input from '../../common/Input';
 import BasicModal from '../../common/Modal/BasicModal';
 import { Button } from '../../ui/button';
-
 interface WineForm {
   wineName: string;
   winePrice: string;
@@ -25,23 +24,19 @@ interface WineForm {
   wineImage: FileList;
   wineType: string;
 }
-
 interface AddWineModalProps {
   showRegisterModal: boolean;
   setShowRegisterModal: (state: boolean) => void;
 }
-
 const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalProps) => {
   const [category, setCategory] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const isDesktop = useMediaQuery('(min-width: 640px)');
-
   const triggerFileSelect = () => {
     fileInputRef.current?.click();
   };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -52,7 +47,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       setPreviewImage(null);
     }
   };
-
   const {
     register,
     handleSubmit,
@@ -65,7 +59,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   } = useForm<WineForm>({
     mode: 'onBlur',
   });
-
   const resetForm = () => {
     reset({
       wineName: '',
@@ -82,7 +75,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const handlePostWine = async (data: PostWineRequest) => {
     return postWine(data);
   };
-
   const postWineMutation = useMutation({
     mutationFn: handlePostWine,
     onSuccess: () => {
@@ -115,16 +107,12 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     };
     postWineMutation.mutate(requestData);
   };
-
   const categoryOptions = [
     { label: 'Red', value: 'Red' },
     { label: 'White', value: 'White' },
     { label: 'Sparkling', value: 'Sparkling' },
   ];
-
   const selectedCategoryLabel = categoryOptions.find((opt) => opt.value === category)?.label;
-
-  //모달창 끄면 리셋되게
   const closeModalReset = (isOpen: boolean) => {
     setShowRegisterModal(isOpen);
     if (!isOpen) {
@@ -133,11 +121,8 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       }, 50);
     }
   };
-  ////
-
   const renderForm = () => (
     <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form-data' className='mx-2'>
-      {/* 이름 */}
       <p className='custom-text-md-medium md:custom-text-lg-medium mt-[22px] mb-[10px]'>
         와인 이름
       </p>
@@ -153,7 +138,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         placeholder='와인 이름 입력'
         className='custom-text-md-regular md:custom-text-lg-regular'
       />
-      {/* 가격 */}
       <p className='custom-text-md-medium md:custom-text-lg-medium mt-[22px] mb-[10px]'>가격</p>
       <Input
         {...register('winePrice', {
@@ -172,7 +156,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         placeholder='가격 입력'
         className='[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none custom-text-md-regular md:custom-text-lg-regular'
       />
-      {/* 원산지 */}
       <p className='custom-text-md-medium md:custom-text-lg-medium mt-[22px] mb-[10px]'>원산지</p>
       <Input
         {...register('wineOrigin', {
@@ -186,7 +169,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         placeholder='원산지 입력'
         className='custom-text-md-regular md:custom-text-lg-regular'
       />
-      {/* 타입 */}
       <p className='custom-text-md-medium md:custom-text-lg-medium mt-[22px] mb-[10px]'>타입</p>
       <SelectDropdown
         selectedValue={category}
@@ -212,7 +194,7 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         <div className='relative'>
           <p className='text-red-500 absolute mt-1'>{errors.wineType.message}</p>
         </div>
-      )}{' '}
+      )}
       <Input
         {...register('wineType', {
           required: '타입을 선택해 주세요.',
@@ -222,7 +204,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
         type='text'
         className='hidden'
       />
-      {/* 사진 */}
       <p className='custom-text-md-medium md:custom-text-lg-medium mt-[24px]'>와인 사진</p>
       <Input
         {...register('wineImage', {
@@ -247,7 +228,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
           onClick={triggerFileSelect}
         >
           {previewImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img src={previewImage} alt='미리보기' className='w-full h-full object-cover' />
           ) : (
             <div className='flex flex-col items-center text-gray-400'>
@@ -310,7 +290,6 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
       </Button>
     </div>
   );
-
   return isDesktop ? (
     <BasicModal
       type='register'
@@ -333,5 +312,4 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     </BasicBottomSheet>
   );
 };
-
 export default AddWineModal;

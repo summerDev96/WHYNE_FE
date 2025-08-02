@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 import { checkToken } from '@/api/auth';
 
-const useTokenCheck = () => {
+const useTokenCheckRedirect = () => {
   const router = useRouter();
 
   const { data: tokenData, isLoading } = useQuery({
@@ -23,4 +23,4 @@ const useTokenCheck = () => {
   return { isLoading, tokenData };
 };
 
-export default useTokenCheck;
+export default useTokenCheckRedirect;
