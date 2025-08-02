@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -12,6 +12,7 @@ import { Toaster } from 'sonner';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
+import Splash from '@/components/Splash';
 import { useInitUser } from '@/hooks/useInitUser';
 
 import type { AppProps } from 'next/app';
@@ -34,6 +35,15 @@ export default function App({ Component, pageProps }: AppProps) {
   const isLanding = pathname === '/';
   const is404 = pathname === '/404';
 
+  const [showSplash, setShowSplash] = useState(isLanding);
+
+  useEffect(() => {
+    if (isLanding) {
+      const timer = setTimeout(() => setShowSplash(false), 2500); // 2초 보여주기
+      return () => clearTimeout(timer);
+    }
+  }, [isLanding]);
+
   return (
     <>
       <Head>
@@ -51,6 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
             },
           }}
         />
+        {showSplash && <Splash />}
         <LoadingOverlay />
         <HydrationBoundary state={pageProps.dehydratedState}>
           {!hideHeader && <Gnb />}
