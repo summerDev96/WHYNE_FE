@@ -4,6 +4,7 @@ import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { getWineInfoForClient } from '@/api/getWineInfo';
@@ -17,7 +18,7 @@ import { GetWineInfoResponse } from '@/types/WineTypes';
 interface WinePageProps {
   wineData?: GetWineInfoResponse; // getWineInfo가 반환하는 WineInfo 타입을 사용
   error?: string;
-  dehydratedState: any;
+  dehydratedState?: any;
   parsedWineId: number;
 }
 
@@ -31,7 +32,7 @@ export default function WineInfoById(props: WinePageProps) {
   const setNowWine = useWineStore((state) => state.setNowWine);
 
   //서버든 목록(클라이언트든) 캐싱된 데이터 사용
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['wineDetail', parsedWineId],
     queryFn: () => getWineInfoForClient(parsedWineId),
     staleTime: 1000 * 60 * 5,
@@ -42,37 +43,51 @@ export default function WineInfoById(props: WinePageProps) {
     if (data) setNowWine(data);
   }, [data]);
 
-  if (isLoading) return <div className='w-300 bg-red-400 h-20'>123</div>; //테스트용
-
   if (!data) {
-    throw new Error('존재하지 않는 와인입니다.');
+    return;
   }
 
   return (
-    <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
-      <ImageCard
-        imageSrc={data.image}
-        imageClassName={IMAGE_CLASS_NAME}
-        className={cn(
-          'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
-          'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
-          'shadow-sm',
-        )}
-      >
-        <WineContent name={data.name} region={data.region} price={data.price} />
-      </ImageCard>
-      <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
-        <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
-          <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
-          <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
+    <>
+      <Head>
+        <title>{`${data.name} 상세정보`}</title>
+        <meta
+          name='description'
+          content={`지역:${data.region} 평균가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+        />
+        <meta property='og:title' content={`${data.name} 상세정보`} />
+        <meta
+          property='og:description'
+          content={`지역:${data.region} 평균가격:${data.price} 평균별점:${data.avgRating} 리뷰:${data.reviewCount}`}
+        />
+        <meta property='og:url' content={process.env.NEXT_PUBLIC_VERCEL_URL} />
+      </Head>
+
+      <main className='mx-auto px-4 md:px-5 xl:px-0 max-w-[1140px]  min-w-[343px]'>
+        <ImageCard
+          imageSrc={data.image}
+          imageClassName={IMAGE_CLASS_NAME}
+          className={cn(
+            'mx-auto relative w-full h-[190px] md:h-[260px] rounded-[16px] mt-[29px] md:mt-[62px] mb-[40px] md:mb-[60px] border-0',
+            'bg-gradient-to-tr from-white from-50% to-primary/20 to-100%', //그래디언트 설정 추후 변경
+            'shadow-sm',
+          )}
+        >
+          <WineContent name={data.name} region={data.region} price={data.price} />
+        </ImageCard>
+        <div className='flex flex-col xl:flex-row max-w-[1140px] w-full mx-auto justify-between '>
+          <div className='flex-col  order-2 xl:order-1 xl:max-w-[1140px] '>
+            <h2 className='sr-only xl:not-sr-only !mb-[22px] xl:custom-text-xl-bold'>리뷰 목록</h2>
+            <Reviews wine={data} reviews={data.reviews} reviewCount={data.reviewCount} />
+          </div>
+          <WineRating
+            rating={data.avgRating}
+            reviewCount={data.reviewCount}
+            ratings={Object.values(data.avgRatings)}
+          ></WineRating>
         </div>
-        <WineRating
-          rating={data.avgRating}
-          reviewCount={data.reviewCount}
-          ratings={Object.values(data.avgRatings)}
-        ></WineRating>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 
@@ -90,7 +105,6 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
     await queryClient.prefetchQuery({
       queryKey: ['wineDetail', parsedWineId],
       queryFn: async () => {
-        //추후 배포용 주소로 변경
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/wines/${parsedWineId}`,
           {
@@ -104,12 +118,13 @@ export const getServerSideProps: GetServerSideProps<WinePageProps> = async (cont
       staleTime: 0,
       retry: false,
     });
-    console.log(`[getServerSideProps] 와인 상세 정보 프리패치 성공 (ID: ${parsedWineId})`);
   } catch (error: any) {
     console.error(`[SSR] 와인 상세 정보 로딩 중 최종 에러:`, error.message || error);
+    return {
+      notFound: true,
+    };
   }
 
-  // prefetch한 queryClient의 캐시를 직렬화, 클라이언트에 전달.
   return {
     props: {
       dehydratedState: dehydrate(queryClient),

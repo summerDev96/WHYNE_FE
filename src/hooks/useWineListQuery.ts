@@ -1,28 +1,48 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { getWines } from '@/lib/getWines';
+import { getWines } from '@/lib/wineApi';
 import useFilterStore from '@/stores/filterStore';
 import useWineSearchKeywordStore from '@/stores/searchStore';
+import { GetWinesResponse } from '@/types/wineListType';
 
 const PAGE_LIMIT = 8;
+const TEAM_ID = process.env.NEXT_PUBLIC_TEAM;
 
 export function useWineListQuery() {
-  /* 각 필터 상태 */
   const type = useFilterStore((state) => state.type);
   const minPrice = useFilterStore((state) => state.minPrice);
   const maxPrice = useFilterStore((state) => state.maxPrice);
   const rating = useFilterStore((state) => state.rating);
   const searchTerm = useWineSearchKeywordStore((state) => state.searchTerm);
 
-  return useInfiniteQuery({
-    queryKey: ['wines', { type, minPrice, maxPrice, rating, searchTerm }],
-    queryFn: ({ pageParam = 0 }) =>
-      getWines({
-        cursor: pageParam,
+  const apiRating = rating === 'all' ? undefined : Number(rating);
+
+  return useInfiniteQuery<GetWinesResponse, unknown, InfiniteData<GetWinesResponse>>({
+    queryKey: ['wines', { type, minPrice, maxPrice, rating: apiRating, name: searchTerm }],
+    queryFn: ({ pageParam = 0 }) => {
+      const filters = {
+        type: type.toUpperCase(),
+        minPrice,
+        maxPrice,
+        rating: apiRating,
+        name: searchTerm,
+      };
+
+      const filteredParams = Object.fromEntries(
+        Object.entries(filters).filter(
+          ([, value]) => value !== null && value !== undefined && value !== '',
+        ),
+      );
+
+      return getWines({
+        teamId: TEAM_ID!,
+        cursor: pageParam as number,
         limit: PAGE_LIMIT,
-        filters: { type, minPrice, maxPrice, rating, searchTerm },
-      }),
+        filters: filteredParams,
+      });
+    },
+
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor ?? undefined,
   });
 }

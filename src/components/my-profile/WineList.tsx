@@ -9,6 +9,7 @@ import MenuDropdown from '@/components/common/dropdown/MenuDropdown';
 import { Badge } from '@/components/ui/badge';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
+import MyPageEmpty from './Empty';
 import DeleteModal from '../Modal/DeleteModal/DeleteModal';
 import EditWineModal from '../Modal/WineModal/EditWineModal';
 
@@ -31,13 +32,12 @@ export function WineList({ setTotalCount }: WineListProps) {
   const [deleteWineId, setDeleteWineId] = useState<number | null>(null);
 
   //useInfiniteQuery 훅으로 와인 데이터를 무한 스크롤 형태로 조회
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ['wines'],
-      queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
-    });
+  const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['wines'],
+    queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
+  });
 
   useEffect(() => {
     if (data?.pages?.[0]?.totalCount != null) {
@@ -54,11 +54,14 @@ export function WineList({ setTotalCount }: WineListProps) {
   });
 
   // 로딩 및 에러 상태 처리 (임시)
-  if (isLoading) return <p className='text-center py-4'>와인 불러오는 중…</p>;
   if (isError || !data) return <p className='text-center py-4'>와인 불러오기 실패</p>;
 
   // 와인 목록 평탄화
   const wines: MyWine[] = data?.pages?.flatMap((page) => page?.list ?? []) ?? [];
+
+  if (!data || data.pages[0].list.length === 0) {
+    return <MyPageEmpty type='wines' />;
+  }
 
   return (
     <div className='flex flex-col mt-9 space-y-9 md:space-y-16 md:mt-16'>

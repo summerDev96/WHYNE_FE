@@ -52,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-function parseCookie(cookieHeader: string | undefined, name: string): string | undefined {
+export function parseCookie(cookieHeader: string | undefined, name: string): string | undefined {
   if (!cookieHeader) {
     return undefined;
   }

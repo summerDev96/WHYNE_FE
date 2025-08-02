@@ -34,10 +34,10 @@ const BasicBottomSheet = ({
           </DrawerHeader>
         )}
 
-        <div className='px-4 py-2'>{children}</div>
+        <div className='px-4 py-2 px-4 py-2 max-h-[60vh] overflow-y-auto'>{children}</div>
 
         {buttons && (
-          <DrawerFooter className='flex flex-col gap-2 px-4 pb-4'>{buttons}</DrawerFooter>
+          <DrawerFooter className='flex flex-col gap-2 px-4 pb-4 '>{buttons}</DrawerFooter>
         )}
       </DrawerContent>
     </Drawer>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Link from 'next/link';
 
 import StarIcon from '@/assets/icons/star.svg';
@@ -24,7 +22,6 @@ export default function WineCard({ id, image, name, rating }: WineCardProps) {
           'md:w-[232px] md:h-[185px]',
         )}
       >
-        {/* 왼쪽: 이미지 카드 */}
         <div className='flex-shrink-0'>
           <ImageCard
             imageSrc={image}
@@ -33,7 +30,6 @@ export default function WineCard({ id, image, name, rating }: WineCardProps) {
           />
         </div>
 
-        {/* 오른쪽: 평점 + 별점 + 이름 */}
         <div className='w-[80px] h-[97px] flex flex-col justify-start mt-[10px] ml-[5px] md:w-[100px] md:h-[125px] md:ml-[20px]'>
           <div className='text-[28px] font-extrabold leading-100% text-gray-800 md:text-[36px] '>
             {rating.toFixed(1)}
