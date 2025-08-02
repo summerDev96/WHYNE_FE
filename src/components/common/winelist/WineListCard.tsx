@@ -1,7 +1,9 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import NextIcon from '@/assets/icons/Next.svg';
 import StarIcon from '@/assets/icons/star.svg';
 import { ImageCard } from '@/components/common/card/ImageCard';
@@ -25,21 +27,38 @@ export default function WineListCard() {
     threshold: 0.3,
   });
 
-  if (isLoading) return <p>불러오는 중...</p>;
-  if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
-
-  const wineList = data.pages.flatMap(
+  const wineList = data?.pages.flatMap(
     (page) =>
       (page as GetWinesResponse)?.list?.filter((wine) => !wine.image.includes('example.com')) ?? [],
   );
 
+  const queryClient = useQueryClient();
+
+  const prefetchWineInfo = async (wineid: number) => {
+    await queryClient.prefetchQuery({
+      queryKey: ['wineDetail', wineid],
+      queryFn: () => getWineInfoForClient(wineid),
+      staleTime: 1000 * 60 * 5,
+    });
+  };
+
+  // // 데이터 프리패칭용
+  useEffect(() => {
+    wineList?.forEach((wine) => {
+      prefetchWineInfo(wine.id);
+    });
+  }, [wineList]);
+
+  if (isLoading) return <p>불러오는 중...</p>;
+  if (isError || !data) return <p>와인 데이터를 불러올 수 없습니다.</p>;
+
   return (
     <div
-      className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] h-[390px]
+      className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px]
     md:px-[20px] md:mt-[24px] 
     xl:px-0 max-w-[1140px] mx-auto xl:max-w-[800px] xl:800px'
     >
-      {wineList.map((wine) => (
+      {wineList?.map((wine) => (
         <Link href={`/wines/${wine.id}`} key={wine.id} className='no-underline'>
           <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative min-w-[320px]'>
             <ImageCard

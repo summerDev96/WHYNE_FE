@@ -1,13 +1,15 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { getWineInfoForClient } from '@/api/getWineInfo';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { getRecommendedWines } from '@/lib/wineApi';
 import { RecommendedWineResponse } from '@/types/wineListType';
@@ -23,27 +25,46 @@ export default function WineSlider() {
     queryFn: () => getRecommendedWines({ teamId: TEAM_ID!, limit: RECOMMENDED_WINES_LIMIT }),
   });
 
-  // 상태 초기값을 null로 설정하여 타입 추론을 유도합니다.
-  const [api, setApi] = React.useState<any>(null); // any로 임시로 타입 지정
-  const [isAtEnd, setIsAtEnd] = React.useState(false);
+  const queryClient = useQueryClient();
 
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
+  const prefetchWineInfo = async (wineid: number) => {
+    await queryClient.prefetchQuery({
+      queryKey: ['wineDetail', wineid],
+      queryFn: () => getWineInfoForClient(wineid),
+      staleTime: 1000 * 60 * 5,
+    });
+  };
 
-    const handleScroll = () => {
-      // 캐러셀의 현재 위치(selectedScrollSnap)와 전체 슬라이드 수를 비교하여
-      // 마지막 슬라이드에 가까워졌는지 확인합니다.
-      const isScrollEnd = api.selectedScrollSnap() >= api.scrollSnapList().length - 2;
-      setIsAtEnd(isScrollEnd);
+  useEffect(() => {
+    data?.forEach((wine) => {
+      prefetchWineInfo(wine.id);
+    });
+  }, [data]);
+
+  // useState 훅들을 여기에 선언합니다.
+  const [api, setApi] = useState<CarouselApi | undefined>();
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+
+  // setApi prop에 직접 콜백을 작성하는 대신,
+  // api 상태가 변경될 때마다 캐러셀 이벤트를 관리하는 useEffect 훅을 사용합니다.
+  useEffect(() => {
+    if (!api) return;
+
+    const handleSelect = () => {
+      setIsAtStart(!api.canScrollPrev());
+      setIsAtEnd(!api.canScrollNext());
     };
 
-    api.on('scroll', handleScroll);
+    // 초기 렌더링 시에도 상태를 업데이트합니다.
+    handleSelect();
 
-    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    api.on('select', handleSelect);
+    api.on('reInit', handleSelect);
+
     return () => {
-      api.off('scroll', handleScroll);
+      api.off('select', handleSelect);
+      api.off('reInit', handleSelect);
     };
   }, [api]);
 
@@ -72,7 +93,7 @@ export default function WineSlider() {
                     align: 'start',
                     slidesToScroll: 2,
                   }}
-                  setApi={setApi} // 캐러셀 API를 useState에 저장
+                  setApi={setApi} // <-- useState로 선언한 setApi 함수를 prop으로 전달합니다.
                 >
                   <CarouselContent>
                     {filteredWines.map((wine, index) => (
@@ -87,8 +108,8 @@ export default function WineSlider() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious disabled={isAtStart} className='z-50' />
+                  <CarouselNext disabled={isAtEnd} className='z-50' />
                 </Carousel>
               );
             })()
