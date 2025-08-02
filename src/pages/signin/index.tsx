@@ -44,9 +44,8 @@ const SignIn = () => {
 
   const {
     handleSubmit,
-    clearErrors,
     setError,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = methods;
 
   const loginMutation = useMutation<LoginResponse, AxiosError, LoginRequest>({
@@ -57,7 +56,7 @@ const SignIn = () => {
     onError: (error) => {
       if (error.response?.status === 400) {
         // 로그인 오류인 경우 공통 에러 메시지
-        setError('root', { message: '이메일 혹은 비밀번호를 확인해주세요' });
+        setError('email', { message: '이메일 혹은 비밀번호를 확인해주세요' });
       } else {
         // API 에러를 모달로 출력
         handleError(error.response?.data as Error);
@@ -105,15 +104,7 @@ const SignIn = () => {
             {/* 이메일 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='email'>이메일</label>
-              <FormInput
-                type='email'
-                id='email'
-                name='email'
-                placeholder='user@email.com'
-                onChange={() => {
-                  clearErrors('root');
-                }}
-              />
+              <FormInput type='email' id='email' name='email' placeholder='user@email.com' />
             </div>
             {/* 비밀번호 */}
             <div className='flex flex-col gap-2.5'>
@@ -123,15 +114,9 @@ const SignIn = () => {
                 id='password'
                 name='password'
                 placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
-                onChange={() => {
-                  clearErrors('root');
-                }}
               />
             </div>
           </div>
-
-          {/* 로그인 오류 출력 */}
-          {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
 
           <div className='flex flex-col mb-10 gap-4'>
             <Button
