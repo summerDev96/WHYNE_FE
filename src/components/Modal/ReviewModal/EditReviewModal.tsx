@@ -99,14 +99,18 @@ const EditReviewModal = ({
     mutationFn: updateReview,
     throwOnError: true,
     onSuccess: () => {
-      toast.success('리뷰가 성공적으로 수정되었습니다.');
+      toast.success('', {
+        description: '리뷰가 성공적으로 수정되었습니다.',
+      });
       console.log('리뷰 수정 완료');
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
       setShowEditModal(false);
     },
     onError: (error) => {
-      toast.error('리뷰 수정이 실패하였습니다.');
+      toast.error('', {
+        description: '리뷰 수정이 실패하였습니다.',
+      });
       console.log('리뷰 수정 실패', error);
     },
   });

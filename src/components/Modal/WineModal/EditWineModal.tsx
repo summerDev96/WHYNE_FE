@@ -101,7 +101,9 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const updateWineMutation = useMutation({
     mutationFn: updateWine,
     onSuccess: () => {
-      toast.success('와인이 성공적으로 수정되었습니다.');
+      toast.success('', {
+        description: '와인이 성공적으로 수정되었습니다.',
+      });
       console.log('와인수정완료');
       queryClient.invalidateQueries({ queryKey: ['wines'] });
       reset({
@@ -114,7 +116,9 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
       setShowEditModal(false);
     },
     onError: (error) => {
-      toast.error('와인 수정이 실패하였습니다.');
+      toast.error('', {
+        description: '와인 수정이 실패하였습니다.',
+      });
       console.log('와인수정실패', error);
     },
   });
