@@ -2,12 +2,14 @@ import React, { useRef, useState } from 'react';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { uploadImage, postWine, PostWineRequest } from '@/api/addwine';
 import CameraIcon from '@/assets/camera.svg';
 import DropdownIcon from '@/assets/dropdowntriangle.svg';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { renameFileIfNeeded } from '@/lib/renameFile';
 
 import SelectDropdown from '../../common/dropdown/SelectDropdown';
 import Input from '../../common/Input';
@@ -41,7 +43,8 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      const renamedFile = renameFileIfNeeded(file); //이미지파일 이름 정규화
+      const imageUrl = URL.createObjectURL(renamedFile);
       setPreviewImage(imageUrl);
     } else {
       setPreviewImage(null);
@@ -89,18 +92,25 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
   const postWineMutation = useMutation({
     mutationFn: handlePostWine,
     onSuccess: () => {
+      toast.success('와인이 성공적으로 등록되었습니다.');
       console.log('와인 등록 성공');
       resetForm();
       setShowRegisterModal(false);
       queryClient.invalidateQueries({ queryKey: ['wines'] });
     },
     onError: (error) => {
+      toast.error('와인 등록이 실패하였습니다.');
       console.log('와인 등록 실패', error);
     },
   });
 
   const onSubmit = async (form: WineForm) => {
-    postWineMutation.mutate(form);
+    let file = form.wineImage[0];
+    file = renameFileIfNeeded(file); //이미지파일 이름 정규화
+    postWineMutation.mutate({
+      ...form,
+      wineImage: [file] as unknown as FileList,
+    });
   };
 
   const categoryOptions = [

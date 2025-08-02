@@ -7,18 +7,23 @@ import { useUserStore } from '@/stores/userStore';
  * 앱 진입 시 유저 정보를 패치하고 Zustand에 저장하는 훅 */
 export const useInitUser = () => {
   const setUser = useUserStore((state) => state.setUser);
+  const clearUser = useUserStore((state) => state.clearUser);
+  const setIsUserLoading = useUserStore((state) => state.setIsUserLoading);
 
-  /* 처음에만 실행 */
   useEffect(() => {
     const fetchUser = async () => {
+      setIsUserLoading(true); // 유저 정보 불러오기 시작
+
       try {
-        const user = await getUser();
-        setUser(user);
+        const user = await getUser(); //  API 호출
+        setUser(user); // 로그인 상태로 전역 상태 설정
       } catch (error) {
-        // 로그인 안 돼있는 경우 무시
+        clearUser(); // 실패 시 로그아웃 상태로 초기화
+      } finally {
+        setIsUserLoading(false); // 로딩 끝
       }
     };
 
     fetchUser();
-  }, [setUser]);
+  }, [setUser, clearUser, setIsUserLoading]);
 };
