@@ -50,7 +50,7 @@ const WineTypeFilter = ({
           max={1000000}
           value={priceRange}
           onChange={setPriceRange}
-          className='w-[17.7rem]'
+          className='w-[17.7rem] ml-1'
         />
       </div>
       <span className={cn(showBorder && borderClass, 'my-[1.9rem]')}></span>
