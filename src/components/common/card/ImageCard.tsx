@@ -34,7 +34,7 @@ export function ImageCard({
             alt='와인 이미지'
             width={80}
             height={112}
-            className={cn('h-28 w-20 rounded-md object-cover', imageClassName)}
+            className={cn('h-28 w-20 rounded-md object-fit', imageClassName)}
             onError={() => setHasImageError(true)}
           />
         )}
