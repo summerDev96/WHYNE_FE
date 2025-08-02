@@ -1,11 +1,17 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
+import useNavigationStore from '@/stores/routerStore';
+
 import HeroSectionLayout from './HeroSectionLayout';
 import { ImageCard } from '../common/card/ImageCard';
 import AverageStar from '../wineDetail/AverageStar';
 
 export const HeroSection = () => {
+  const isFirstPageLoad = useNavigationStore((state) => state.isFirstPageLoad);
+
+  const animationDelay = isFirstPageLoad ? 2 : 0.3;
+  const smallCardDelay = isFirstPageLoad ? 2.2 : 0.2;
   return (
     <header>
       <motion.div
@@ -13,7 +19,7 @@ export const HeroSection = () => {
         initial={{ opacity: 0, y: -100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, delay: 0.7, ease: 'easeOut' }}
+        transition={{ duration: 0.6, delay: animationDelay, ease: 'easeOut' }}
       >
         <div className='flex flex-col items-center h-full'>
           <div>
@@ -35,7 +41,7 @@ export const HeroSection = () => {
               <motion.div
                 initial={{ opacity: 1, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.6, delay: smallCardDelay, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine3.png'
@@ -57,7 +63,7 @@ export const HeroSection = () => {
               <motion.div
                 initial={{ opacity: 1, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.6, delay: smallCardDelay, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine1.png'
@@ -77,7 +83,7 @@ export const HeroSection = () => {
               <motion.div
                 initial={{ opacity: 1, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.6, delay: smallCardDelay, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine2.png'
@@ -97,7 +103,7 @@ export const HeroSection = () => {
               <motion.div
                 initial={{ opacity: 1, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.6, delay: smallCardDelay, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine4.png'
@@ -117,7 +123,7 @@ export const HeroSection = () => {
               <motion.div
                 initial={{ opacity: 1, y: 200 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+                transition={{ duration: 0.6, delay: smallCardDelay, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine1.png'

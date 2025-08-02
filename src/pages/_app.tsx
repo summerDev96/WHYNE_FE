@@ -14,6 +14,7 @@ import Gnb from '@/components/common/Gnb';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import Splash from '@/components/Splash';
 import { useInitUser } from '@/hooks/useInitUser';
+import { useSetupNavigationListener } from '@/hooks/useIsInitialLoad';
 
 import type { AppProps } from 'next/app';
 
@@ -26,6 +27,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  useSetupNavigationListener();
   useInitUser();
   const router = useRouter();
 
