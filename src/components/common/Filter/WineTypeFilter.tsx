@@ -19,7 +19,7 @@ const WineTypeFilter = ({
 }: WineTypeFilterProps) => {
   const { type, setType, minPrice, maxPrice, setPriceRange, rating, setRating } = useFilterStore();
 
-  const wineTypeOptions: WineType[] = ['Red', 'White', 'Sparkling'];
+  const wineTypeOptions: WineType[] = ['RED', 'WHITE', 'SPARKLING'];
   const priceRange: [number, number] = [minPrice, maxPrice];
 
   const borderClass = 'border-b border-gray-100';
