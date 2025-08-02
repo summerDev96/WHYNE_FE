@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 
 import Image from 'next/image';
+import { toast } from 'sonner';
 
 import Camera from '@/assets/camera.svg';
 import UserDefaultImg from '@/assets/icons/userDefaultImg.svg';
@@ -45,7 +46,9 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
     if (file) {
       const allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
       if (!allowedTypes.includes(file.type)) {
-        alert('지원하지 않는 이미지 형식입니다.');
+        toast.warning('', {
+          description: '지원하지 않는 이미지 형식입니다.',
+        });
         return;
       }
 
