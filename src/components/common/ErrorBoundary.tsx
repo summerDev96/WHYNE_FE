@@ -34,10 +34,12 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     if (isAxiosError(error)) {
       switch (error.response?.status) {
         case 404: {
+          //라우팅 경로는 맞는데 페이지 못 찾은 경우
           errorMessage = '해당 페이지를 찾을 수 없습니다.';
           break;
         }
         case 403: {
+          //인가받지 못한 경우
           const apiMessage = error.response?.data?.message;
           if (apiMessage === '본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.') {
             errorMessage = '본인이 작성한 리뷰에는 좋아요를 할 수 없습니다.';
@@ -47,9 +49,18 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           break;
         }
         case 401: {
+          //401
           const apiMessage = error.response?.data?.message;
           if (apiMessage === 'Unauthorized') {
             errorMessage = '로그인이 필요합니다.';
+          }
+          break;
+        }
+        case 400: {
+          // wineid값에 영어가 들어간 경우
+          const apiMessage = error.response?.data?.message;
+          if (apiMessage === 'Validation Failed') {
+            errorMessage = '잘못된 요청입니다.';
           }
           break;
         }
@@ -59,6 +70,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         }
       }
     } else {
+      //엑시오스 에러가 아닌 것들
       errorMessage = `${error.message}`;
     }
 

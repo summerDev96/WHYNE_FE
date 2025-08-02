@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import Camera from '@/assets/camera.svg';
 import UserDefaultImg from '@/assets/icons/userDefaultImg.svg';
+import { renameFileIfNeeded } from '@/lib/renameFile';
 
 interface ProfileImageInputProps {
   /** 미리보기 또는 서버에서 받은 프로필 이미지 URL (null이면 기본 이미지 표시) */
@@ -48,7 +49,8 @@ export function ProfileImageInput({ imageUrl, onFileSelect }: ProfileImageInputP
         return;
       }
 
-      onFileSelect?.(file);
+      const renamedFile = renameFileIfNeeded(file);
+      onFileSelect?.(renamedFile);
     }
   };
 

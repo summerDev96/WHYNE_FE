@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import ShowMoreBtn from '@/assets/icons/showMoreBtn.svg';
 import Star from '@/assets/icons/star.svg';
 import { Badge } from '@/components/ui/badge';
@@ -30,13 +32,14 @@ export function ReviewCard({ children }: ReviewCardProps) {
 
 ReviewCard.UserHeader = function UserHeader({ userIcon, reviewId, children }: UserHeaderProps) {
   const username = useReviewCardStore((state) => state.allReviews[reviewId]?.user.nickname);
+  const userImg = useReviewCardStore((state) => state.allReviews[reviewId]?.user.image);
   const timeAgo = useReviewCardStore((state) => state.allReviews[reviewId]?.updatedAt);
 
   return (
     <div className='flex justify-between items-start'>
       <div className='flex items-center gap-4'>
-        <div className='w-10 h-10 md:w-16 md:h-16 rounded-full bg-gray-200 overflow-hidden'>
-          {userIcon}
+        <div className='relative w-10 h-10 md:w-16 md:h-16 rounded-full bg-gray-200 overflow-hidden'>
+          {userImg ? <Image fill src={userImg} alt='유저 프로필' /> : userIcon}
         </div>
         <div className='flex flex-col'>
           <span className='custom-text-lg-semibold text-gray-900'>{username}</span>

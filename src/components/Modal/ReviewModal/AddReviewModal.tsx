@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { postReview } from '@/api/addreview';
 import BasicBottomSheet from '@/components/common/BottomSheet/BasicBottomSheet';
@@ -114,6 +115,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
     //mutation function
     mutationFn: postReview, //실제 서버에 리뷰를 보내는 역할
     onSuccess: (data) => {
+      toast.success('리뷰가 성공적으로 등록되었습니다.');
       console.log('리뷰 등록 성공', data);
       queryClient.invalidateQueries({ queryKey: ['reviews'] });
       queryClient.invalidateQueries({ queryKey: ['wineDetail'] });
@@ -121,6 +123,7 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       setShowRegisterModal(false);
     },
     onError: (error) => {
+      toast.error('리뷰 등록이 실패하였습니다.');
       console.log('리뷰 등록 실패', error);
     },
   });
@@ -213,14 +216,14 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
         })}
         placeholder='후기를 작성해 주세요'
         className={cn(
-          'relative h-[100px] md:h-[120px] custom-text-md-regular md:custom-text-lg-regular w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none active:border-gray-500 focus:border-gray-500 font-sans resize-none',
+          'h-[100px] md:h-[120px] w-full px-[20px] py-[14px] rounded-[16px] bg-white border border-gray-300 outline-none font-sans resize-none',
           errors.content && 'border-red-500',
         )}
         rows={5}
       />
       {errors.content && (
-        <div role='alert' className='absolute text-red-500 mt-[4px]'>
-          <p>{errors.content.message}</p>
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500 mt-1'>{errors.content.message}</p>
         </div>
       )}
       <p className='custom-text-2lg-bold md:custom-text-xl-bold mb-[24px] mt-[35px]'>
@@ -279,8 +282,8 @@ const AddReviewModal = ({ wineId, wineName }: { wineId: number; wineName: string
       </div>
       <p className='custom-text-2lg-bold md:custom-text-xl-bold'>기억에 남는 향이 있나요?</p>
       {errors.aroma && (
-        <div role='alert' className='absolute text-red-500'>
-          {errors.aroma.message}
+        <div role='alert' className='relative'>
+          <p className='absolute text-red-500'>{errors.aroma.message}</p>
         </div>
       )}
       <div className='relative flex flex-wrap gap-[10px] mt-6'>

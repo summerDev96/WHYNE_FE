@@ -12,6 +12,7 @@ interface ErrorModalProps {
   showCloseButton?: boolean;
   children?: React.ReactNode;
   className?: string;
+  confirmText?: string;
 }
 
 /* 기존에 errorMessage를 props로 받았는데,
@@ -24,6 +25,7 @@ const ErrorModal = ({
   showCloseButton = false,
   children,
   className,
+  confirmText,
 }: ErrorModalProps) => {
   return (
     <Modal
@@ -48,7 +50,7 @@ const ErrorModal = ({
             onConfirm?.();
           }}
         >
-          확인
+          {confirmText ?? '확인'}
         </Button>
       </Modal.Footer>
     </Modal>
