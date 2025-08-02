@@ -189,6 +189,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
           orientation === 'horizontal'
             ? 'left-2 !top-1/2 [-webkit-transform:translateY(calc(-50%+3px))] [transform:translateY(calc(-50%+3px))]'
             : 'top-4 left-1/2 -translate-x-1/2 rotate-90',
+          !canScrollPrev ? 'sr-only' : '',
           className,
         )}
         disabled={!canScrollPrev}
@@ -217,6 +218,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
           orientation === 'horizontal'
             ? 'right-2 !top-1/2 !-translate-y-1/2'
             : 'bottom-4 left-1/2 -translate-x-1/2 rotate-90',
+          !canScrollNext ? 'sr-only' : '',
           className,
         )}
         disabled={!canScrollNext}
