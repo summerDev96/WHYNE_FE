@@ -8,32 +8,24 @@ import { GetWinesResponse } from '@/types/wineListType';
 const PAGE_LIMIT = 8;
 const TEAM_ID = process.env.NEXT_PUBLIC_TEAM;
 
-const getMinRatingFromFilter = (rating: string): number | undefined => {
-  const ratingMap: Record<string, number> = {
-    '4.5 - 5.0': 4.5,
-    '4.0 - 4.5': 4.0,
-    '3.5 - 4.0': 3.5,
-    '3.0 - 3.5': 3.0,
-  };
-  return ratingMap[rating];
-};
-
 export function useWineListQuery() {
+  const type = useFilterStore((state) => state.type);
   const minPrice = useFilterStore((state) => state.minPrice);
   const maxPrice = useFilterStore((state) => state.maxPrice);
   const rating = useFilterStore((state) => state.rating);
   const searchTerm = useWineSearchKeywordStore((state) => state.searchTerm);
 
-  const minRating = getMinRatingFromFilter(rating);
+  const apiRating = rating === 'all' ? undefined : Number(rating);
 
   return useInfiniteQuery<GetWinesResponse, unknown, InfiniteData<GetWinesResponse>>({
-    queryKey: ['wines', { minPrice, maxPrice, rating: minRating, searchTerm }],
+    queryKey: ['wines', { type, minPrice, maxPrice, rating: apiRating, name: searchTerm }],
     queryFn: ({ pageParam = 0 }) => {
       const filters = {
+        type: type.toUpperCase(),
         minPrice,
         maxPrice,
-        rating: minRating,
-        searchTerm,
+        rating: apiRating,
+        name: searchTerm,
       };
 
       const filteredParams = Object.fromEntries(
