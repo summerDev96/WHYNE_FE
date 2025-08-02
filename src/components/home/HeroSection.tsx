@@ -13,7 +13,7 @@ export const HeroSection = () => {
         initial={{ opacity: 0, y: -100 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        transition={{ duration: 0.6, delay: 0.7, ease: 'easeOut' }}
       >
         <div className='flex flex-col items-center h-full'>
           <div>
