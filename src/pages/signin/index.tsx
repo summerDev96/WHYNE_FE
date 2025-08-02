@@ -54,12 +54,15 @@ const SignIn = () => {
       userMutation.mutate();
     },
     onError: (error) => {
-      if (error.response?.status === 400) {
-        // 로그인 오류인 경우 공통 에러 메시지
-        setError('email', { message: '이메일 혹은 비밀번호를 확인해주세요' });
-      } else {
-        // API 에러를 모달로 출력
-        handleError(error.response?.data as Error);
+      const err = error as AxiosError<{ message?: string }>;
+      const status = err.response?.status;
+
+      switch (status) {
+        case 400:
+          setError('email', { message: '이메일 혹은 비밀번호를 확인해주세요' });
+          break;
+        default:
+          handleError(error.response?.data as Error);
       }
     },
   });
