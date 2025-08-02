@@ -8,7 +8,13 @@ import AverageStar from '../wineDetail/AverageStar';
 export const HeroSection = () => {
   return (
     <header>
-      <div className='relative h-[403px] md:h-[394px] xl:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden rounded-lg'>
+      <motion.div
+        className='relative h-[403px] md:h-[394px] xl:h-[535px] bg-[#171A21] flex items-center justify-center overflow-hidden rounded-lg'
+        initial={{ opacity: 0, y: -100 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
         <div className='flex flex-col items-center h-full'>
           <div>
             <Image
@@ -25,18 +31,11 @@ export const HeroSection = () => {
           </span>
           <div className='relative w-[720px] h-[420px] mt-auto mx-auto translate-y-[80px] md:translate-y-[40px] xl:translate-y-[120px] scale-[1] md:scale-[0.7] xl:scale-[1]'>
             {/* 기준 박스 translate-y 아래로-ㅁㅁ만큼 밀어내기 */}
-            <HeroSectionLayout className='top-4 left-1/2 -translate-x-1/2 z-30 hover:z-30'>
+            <HeroSectionLayout className='top-4 left-1/2 -translate-x-1/2 z-30'>
               <motion.div
-                whileHover={{
-                  y: -25, //y축 튀어오름
-                  scale: 1,
-                  rotate: 0, //기울기
-                  transition: {
-                    type: 'keyframes', // 자연스럽게 튀어오름
-                    bounce: 0.1, // 자연스럽게 튀어오름
-                    duration: 0.8,
-                  },
-                }}
+                initial={{ opacity: 1, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine3.png'
@@ -54,18 +53,11 @@ export const HeroSection = () => {
             </HeroSectionLayout>
 
             {/* 좌우 위 박스 */}
-            <HeroSectionLayout className='top-10 left-[calc(50%-340px)] z-20 hover:z-30'>
+            <HeroSectionLayout className='top-10 left-[calc(50%-340px)] z-20'>
               <motion.div
-                whileHover={{
-                  y: -25, //y축 튀어오름
-                  scale: 1,
-                  rotate: 0, //기울기
-                  transition: {
-                    type: 'keyframes', // 자연스럽게 튀어오름
-                    bounce: 0.1, // 자연스럽게 튀어오름
-                    duration: 0.5,
-                  },
-                }}
+                initial={{ opacity: 1, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine1.png'
@@ -81,18 +73,11 @@ export const HeroSection = () => {
                 </ImageCard>
               </motion.div>
             </HeroSectionLayout>
-            <HeroSectionLayout className='top-10 left-[calc(50%+100px)] z-20 hover:z-30'>
+            <HeroSectionLayout className='top-10 left-[calc(50%+100px)] z-20'>
               <motion.div
-                whileHover={{
-                  y: -25, //y축 튀어오름
-                  scale: 1,
-                  rotate: 0, //기울기
-                  transition: {
-                    type: 'keyframes', // 자연스럽게 튀어오름
-                    bounce: 0.1, // 자연스럽게 튀어오름
-                    duration: 0.5,
-                  },
-                }}
+                initial={{ opacity: 1, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine2.png'
@@ -108,18 +93,11 @@ export const HeroSection = () => {
             </HeroSectionLayout>
 
             {/* 좌우 아래 박스 */}
-            <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10 hover:z-30'>
+            <HeroSectionLayout className='top-[80px] left-[calc(50%-480px)] z-10'>
               <motion.div
-                whileHover={{
-                  y: -25, //y축 튀어오름
-                  scale: 1,
-                  rotate: 0, //기울기
-                  transition: {
-                    type: 'keyframes', // 자연스럽게 튀어오름
-                    bounce: 0.1, // 자연스럽게 튀어오름
-                    duration: 0.5,
-                  },
-                }}
+                initial={{ opacity: 1, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine4.png'
@@ -135,18 +113,11 @@ export const HeroSection = () => {
                 </ImageCard>
               </motion.div>
             </HeroSectionLayout>
-            <HeroSectionLayout className='top-[80px] left-[calc(50%+240px)] z-10 hover:z-30'>
+            <HeroSectionLayout className='top-[80px] left-[calc(50%+240px)] z-10'>
               <motion.div
-                whileHover={{
-                  y: -25, //y축 튀어오름
-                  scale: 1,
-                  rotate: 0, //기울기
-                  transition: {
-                    type: 'keyframes', // 자연스럽게 튀어오름
-                    bounce: 0.1, // 자연스럽게 튀어오름
-                    duration: 0.5,
-                  },
-                }}
+                initial={{ opacity: 1, y: 200 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
                 <ImageCard
                   imageSrc='/assets/lendingwine1.png'
@@ -164,7 +135,7 @@ export const HeroSection = () => {
             </HeroSectionLayout>
           </div>
         </div>
-      </div>
+      </motion.div>
     </header>
   );
 };
