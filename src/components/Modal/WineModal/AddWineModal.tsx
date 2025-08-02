@@ -128,7 +128,9 @@ const AddWineModal = ({ showRegisterModal, setShowRegisterModal }: AddWineModalP
     }
     //// ////
 
-    const imageUrl = await uploadImage(file); //이미지 업로드해서 URL얻고
+    // 3. 파일 정규화 및 제출
+    const renamedFile = renameFileIfNeeded(file);
+    const imageUrl = await uploadImage(renamedFile); //이미지 업로드해서 URL얻고
 
     const numberPrice = Number(form.winePrice.replace(/,/g, '')); //가격 쉼표 제거 후 숫자로 변환
 
