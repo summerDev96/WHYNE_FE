@@ -98,7 +98,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
           onOpenChange={() => {}}
           onConfirm={() => {
             this.setState({ isOpen: false, hasError: false });
-            router.back();
+            router.replace('/');
           }}
         >
           <div className='text-center custom-text-lg-bold'>{errorMessageToDisplay}</div>
