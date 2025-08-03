@@ -9,11 +9,22 @@ interface WineCardProps {
   image: string;
   name: string;
   rating: number;
+  isCarouselEnd?: boolean;
 }
 
-export default function WineCard({ id, image, name, rating }: WineCardProps) {
+export default function WineCard({ id, image, name, rating, isCarouselEnd }: WineCardProps) {
   return (
-    <Link href={`/wines/${id}`} key={id} className='no-underline'>
+    <Link
+      href={`/wines/${id}`}
+      key={id}
+      className='no-underline'
+      onClick={(e) => {
+        if (isCarouselEnd) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+    >
       <div
         className={cn(
           'flex h-[160px] bg-white p-2 border border-gray-200 ',

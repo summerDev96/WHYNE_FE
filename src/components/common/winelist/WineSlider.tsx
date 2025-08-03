@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -9,6 +9,7 @@ import {
   CarouselItem,
   CarouselPrevious,
   CarouselNext,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { getRecommendedWines } from '@/lib/wineApi';
 import { RecommendedWineResponse } from '@/types/wineListType';
@@ -40,6 +41,33 @@ export default function WineSlider() {
     });
   }, [data]);
 
+  // useState 훅들을 여기에 선언합니다.
+  const [api, setApi] = useState<CarouselApi | undefined>();
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+
+  // setApi prop에 직접 콜백을 작성하는 대신,
+  // api 상태가 변경될 때마다 캐러셀 이벤트를 관리하는 useEffect 훅을 사용합니다.
+  useEffect(() => {
+    if (!api) return;
+
+    const handleSelect = () => {
+      setIsAtStart(!api.canScrollPrev());
+      setIsAtEnd(!api.canScrollNext());
+    };
+
+    // 초기 렌더링 시에도 상태를 업데이트합니다.
+    handleSelect();
+
+    api.on('select', handleSelect);
+    api.on('reInit', handleSelect);
+
+    return () => {
+      api.off('select', handleSelect);
+      api.off('reInit', handleSelect);
+    };
+  }, [api]);
+
   return (
     <div className='mx-auto px-[16px] md:px-[20px] xl:px-0 max-w-[1140px] min-w-[365px] mt-[20px] mb-[24px]'>
       <section className='w-full min-h-[241px] rounded-[12px] bg-gray-100 py-[20px] md:min-h-[285px]'>
@@ -65,21 +93,23 @@ export default function WineSlider() {
                     align: 'start',
                     slidesToScroll: 2,
                   }}
+                  setApi={setApi} // <-- useState로 선언한 setApi 함수를 prop으로 전달합니다.
                 >
                   <CarouselContent>
-                    {filteredWines.map((wine) => (
+                    {filteredWines.map((wine, index) => (
                       <CarouselItem key={wine.id} className='basis-auto flex items-start '>
                         <WineCard
                           id={wine.id}
                           image={wine.image}
                           name={wine.name}
                           rating={wine.avgRating}
+                          isCarouselEnd={isAtEnd && index >= filteredWines.length - 2}
                         />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious disabled={isAtStart} className='z-50' />
+                  <CarouselNext disabled={isAtEnd} className='z-50' />
                 </Carousel>
               );
             })()

@@ -54,13 +54,13 @@ export default function WineListCard() {
 
   return (
     <div
-      className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px] h-[390px]
+      className='flex flex-col gap-[24px] px-[16px] mt-[12px] min-w-[370px]
     md:px-[20px] md:mt-[24px] 
     xl:px-0 max-w-[1140px] mx-auto xl:max-w-[800px] xl:800px'
     >
       {wineList?.map((wine) => (
         <Link href={`/wines/${wine.id}`} key={wine.id} className='no-underline'>
-          <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative min-w-[320px]'>
+          <div className='w-full bg-white border border-gray-300 rounded-xl flex flex-col relative min-w-[320px] group'>
             <ImageCard
               imageSrc={wine.image}
               className='pt-[20px] pb-0 border-none md:pl-[30px]'
@@ -114,7 +114,7 @@ export default function WineListCard() {
                     </div>
                   </div>
                   <button type='button' className='w-[36px] h-[36px] p-[4px] rounded'>
-                    <NextIcon className='w-full h-full text-gray-300 hover:text-gray-500' />
+                    <NextIcon className='w-full h-full text-gray-300 group-hover:text-gray-700' />
                   </button>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function WineListCard() {
               type='button'
               className='w-[40px] h-[40px] p-[4px] rounded flex-shrink-0 ml-10 hidden md:block absolute top-[185px] right-[20px]'
             >
-              <NextIcon className='w-full h-full text-gray-300 hover:text-gray-500' />
+              <NextIcon className='w-full h-full text-gray-300 group-hover:text-gray-700' />
             </button>
             <div className='w-full h-px bg-gray-300 mt-[-1px]' />
             <div className='px-[25px] py-[20px] xl:w-[800px] xl:h-[110px]'>
