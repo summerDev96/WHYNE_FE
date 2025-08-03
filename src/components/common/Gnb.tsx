@@ -85,7 +85,9 @@ function UserDropdown({ userImage }: Props) {
     //쿠키 만료시키기
     await apiClient.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`);
     clearUser();
-    router.push('/');
+    if (router.pathname !== '/my-profile') {
+      router.push('/');
+    }
   }
 
   return (

@@ -180,11 +180,30 @@ const EditReviewModal = ({
     }
   };
 
+  //watch() 값들 추적
   const content = watch('content');
-  const aromaList = watch('aroma');
+  const aromaList = watch('aroma'); // 한글임
   const rating = watch('rating');
+  const lightBold = watch('lightBold');
+  const smoothTannic = watch('smoothTannic');
+  const drySweet = watch('drySweet');
+  const softAcidic = watch('softAcidic');
 
-  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0;
+  // 한글 → 영어 변환
+  const selectedAromaEng = (aromaList || []).map((kor) => aromaMap[kor]).filter(Boolean);
+
+  // 변경 여부 비교
+  const isChanged =
+    rating !== reviewData.rating ||
+    lightBold !== reviewData.lightBold ||
+    smoothTannic !== reviewData.smoothTannic ||
+    drySweet !== reviewData.drySweet ||
+    softAcidic !== reviewData.softAcidic ||
+    content !== reviewData.content ||
+    JSON.stringify(selectedAromaEng) !== JSON.stringify(reviewData.aroma);
+
+  //버튼 활성화 조건 개선
+  const isFormValid = rating > 0 && content.trim().length > 0 && aromaList.length > 0 && isChanged;
 
   const renderButton = (
     <Button
