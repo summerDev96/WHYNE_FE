@@ -108,8 +108,8 @@ export default function WineSlider() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious disabled={isAtStart} className='z-50' />
-                  <CarouselNext disabled={isAtEnd} className='z-50' />
+                  <CarouselPrevious disabled={isAtStart} />
+                  <CarouselNext disabled={isAtEnd} />
                 </Carousel>
               );
             })()

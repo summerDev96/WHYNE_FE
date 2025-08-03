@@ -12,6 +12,7 @@ import { Toaster } from 'sonner';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import Gnb from '@/components/common/Gnb';
 import { LoadingOverlay } from '@/components/common/LoadingOverlay';
+import ScrollToTop from '@/components/common/scrollToTop';
 import Splash from '@/components/Splash';
 import { useInitUser } from '@/hooks/useInitUser';
 import { useSetupNavigationListener } from '@/hooks/useIsInitialLoad';
@@ -75,6 +76,7 @@ export default function App({ Component, pageProps }: AppProps) {
               })}
             >
               <Component {...pageProps} />
+              <ScrollToTop />
               <SpeedInsights />
             </div>
           </ErrorBoundary>
