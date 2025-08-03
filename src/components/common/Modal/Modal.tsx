@@ -24,7 +24,7 @@ const Modal = ({ open, onOpenChange, showCloseButton = true, children, className
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className={cn(
-          'flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden focus:outline-none focus:border-none',
+          'flex flex-col rounded-xl max-h-[95vh] [&>button:last-child]:hidden',
           className,
         )}
       >
@@ -58,7 +58,9 @@ Modal.Title = function Title({ title, className, children }: ModalTitleProps) {
 };
 
 Modal.Body = function Body({ children }: ModalBodyProps) {
-  return <div className='overflow-auto max-h-[calc(95vh - 10rem)]'>{children}</div>;
+  return (
+    <div className='overflow-y-auto overflow-x-hidden max-h-[calc(95vh - 10rem)]'>{children}</div>
+  );
 };
 
 Modal.Footer = function Footer({ children }: ModalFooterProps) {
