@@ -32,12 +32,14 @@ export function WineList({ setTotalCount }: WineListProps) {
   const [deleteWineId, setDeleteWineId] = useState<number | null>(null);
 
   //useInfiniteQuery 훅으로 와인 데이터를 무한 스크롤 형태로 조회
-  const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['wines'],
-    queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
-  });
+  const { data, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    {
+      queryKey: ['wines'],
+      queryFn: ({ pageParam = 0 }) => getMyWines({ cursor: pageParam, limit: PAGE_LIMIT }),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage: MyWinesResponse | undefined) => lastPage?.nextCursor ?? null,
+    },
+  );
 
   useEffect(() => {
     if (data?.pages?.[0]?.totalCount != null) {
@@ -53,11 +55,11 @@ export function WineList({ setTotalCount }: WineListProps) {
     isFetching: isFetchingNextPage,
   });
 
-  // 로딩 및 에러 상태 처리 (임시)
-  if (isError || !data) return <p className='text-center py-4'>와인 불러오기 실패</p>;
+  if (isError) throw error;
 
   // 와인 목록 평탄화
-  const wines: MyWine[] = data?.pages?.flatMap((page) => page?.list ?? []) ?? [];
+  const wines: MyWine[] =
+    data?.pages?.flatMap((page) => page?.list ?? [])?.sort((a, b) => b.id - a.id) ?? [];
 
   if (!data || data.pages[0].list.length === 0) {
     return <MyPageEmpty type='wines' />;
@@ -100,7 +102,7 @@ export function WineList({ setTotalCount }: WineListProps) {
               {wine.region}
             </p>
             <Badge variant='priceBadge'>
-              <span className='inline-block w-full h-full pt-[3px]'>
+              <span className='inline-block w-full h-full md:pt-[3px] xl:pt-[2px]'>
                 ₩ {wine.price.toLocaleString()}
               </span>
             </Badge>
