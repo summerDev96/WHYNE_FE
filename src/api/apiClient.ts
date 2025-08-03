@@ -45,6 +45,9 @@ export const createApiClient = (context?: ApiClientContext) => {
         });
         if (result) return result;
       } catch (refreshTokenError) {
+        if (isClient()) {
+          window.location.href = '/login';
+        }
         return handleCommonError(refreshTokenError as AxiosError);
       }
     },
