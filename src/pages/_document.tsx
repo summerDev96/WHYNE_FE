@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
+import Script from 'next/script';
 
 export default function Document() {
   const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL;
@@ -19,6 +20,21 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
+        <Script
+          id='chatling-config'
+          strategy='afterInteractive'
+          dangerouslySetInnerHTML={{
+            __html: `window.chtlConfig = { chatbotId: "${process.env.NEXT_PUBLIC_CHAT_ID}" };`,
+          }}
+        />
+        <Script
+          async
+          data-id='7771422489'
+          id='chtl-script'
+          type='text/javascript'
+          src='https://chatling.ai/js/embed.js'
+          strategy='afterInteractive'
+        />
       </body>
     </Html>
   );

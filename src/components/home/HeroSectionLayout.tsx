@@ -8,7 +8,7 @@ interface HeroSectionLayoutProps {
 }
 
 const HeroSectionLayout = ({ children, className }: HeroSectionLayoutProps) => {
-  const baseClass = 'absolute w-[240px] h-[185px] rounded-xl shadow-xl bg-white';
+  const baseClass = 'absolute w-[240px] h-[185px] rounded-xl shadow-xl';
 
   return <div className={cn(baseClass, className)}>{children}</div>;
 };

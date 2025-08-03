@@ -19,7 +19,7 @@ const WineTypeFilter = ({
 }: WineTypeFilterProps) => {
   const { type, setType, minPrice, maxPrice, setPriceRange, rating, setRating } = useFilterStore();
 
-  const wineTypeOptions: WineType[] = ['Red', 'White', 'Sparkling'];
+  const wineTypeOptions: WineType[] = ['RED', 'WHITE', 'SPARKLING'];
   const priceRange: [number, number] = [minPrice, maxPrice];
 
   const borderClass = 'border-b border-gray-100';
@@ -50,7 +50,7 @@ const WineTypeFilter = ({
           max={1000000}
           value={priceRange}
           onChange={setPriceRange}
-          className='w-[17.7rem]'
+          className='w-[17.7rem] ml-1'
         />
       </div>
       <span className={cn(showBorder && borderClass, 'my-[1.9rem]')}></span>
@@ -65,19 +65,19 @@ const WineTypeFilter = ({
             </Label>
           </div>
           <div className='flex items-center gap-3 custom-text-lg-medium'>
-            <RadioGroupItem value='4.6' id='rate1' />
+            <RadioGroupItem value='5.0' id='rate1' />
             <Label htmlFor='rate1'>4.5 - 5.0</Label>
           </div>
           <div className='flex items-center gap-3'>
-            <RadioGroupItem value='4.1' id='rate2' />
+            <RadioGroupItem value='4.5' id='rate2' />
             <Label htmlFor='rate2'>4.0 - 4.5</Label>
           </div>
           <div className='flex items-center gap-3'>
-            <RadioGroupItem value='3.6' id='rate3' />
+            <RadioGroupItem value='4.0' id='rate3' />
             <Label htmlFor='rate3'>3.5 - 4.0</Label>
           </div>
           <div className='flex items-center gap-3'>
-            <RadioGroupItem value='3.1' id='rate4' />
+            <RadioGroupItem value='3.5' id='rate4' />
             <Label htmlFor='rate4'>3.0 - 3.5</Label>
           </div>
         </RadioGroup>

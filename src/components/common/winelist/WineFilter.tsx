@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { toast } from 'sonner';
+
 import SearchButton from '@/assets/icons/SearchButton.svg';
 import WineTypeFilter from '@/components/common/Filter/WineTypeFilter';
 import Input from '@/components/common/Input';
@@ -7,6 +9,7 @@ import WineListCard from '@/components/common/winelist/WineListCard';
 import FilterModal from '@/components/Modal/FilterModal/FilterModal';
 import AddWineModal from '@/components/Modal/WineModal/AddWineModal';
 import { Button } from '@/components/ui/button';
+import { useUser } from '@/hooks/useUser';
 import useWineSearchKeywordStore from '@/stores/searchStore';
 
 export default function WineFilter() {
@@ -14,6 +17,8 @@ export default function WineFilter() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const { searchTerm, setSearchTerm } = useWineSearchKeywordStore();
+
+  const { user } = useUser();
 
   return (
     <div className='w-full max-w-[1140px] mx-auto'>
@@ -27,7 +32,10 @@ export default function WineFilter() {
             variant='purpleDark'
             size='md'
             width={null}
-            onClick={() => setShowRegisterModal(true)}
+            onClick={() => {
+              if (!user) toast.error('', { description: '로그인이 필요합니다.' });
+              else setShowRegisterModal(true);
+            }}
             className='ml-[30px] mb-[200px] w-[284px]'
           >
             와인 등록하기

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { motion } from 'framer-motion';
+
 import { Progress } from '@/components/ui/progress';
 import useWineStore from '@/stores/wineStore';
 
@@ -15,11 +17,19 @@ interface Props {
 function WineRating({ rating, reviewCount, ratings }: Props) {
   const nowWine = useWineStore((state) => state.nowWine);
 
-  if (!nowWine) return <>에러</>;
+  if (!nowWine) return;
   const { id, name } = nowWine;
 
+  const percentageArr = [...ratings].reverse().map((rating) => {
+    return (rating / reviewCount) * 100;
+  });
+
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0 }}
+      transition={{ duration: 1.6, ease: 'easeOut' }}
       className='mb-10 md:mb-[60px] md:px-[63px] xl:px-0 w-full xl:max-w-[280px] mx-auto xl:mx-0 order-1 xl:order-2  
       flex flex-col md:flex-row md:gap-20 xl:gap-0 xl:flex-col xl:relative'
     >
@@ -40,7 +50,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
             </div>
           </div>
           <div className='flex gap-2 flex-col w-full order-2 '>
-            {[...ratings].reverse().map((rating, i) => (
+            {percentageArr.map((rating, i) => (
               <div key={`${5 - i}points`} className='flex items-center justify-between'>
                 <span className='block w-8 text-gray-500 mr-4'>{5 - i}점</span>
                 <Progress className='h-[6px]' value={rating} />
@@ -49,7 +59,7 @@ function WineRating({ rating, reviewCount, ratings }: Props) {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
 

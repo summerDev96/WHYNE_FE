@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type WineType = 'Red' | 'White' | 'Sparkling';
+export type WineType = 'RED' | 'WHITE' | 'SPARKLING';
 
 type FilterState = {
   type: WineType;

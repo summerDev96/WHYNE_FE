@@ -54,11 +54,10 @@ const Signup = () => {
 
   const {
     handleSubmit,
-    clearErrors,
     setError,
     trigger,
     getValues,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = methods;
 
   const registerMutation = useMutation<SignupResponse, AxiosError, SignupRequest>({
@@ -68,12 +67,19 @@ const Signup = () => {
       loginMutation.mutate({ email, password });
     },
     onError: (error) => {
-      if (error.response?.status === 500) {
-        // 로그인 오류인 경우 공통 에러 메시지
-        setError('root', { message: '닉네임이 중복되었습니다.' });
-      } else {
-        // API 에러를 모달로 출력
-        handleError(error.response?.data as Error);
+      const err = error as AxiosError<{ message?: string }>;
+      const status = err.response?.status;
+      const message = err.response?.data?.message;
+
+      switch (status) {
+        case 400:
+          setError('email', { message });
+          break;
+        case 500:
+          setError('nickname', { message: '닉네임이 중복되었습니다.' });
+          break;
+        default:
+          handleError(error.response?.data as Error);
       }
     },
   });
@@ -105,11 +111,6 @@ const Signup = () => {
     registerMutation.mutate(formData);
   };
 
-  /* 공통 에러가 이미 있는 경우, 인풋 입력 시 초기화 하는 메소드  */
-  const resetCommonErrorMessage = () => {
-    if (errors.root) clearErrors('root');
-  };
-
   /* 비밀번호 확인 값 입력 시, 비밀번호 확인 값을 유효성 체크하도록 함 */
   const validatePasswordConfirmation = () => {
     if (getValues('passwordConfirmation')) {
@@ -135,24 +136,12 @@ const Signup = () => {
             {/* 이메일 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='email'>이메일</label>
-              <FormInput
-                type='email'
-                id='email'
-                name='email'
-                placeholder='user@email.com'
-                onChange={resetCommonErrorMessage}
-              />
+              <FormInput type='email' id='email' name='email' placeholder='user@email.com' />
             </div>
             {/* 닉네임 */}
             <div className='flex flex-col gap-2.5'>
               <label htmlFor='nickname'>닉네임</label>
-              <FormInput
-                type='text'
-                id='nickname'
-                name='nickname'
-                placeholder='user'
-                onChange={resetCommonErrorMessage}
-              />
+              <FormInput type='text' id='nickname' name='nickname' placeholder='user' />
             </div>
             {/* 비밀번호 */}
             <div className='flex flex-col gap-2.5'>
@@ -163,7 +152,6 @@ const Signup = () => {
                 name='password'
                 placeholder='영문, 숫자, 특수문자(!@#$%^&*) 제한'
                 onChange={() => {
-                  resetCommonErrorMessage();
                   /* 비밀번호 확인 값이 있으면 유효성 체크하도록 함 */
                   validatePasswordConfirmation();
                 }}
@@ -177,13 +165,10 @@ const Signup = () => {
                 id='passwordConfirmation'
                 name='passwordConfirmation'
                 placeholder='비밀번호 확인'
-                onChange={resetCommonErrorMessage}
               />
             </div>
           </div>
 
-          {/* 회원가입 오류 출력 */}
-          {errors.root && <p className='text-red-500 flex self-start'>{errors.root.message}</p>}
           <Button
             variant='purpleDark'
             size='md'

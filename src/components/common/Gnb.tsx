@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import apiClient from '@/api/apiClient';
+import { getUser } from '@/api/user';
 import { useUser } from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 
@@ -37,27 +39,31 @@ function Gnb() {
 
 export default Gnb;
 
-function AuthMenu() {
+export function AuthMenu() {
   const { pathname } = useRouter();
-  const { user } = useUser();
 
-  /**
-   1)로그인 -> User스토어에 바로 저장이되나?(확인하고)
-   2)바로 저장이 되는데 안보인다? -> user다시 조회하는 동작 추가 필요
-   3)바로 저장이 되면 보인다? -> 그냥 넘어가기
-   4) 로딩스피너 적용되는 거 보고 오버레이(뒤에 비치니까) 만약 새로고침 시 유저상태 변하는 게 보인다? -> ssr고려하기? 하 
-   
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['nowLoginUser'],
+    queryFn: () => getUser(),
+    staleTime: 1000 * 60 * 5,
+  });
 
-   */
+  if (isLoading) return;
 
-  return user ? (
-    <UserDropdown userImage={user.image} />
-  ) : (
-    <div className='flex items-center gap-[20px] md:gap-[40px] text-white md:text-[16px] custom-text-md-medium font-sans'>
-      <Link href='/signin'>로그인</Link>
-      {pathname === '/' && <Link href='/signup'>회원가입</Link>}
-    </div>
-  );
+  if (isError)
+    return (
+      <div className='flex items-center gap-[20px] md:gap-[40px] text-white md:text-[16px] custom-text-md-medium font-sans'>
+        <Link href='/signin'>로그인</Link>
+        {pathname === '/' && <Link href='/signup'>회원가입</Link>}
+      </div>
+    );
+
+  if (!user) return;
+  return <UserDropdown userImage={user.image} />;
 }
 
 interface Props {
@@ -66,18 +72,22 @@ interface Props {
 
 function UserDropdown({ userImage }: Props) {
   const router = useRouter();
+  const { clearUser } = useUser();
+  const queryClient = useQueryClient();
 
   function onSelect(value: string) {
     if (value === 'myprofile') router.push('/my-profile');
     if (value === 'logout') handleLogout();
   }
 
-  const { clearUser } = useUser();
-
   async function handleLogout() {
+    queryClient.removeQueries({ queryKey: ['nowLoginUser'] });
+    //쿠키 만료시키기
     await apiClient.get(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`);
     clearUser();
-    router.push('/');
+    if (router.pathname !== '/my-profile') {
+      router.push('/');
+    }
   }
 
   return (
@@ -90,7 +100,7 @@ function UserDropdown({ userImage }: Props) {
       trigger={
         <div className='relative w-[20px] md:w-[45px] h-[20px] md:h-[45px] cursor-pointer rounded-full overflow-hidden'>
           {userImage ? (
-            <Image width={45} height={45} src={userImage} alt='유저의 프로필 사진' />
+            <Image fill style={{ objectFit: 'cover' }} src={userImage} alt='유저의 프로필 사진' />
           ) : (
             <UserDefaultImg />
           )}
