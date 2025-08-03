@@ -180,12 +180,19 @@ const EditWineModal = ({ wine, showEditModal, setShowEditModal }: EditWineModalP
   const watchedType = watch('wineType');
   const watchedImage = watch('wineImage');
 
+  const isChanged =
+    watchedName !== wine.name ||
+    watchedPrice !== wine.price.toLocaleString() ||
+    watchedOrigin !== wine.region ||
+    watchedType !== wine.type ||
+    watchedImage?.[0] !== undefined; // 이미지 새로 업로드되면 변경됨
+
   const isFormValid =
     watchedName?.trim() &&
     watchedPrice &&
     watchedOrigin?.trim() &&
     watchedType?.trim() &&
-    watchedImage?.length > 0;
+    isChanged; // 최소 하나라도 바뀐 경우에만 버튼 활성화
 
   const renderButton = (
     <Button

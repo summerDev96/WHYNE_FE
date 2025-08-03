@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { LoadingOverlay } from '@/components/common/LoadingOverlay';
 import ErrorModal from '@/components/common/Modal/ErrorModal';
 import Profile from '@/components/my-profile/Profile';
 import { ReviewList } from '@/components/my-profile/ReviewList';
@@ -40,9 +39,6 @@ export default function MyProfile() {
 
   return (
     <div>
-      {/* 로딩 중일 때 전체 오버레이 */}
-      {isUserLoading && <LoadingOverlay />}
-
       <ErrorModal
         open={showModal}
         onOpenChange={() => {}}
